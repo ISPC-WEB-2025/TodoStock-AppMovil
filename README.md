@@ -42,7 +42,7 @@ Muchas pymes controlan su inventario con planillas o procesos manuales, lo que g
  
 ---
  
-## 🌿 Esquema de branching
+##  Esquema de branching
  
 Basado en Gitflow simplificado:
  
@@ -58,7 +58,7 @@ feature/virginia-XXXXX    ─┤
 feature/aylen-XXXXX       ─┘
 
  
-## 🚀 Cómo correr el proyecto
+##  Cómo correr el proyecto
  
 1. Clonar el repositorio:
 ```bash
@@ -70,7 +70,7 @@ feature/aylen-XXXXX       ─┘
 5. Ejecutar en un emulador (AVD, Android 5.0+) o en un dispositivo físico con depuración USB habilitada.
 ---
  
-## 📋 Gestión del proyecto
+##  Gestión del proyecto
  
 - **Tablero Kanban:** *(link al Project de GitHub)*
 - **Milestones / Sprints:** *(link a Milestones)*
@@ -79,7 +79,7 @@ feature/aylen-XXXXX       ─┘
 - **Diseño (Figma):** https://www.figma.com/design/Aa1IGF6PBIY5ID9SQHCCG4/StockSip---Mobile-Application--Community-
 ---
  
-## 🔐 Seguridad
+##  Seguridad
  
 - Autenticación mediante **JWT**.
 - Contraseñas con mínimo 8 caracteres, alfanuméricas y con caracteres especiales.
@@ -88,6 +88,6 @@ feature/aylen-XXXXX       ─┘
 - Detalle completo del plan de seguridad en la sección **Ciberseguridad** de la Wiki.
 ---
  
-## 📄 Licencia
+##  Licencia
  
 *Codelab*
