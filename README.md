@@ -1,9 +1,6 @@
 
 # TodoStock 
-Aplicación móvil (Android, Java) para la gestión de inventario en tiempo real, desarrollada como continuación del proyecto web **TodoStock** (Programador Web) en el marco de Proyecto Integrador II — TSDWAD, ISPC.
- 
-Permite a **Administradores** y **Vendedores** acceder desde el celular a las mismas funcionalidades de control de stock que la plataforma web, consumiendo las APIs REST ya desarrolladas en Django.
- 
+Aplicación móvil (Android, Java) para la gestión de inventario en tiempo real.
 ---
  
 ##  Sobre el proyecto
