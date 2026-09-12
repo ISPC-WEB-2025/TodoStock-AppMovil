@@ -1,0 +1,19 @@
+# Rutas locales y credenciales del SDK / NDK
+local.properties
+Captures/
+*.jks
+*.keystore
+
+# Salidas de compilación y caches de Gradle
+.gradle/
+build/
+*/build/
+
+# Archivos de entorno y configuración de Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+.DS_Store
+
+# Reportes de testing y métricas
+lint/
+baseline-prof.txt
