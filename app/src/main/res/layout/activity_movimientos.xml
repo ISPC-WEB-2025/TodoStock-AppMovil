@@ -14,10 +14,11 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="MOVIMIENTOS\n(sucursales)"
+        android:padding="40dp"
         android:textColor="@color/color_texto"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="12dp"/>
 
     <!-- Sub-contenedor para el formulario -->
     <LinearLayout
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
 
@@ -148,7 +149,9 @@
             android:id="@+id/btnConfirmar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Confirmar Movimiento"
+            android:text="Confirmar"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:background="@drawable/boton_redondeado" />
 
