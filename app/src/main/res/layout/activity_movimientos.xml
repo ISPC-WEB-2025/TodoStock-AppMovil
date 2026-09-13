@@ -3,13 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< Updated upstream
     android:orientation="vertical"
     android:background="@color/color_fondo">
+=======
+    android:background="@color/color_fondo"
+    android:orientation="vertical"
+    android:gravity="center">
+>>>>>>> Stashed changes
 
     <!-- Título Principal -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< Updated upstream
         android:text="MOVIMIENTOS > SUCURSALES"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -17,6 +24,14 @@
         android:background="@color/color_detalles"
         android:gravity="center"
         android:padding="12dp" />
+=======
+        android:gravity="center"
+        android:text="MOVIMIENTOS\n (sucursales)"
+        android:textColor="@color/color_texto"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"/>
+>>>>>>> Stashed changes
 
     <!-- Sub-contenedor para el formulario -->
     <LinearLayout
@@ -31,9 +46,14 @@
             android:layout_height="wrap_content"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
+<<<<<<< Updated upstream
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
+=======
+            android:textSize="20sp"
+            android:textStyle="bold" />
+>>>>>>> Stashed changes
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -63,15 +83,25 @@
             android:layout_height="wrap_content"
             android:text="DESTINO"
             android:textColor="@color/color_texto"
+<<<<<<< Updated upstream
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
+=======
+            android:textSize="20sp"
+            android:textStyle="bold" />
+>>>>>>> Stashed changes
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+<<<<<<< Updated upstream
             android:background="@drawable/input_fondo"
             android:layout_marginBottom="16dp">
+=======
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_fondo">
+>>>>>>> Stashed changes
 
             <Spinner
                 android:id="@+id/spinnerDestino"
@@ -95,9 +125,14 @@
             android:layout_height="wrap_content"
             android:text="PRODUCTO"
             android:textColor="@color/color_texto"
+<<<<<<< Updated upstream
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
+=======
+            android:textSize="20sp"
+            android:textStyle="bold" />
+>>>>>>> Stashed changes
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -127,9 +162,14 @@
             android:layout_height="wrap_content"
             android:text="CANTIDAD"
             android:textColor="@color/color_texto"
+<<<<<<< Updated upstream
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
+=======
+            android:textSize="20sp"
+            android:textStyle="bold" />
+>>>>>>> Stashed changes
 
         <EditText
             android:id="@+id/etCantidad"
@@ -139,9 +179,13 @@
             android:inputType="number"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+<<<<<<< Updated upstream
             android:background="@drawable/input_fondo"
             android:textColor="@color/color_texto"
             android:layout_marginBottom="32dp" />
+=======
+            android:textColor="@color/texto_secundario" />
+>>>>>>> Stashed changes
 
         <!-- Botón -->
         <androidx.appcompat.widget.AppCompatButton
