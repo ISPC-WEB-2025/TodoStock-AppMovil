@@ -4,7 +4,7 @@
     android:shape="rectangle"
     >
     <!-- Color de relleno del botón -->
-    <solid android:color="@color/azul_primario" />
+    <solid android:color="@color/color_botones" />
     <!-- Radio de curvatura de las 4 esquinas -->
     <corners android:radius="25dp" />
     <!-- Borde del botón -->
