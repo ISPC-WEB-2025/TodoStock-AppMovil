@@ -32,7 +32,7 @@
             android:layout_marginBottom="6dp"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
 
