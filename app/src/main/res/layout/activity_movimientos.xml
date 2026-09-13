@@ -3,27 +3,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_fondo"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="32dp">
+    android:orientation="vertical">
 
-    <!-- Título Principal -->
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Barra superior de lado a lado con fondo verde -->
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="MOVIMIENTOS\n(sucursales)"
-        android:padding="40dp"
-        android:textColor="@color/color_texto"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp"/>
+        android:background="@color/boton_presionado"
+        android:padding="16dp"
+        android:layout_marginBottom="24dp">
+
+        <ImageButton
+            android:id="@+id/btnAtras"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/flecha_atras"
+            android:contentDescription="Volver a la pantalla anterior" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="MOVIMIENTOS\n(sucursales)"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </FrameLayout>
 
     <!-- Sub-contenedor para el formulario -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp">
 
         <!-- Origen -->
         <TextView
