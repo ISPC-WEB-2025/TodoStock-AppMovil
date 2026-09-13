@@ -108,7 +108,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             }
         });
 
-        // 4. Movimientos entre Sucursales (Aylen)
+        // 4. Movimientos entre sucursales (Aylen)
         btnNavMovimientos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
