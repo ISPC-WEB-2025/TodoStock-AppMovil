@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarStock"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/gris_fondo_input"
+        app:title="Gestión de Stock"
+        app:titleTextColor="@color/color_texto" />
+
+    <!-- Indicador de la sucursal actual filtrada -->
+    <TextView
+        android:id="@+id/tvSucursalFiltro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Mostrando inventario de: Sucursal 1"
+        android:textColor="@color/color_texto"
+        android:textSize="15sp"
+        android:textStyle="italic" />
+
+    <!-- RecyclerView para soporte de listas largas con scroll fluido -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStock"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_stock" />
+
+</LinearLayout>
