@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    TK02: Layout del Menu Principal (Hub central)
+    Responsable: Miguel Flores
+    Accesos a las 5 pantallas hijas con diseno limpio y organizado
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <!-- Barra superior / Header -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_fondo"
+        app:title="TodoStock - Menú"
+        app:titleTextColor="@color/texto_principal" />
+
+    <!-- Datos de sesion / Rol activo -->
+    <TextView
+        android:id="@+id/tvRolActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="Sesión activa: Administrador"
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Acceso 1: Seleccion de Sucursal -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavSucursal"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:text="1. Seleccionar Sucursal"
+                android:textAlignment="viewStart"
+                android:textColor="@color/texto_principal"
+                app:strokeColor="@color/texto_principal" />
+
+            <!-- Acceso 2: Gestion de Stock -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavStock"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:text="2. Gestión de Stock"
+                android:textAlignment="viewStart"
+                android:textColor="@color/texto_principal"
+                app:strokeColor="@color/texto_principal" />
+
+            <!-- Acceso 3: Carga de Producto -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavCargaProducto"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:text="3. Cargar Nuevo Producto"
+                android:textAlignment="viewStart"
+                android:textColor="@color/texto_principal"
+                app:strokeColor="@color/texto_principal" />
+
+            <!-- Acceso 4: Movimientos entre Sucursales -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavMovimientos"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:text="4. Movimientos entre Sucursales"
+                android:textAlignment="viewStart"
+                android:textColor="@color/texto_principal"
+                app:strokeColor="@color/texto_principal" />
+
+            <!-- Acceso 5: Contacto Soporte -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavContacto"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="24dp"
+                android:text="5. Contacto / Soporte"
+                android:textAlignment="viewStart"
+                android:textColor="@color/color_texto"
+                app:strokeColor="@color/texto_principal" />
+
+            <!-- Boton Cerrar Sesion (Preparado para Sprint 2 / accesible) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:text="Cerrar Sesión"
+                android:backgroundTint="@color/color_errores"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
