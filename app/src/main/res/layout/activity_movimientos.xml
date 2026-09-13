@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_fondo"
@@ -30,6 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
@@ -39,8 +39,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_fondo"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/input_fondo">
 
             <Spinner
                 android:id="@+id/spinnerOrigen"
@@ -53,26 +53,26 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
-                android:src="@android:drawable/arrow_down_float"
                 android:clickable="false"
-                android:focusable="false" />
+                android:focusable="false"
+                android:src="@android:drawable/arrow_down_float" />
         </FrameLayout>
 
         <!-- Destino -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:text="DESTINO"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="6dp" />
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_fondo"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/input_fondo">
 
             <Spinner
                 android:id="@+id/spinnerDestino"
@@ -85,26 +85,26 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
-                android:src="@android:drawable/arrow_down_float"
                 android:clickable="false"
-                android:focusable="false" />
+                android:focusable="false"
+                android:src="@android:drawable/arrow_down_float" />
         </FrameLayout>
 
         <!-- Producto -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:text="PRODUCTO"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="6dp" />
+            android:textStyle="bold" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@drawable/input_fondo"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/input_fondo">
 
             <Spinner
                 android:id="@+id/spinnerProducto"
@@ -117,32 +117,32 @@
                 android:layout_height="24dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="16dp"
-                android:src="@android:drawable/arrow_down_float"
                 android:clickable="false"
-                android:focusable="false" />
+                android:focusable="false"
+                android:src="@android:drawable/arrow_down_float" />
         </FrameLayout>
 
         <!-- Cantidad -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:text="CANTIDAD"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="6dp" />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etCantidad"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/input_fondo"
             android:hint="Ingrese cantidad"
             android:inputType="number"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:background="@drawable/input_fondo"
-            android:textColor="@color/texto_secundario"
-            android:layout_marginBottom="32dp" />
+            android:textColor="@color/color_texto" />
 
         <!-- Botón -->
         <androidx.appcompat.widget.AppCompatButton
