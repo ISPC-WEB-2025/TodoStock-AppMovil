@@ -16,6 +16,9 @@
             android:name=".GestionStockActivity"
             android:exported="false" />
         <activity
+            android:name=".activity_seleccion_sucursal"
+            android:exported="false" />
+        <activity
             android:name=".MovimientosActivity"
             android:exported="false" />
         <activity
