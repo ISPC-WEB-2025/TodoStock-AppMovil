@@ -4,70 +4,153 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:background="@color/color_fondo">
 
-    <!-- TÍTULO CENTRADO NUEVO -->
+    <!-- Título Principal -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="MOVIMIENTOS > SUCURSALES"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="32dp" />
-
-    <!-- Selector Sucursal Origen -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sucursal Origen:"
-        android:textStyle="bold" />
-    <Spinner
-        android:id="@+id/spinnerOrigen"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Selector Sucursal Destino -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sucursal Destino:"
-        android:textStyle="bold" />
-    <Spinner
-        android:id="@+id/spinnerDestino"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Selector Producto -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Producto:"
-        android:textStyle="bold" />
-    <Spinner
-        android:id="@+id/spinnerProducto"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Campo Cantidad -->
-    <EditText
-        android:id="@+id/etCantidad"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Cantidad a mover"
-        android:inputType="number"
-        android:layout_marginBottom="32dp" />
-
-    <!-- BOTÓN MODIFICADO (Bordes redondeados) -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnConfirmar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Confirmar Movimiento"
         android:textColor="@color/white"
-        android:background="@drawable/boton_redondeado" />
+        android:background="@color/color_detalles"
+        android:gravity="center"
+        android:padding="12dp" />
 
+    <!-- Sub-contenedor para el formulario -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Origen -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ORIGEN"
+            android:textColor="@color/color_texto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/input_fondo"
+            android:layout_marginBottom="16dp">
+
+            <Spinner
+                android:id="@+id/spinnerOrigen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:clickable="false"
+                android:focusable="false" />
+        </FrameLayout>
+
+        <!-- Destino -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESTINO"
+            android:textColor="@color/color_texto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/input_fondo"
+            android:layout_marginBottom="16dp">
+
+            <Spinner
+                android:id="@+id/spinnerDestino"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:clickable="false"
+                android:focusable="false" />
+        </FrameLayout>
+
+        <!-- Producto -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PRODUCTO"
+            android:textColor="@color/color_texto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/input_fondo"
+            android:layout_marginBottom="16dp">
+
+            <Spinner
+                android:id="@+id/spinnerProducto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="16dp"
+                android:src="@android:drawable/arrow_down_float"
+                android:clickable="false"
+                android:focusable="false" />
+        </FrameLayout>
+
+        <!-- Cantidad -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CANTIDAD"
+            android:textColor="@color/color_texto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etCantidad"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Ingrese cantidad"
+            android:inputType="number"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/input_fondo"
+            android:textColor="@color/color_texto"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Botón -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnConfirmar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Confirmar Movimiento"
+            android:textColor="@color/white"
+            android:background="@drawable/boton_redondeado" />
+
+    </LinearLayout>
 </LinearLayout>
