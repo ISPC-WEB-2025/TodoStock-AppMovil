@@ -39,13 +39,13 @@ public class LoginActivity extends AppCompatActivity {
                     // Crear Intent para ir a MainActivity
                     Intent intent = new Intent(
                             LoginActivity.this,
-                            MainActivity.class
+                            MenuPrincipalActivity.class
                     );
 
                     // Adjuntar un dato "extra"
                     // para llevarlo a la siguiente pantalla
                     intent.putExtra(
-                            "EXTRA_USUARIO",
+                            MenuPrincipalActivity.EXTRA_USUARIO,
                             usuario
                     );
 

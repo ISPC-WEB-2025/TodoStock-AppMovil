@@ -6,6 +6,9 @@
     <!-- Botones y llamados a la acción (Verde) -->
     <color name="color_botones">#4F6429</color>
 
+    <!-- Errores (Rojo) -->
+    <color name="color_errores">#FF0000</color>
+
     <!-- Detalles, bordes o acentos (Marrón) -->
     <color name="color_detalles">#976E46</color>
 
@@ -19,6 +22,6 @@
     <color name="azul_presionado">#1976D2</color>     <!-- Color al presionar -->
     <color name="gris_fondo_input">#F4F6F9</color>    <!-- Fondo claro para campos de texto -->
     <color name="texto_principal">#334155</color>     <!-- Color de letra para títulos -->
-
+    <color name="texto_secundario">#334155</color>     <!-- Color de letra para títulos -->
 
 </resources>
