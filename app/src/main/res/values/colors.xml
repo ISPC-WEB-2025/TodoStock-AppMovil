@@ -1,37 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Títulos y textos-->
+    <!-- Títulos y textos principales (Oscuro) -->
     <color name="color_texto">#211C13</color>
-    <color name="texto_secundario">#12100E</color>
 
-    <!-- Botones-->
+    <!-- Botones y llamados a la acción (Verde) -->
     <color name="color_botones">#4F6429</color>
 
+    <!-- Errores (Rojo) -->
+    <color name="color_errores">#FF0000</color>
 
     <!-- Detalles, bordes o acentos (Marrón) -->
     <color name="color_detalles">#976E46</color>
 
     <!-- Fondo principal de la app (Crema) -->
     <color name="color_fondo">#F2E4D8</color>
-
-    <color name="boton_presionado">#303E18</color>
-
-    <!-- Errores-->
-    <color name="color_errores">#AC0D0D</color>
-
-    <!-- Detalles, bordes o acentos -->
-    <color name="color_detalles">#976E46</color>
-
-    <!-- Fondo principal-->
-    <color name="color_fondo">#FBF3EC</color>
-
-
-    <!-- Inputs -->
-    <color name="gris_borde_input">#CBD5E1</color>
-    <color name="gris_fondo_input">#F4F6F9</color>
-
-    <!-- Splash -->
-    <color name="fondo_splash">#4E6C18</color>
-    <color name="white">#ECE7E4</color>
+    <color name="gris_borde_input">#CBD5E1</color>    <!-- Borde tenue -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="fondo_splash">#1E1E2C</color>        <!-- Oscuro elegante -->
+    <color name="azul_primario">#2196F3</color>       <!-- Color para botones principales -->
+    <color name="azul_presionado">#1976D2</color>     <!-- Color al presionar -->
+    <color name="gris_fondo_input">#F4F6F9</color>    <!-- Fondo claro para campos de texto -->
+    <color name="texto_principal">#334155</color>     <!-- Color de letra para títulos -->
+    <color name="texto_secundario">#334155</color>     <!-- Color de letra para títulos -->
 
 </resources>
