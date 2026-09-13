@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="6dp" />
 
@@ -141,7 +141,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:background="@drawable/input_fondo"
-            android:textColor="@color/color_texto"
+            android:textColor="@color/texto_secundario"
             android:layout_marginBottom="32dp" />
 
         <!-- Botón -->
