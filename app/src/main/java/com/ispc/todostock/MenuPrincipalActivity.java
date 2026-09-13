@@ -112,12 +112,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavMovimientos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Módulo Movimientos en desarrollo", Toast.LENGTH_SHORT).show();
-            /*
-            Intent intent = new Intent(MenuPrincipalActivity.this, MovimientosActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
-            */
+                Intent intent = new Intent(MenuPrincipalActivity.this, MovimientosActivity.class);
+                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
+                startActivity(intent);
             }
         });
 
