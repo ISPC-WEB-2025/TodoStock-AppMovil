@@ -2,18 +2,18 @@
 <resources>
     <!-- Títulos y textos-->
     <color name="color_texto">#211C13</color>
-    <color name="texto_secundario">#12100E</color>     <!-- Color de letra para títulos -->
+    <color name="texto_secundario">#12100E</color>
 
     <!-- Botones-->
     <color name="color_botones">#4F6429</color>
 
-<<<<<<< Updated upstream
+
     <!-- Detalles, bordes o acentos (Marrón) -->
     <color name="color_detalles">#976E46</color>
 
     <!-- Fondo principal de la app (Crema) -->
     <color name="color_fondo">#F2E4D8</color>
-=======
+
     <color name="boton_presionado">#303E18</color>
 
     <!-- Errores-->
@@ -33,5 +33,5 @@
     <!-- Splash -->
     <color name="fondo_splash">#4E6C18</color>
     <color name="white">#ECE7E4</color>
->>>>>>> Stashed changes
+
 </resources>
