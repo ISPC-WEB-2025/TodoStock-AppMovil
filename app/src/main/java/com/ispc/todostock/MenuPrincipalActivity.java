@@ -115,7 +115,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
                 Intent intent = new Intent(MenuPrincipalActivity.this, MovimientosActivity.class);
                 intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
                 startActivity(intent);
-
             }
         });
 
