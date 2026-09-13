@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Validar que los campos no estén vacíos
                 if (!usuario.isEmpty() && !password.isEmpty()) {
 
-                    // Crear Intent para ir a MainActivity
+                    // Crear Intent para ir a Menu Principal
                     Intent intent = new Intent(
                             LoginActivity.this,
                             MenuPrincipalActivity.class
@@ -55,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 } else {
+                    if (usuario.isEmpty()) {
+                        etUsuario.setError("El usuario es requerido");
+                    }
+                    if (password.isEmpty()) {
+                        etPassword.setError("La contraseña es requerida");
+                    }
 
                     // Mostrar mensaje de advertencia
                     Toast.makeText(
