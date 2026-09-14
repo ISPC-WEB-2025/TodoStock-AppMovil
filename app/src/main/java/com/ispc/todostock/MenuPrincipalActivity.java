@@ -72,12 +72,10 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavSucursal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Módulo Selección de Sucursal en desarrollo", Toast.LENGTH_SHORT).show();
-            /*
             Intent intent = new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class);
             intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
             startActivity(intent);
-            */
+
 
             }
         });
@@ -86,7 +84,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Módulo Gestión de Stock en desarrollo", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(MenuPrincipalActivity.this, GestionStockActivity.class);
             intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
