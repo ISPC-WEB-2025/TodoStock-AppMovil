@@ -78,6 +78,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
             startActivity(intent);
             */
+
             }
         });
 
