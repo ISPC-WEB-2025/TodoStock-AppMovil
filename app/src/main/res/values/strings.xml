@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">TodoStock</string>
     <string name="seleccione_una_sucursal_para_ver_su_informaci_n">Seleccione una sucursal para ver su información</string>
+    <string name="contacto_titulo">Contacto</string>
+    <string name="contacto_descripcion">Comunicate con soporte ante cualquier consulta.</string>
+    <string name="contacto_hint_nombre">Nombre</string>
+    <string name="contacto_hint_email">Email</string>
+    <string name="contacto_hint_mensaje">Mensaje</string>
+    <string name="contacto_boton_enviar">ENVIAR</string>
 </resources>
