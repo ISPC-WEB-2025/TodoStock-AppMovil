@@ -11,9 +11,11 @@
         android:id="@+id/toolbarStock"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/gris_fondo_input"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
         app:title="Gestión de Stock"
-        app:titleTextColor="@color/color_texto" />
+        app:titleTextColor="@color/color_fondo" />
+
 
     <!-- Indicador de la sucursal actual filtrada -->
     <TextView
