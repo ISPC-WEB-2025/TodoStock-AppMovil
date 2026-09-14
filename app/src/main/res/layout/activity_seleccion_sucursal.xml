@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:background="@color/color_fondo">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:orientation="vertical">
 
-<!-- Barra superior para mantener el formato -->
+    <!-- Barra superior para mantener el formato -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMenu"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
         app:title="Sucursales"
-        app:titleTextColor="@color/color_fondo"
-        app:navigationIcon="@drawable/flecha_atras" />
+        app:titleTextColor="@color/color_fondo" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
