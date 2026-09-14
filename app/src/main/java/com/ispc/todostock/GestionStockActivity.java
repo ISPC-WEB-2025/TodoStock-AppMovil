@@ -12,3 +12,4 @@ public class GestionStockActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gestion_stock);
     }
 }
+
