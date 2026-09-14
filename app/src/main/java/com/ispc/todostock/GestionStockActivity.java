@@ -40,12 +40,20 @@ public class GestionStockActivity extends AppCompatActivity {
         tvSucursalFiltro = findViewById(R.id.tvSucursalFiltro);
         rvStock = findViewById(R.id.rvStock);
 
-        // 1. Recibir sucursal_id por Intent (TK15)
-        if (getIntent() != null && getIntent().hasExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID)) {
-            sucursalIdActual = getIntent().getIntExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID, 1);
+        // 1. Recibir sucursal_id y nombre por Intent (TK15)
+        String sucursalNombre = "Sucursal #" + sucursalIdActual;
+
+        if (getIntent() != null) {
+            if (getIntent().hasExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID)) {
+                sucursalIdActual = getIntent().getIntExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID, 1);
+                sucursalNombre = "Sucursal #" + sucursalIdActual;
+            }
+            if (getIntent().hasExtra("sucursal_nombre")) {
+                sucursalNombre = getIntent().getStringExtra("sucursal_nombre");
+            }
         }
 
-        tvSucursalFiltro.setText("Mostrando inventario de: Sucursal #" + sucursalIdActual);
+        tvSucursalFiltro.setText("Mostrando inventario de: " + sucursalNombre);
 
         // 2. Configurar RecyclerView con LayoutManager
         rvStock.setLayoutManager(new LinearLayoutManager(this));
