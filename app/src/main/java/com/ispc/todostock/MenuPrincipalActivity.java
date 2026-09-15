@@ -120,12 +120,10 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavContacto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Módulo Contacto en desarrollo", Toast.LENGTH_SHORT).show();
-            /*
+
             Intent intent = new Intent(MenuPrincipalActivity.this, ContactoActivity.class);
             intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
             startActivity(intent);
-            */
             }
         });
 

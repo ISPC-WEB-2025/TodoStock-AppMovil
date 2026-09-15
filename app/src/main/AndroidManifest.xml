@@ -38,6 +38,9 @@
             android:exported="false" />
         <activity
             android:name=".ContactoActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".CargaProductoActivity"
             android:exported="false" />
     </application>
