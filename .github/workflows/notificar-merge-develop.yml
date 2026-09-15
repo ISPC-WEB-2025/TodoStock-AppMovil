@@ -1,0 +1,20 @@
+name: Notificar Merge a Develop
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Crear issue de notificación
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🔀 Merge a develop por ${context.actor}`,
+              body: `Se hizo push/merge a **develop**.\n\n**Autor:** ${context.actor}\n**Commit:** ${context.sha}\n**Mensaje:** ${context.payload.head_commit.message}\n\ncc @AylenBL8 @candebar @mikefink22 @PedroGonzalez1212 @virginia-garcia`
+            })
