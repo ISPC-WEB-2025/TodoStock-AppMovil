@@ -36,6 +36,9 @@
         <activity
             android:name=".MenuPrincipalActivity"
             android:exported="false" />
+        <activity
+            android:name=".CargaProductoActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
