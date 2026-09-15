@@ -7,4 +7,11 @@
     <string name="contacto_hint_email">Email</string>
     <string name="contacto_hint_mensaje">Mensaje</string>
     <string name="contacto_boton_enviar">ENVIAR</string>
+    <string name="carga_producto_titulo">Carga de Producto</string>
+    <string name="carga_producto_descripcion">Completá los datos del nuevo producto.</string>
+    <string name="carga_producto_hint_nombre">Nombre</string>
+    <string name="carga_producto_hint_descripcion">Descripción</string>
+    <string name="carga_producto_hint_precio">Precio</string>
+    <string name="carga_producto_hint_codigo">Código</string>
+    <string name="carga_producto_boton_guardar">GUARDAR</string>
 </resources>
