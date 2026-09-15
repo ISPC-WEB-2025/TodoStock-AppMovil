@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">TodoStock</string>
     <string name="seleccione_una_sucursal_para_ver_su_informaci_n">Seleccione una sucursal para ver su información</string>
+    <string name="carga_producto_titulo">Carga de Producto</string>
+    <string name="carga_producto_descripcion">Completá los datos del nuevo producto.</string>
+    <string name="carga_producto_hint_nombre">Nombre</string>
+    <string name="carga_producto_hint_descripcion">Descripción</string>
+    <string name="carga_producto_hint_precio">Precio</string>
+    <string name="carga_producto_hint_codigo">Código</string>
+    <string name="carga_producto_boton_guardar">GUARDAR</string>
 </resources>
