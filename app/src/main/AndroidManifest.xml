@@ -37,6 +37,7 @@
             android:name=".MenuPrincipalActivity"
             android:exported="false" />
         <activity
+            android:name=".ContactoActivity"
             android:name=".CargaProductoActivity"
             android:exported="false" />
     </application>
