@@ -71,7 +71,6 @@ feature/aylen-XXXXX       ─┘
 - **Tablero Kanban:** https://github.com/orgs/ISPC-WEB-2025/projects/18
 - **Milestones / Sprints:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/milestones
 - **Wiki del proyecto:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki
-- **Documentación IEEE830:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Anexos-IEEE830
 - **Diseño (Figma):** https://www.figma.com/design/Aa1IGF6PBIY5ID9SQHCCG4/StockSip---Mobile-Application--Community-
 ---
  
