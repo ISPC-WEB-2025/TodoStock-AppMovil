@@ -68,10 +68,10 @@ feature/aylen-XXXXX       ─┘
  
 ##  Gestión del proyecto
  
-- **Tablero Kanban:** *(link al Project de GitHub)*
-- **Milestones / Sprints:** *(link a Milestones)*
-- **Wiki del proyecto:** *(link a la Wiki: ceremonias, Testing, Ciberseguridad)*
-- **Documentación IEEE830:** *(link a Google Drive)*
+- **Tablero Kanban:** https://github.com/orgs/ISPC-WEB-2025/projects/18
+- **Milestones / Sprints:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/milestones
+- **Wiki del proyecto:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki
+- **Documentación IEEE830:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Anexos-IEEE830
 - **Diseño (Figma):** https://www.figma.com/design/Aa1IGF6PBIY5ID9SQHCCG4/StockSip---Mobile-Application--Community-
 ---
  
@@ -82,6 +82,11 @@ feature/aylen-XXXXX       ─┘
 - Gestión de permisos según rol (Administrador / Vendedor).
 - Control de sesiones y comunicación vía HTTPS (SSL/TLS).
 - Detalle completo del plan de seguridad en la sección **Ciberseguridad** de la Wiki.
+---
+ 
+##  Testing
+ 
+- **Casos de prueba (Test Cases):** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Testing-y-Calidad
 ---
  
 ##  Licencia
