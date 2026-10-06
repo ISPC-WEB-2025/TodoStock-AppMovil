@@ -79,6 +79,7 @@ No necesitás hacer nada. Por defecto, la app se conectará a `http://10.0.2.2:8
 3. Agregá la siguiente línea al final del archivo, reemplazando con tu IP real:
    ```properties
    api.baseUrl=http://192.168.X.X:8000/
+   ```
 
  
 ##  Gestión del proyecto

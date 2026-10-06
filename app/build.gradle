@@ -2,47 +2,51 @@ plugins {
     id 'com.android.application'
 }
 
+// TK90: la URL del backend para desarrollo se puede cambiar sin tocar el código,
+// agregando en local.properties (archivo que NO se sube al repo) una línea como:
+//     api.baseUrl=http://192.168.0.15:8000/
+// Si no existe esa línea, se usa la del emulador (10.0.2.2 = la PC donde corre el emulador).
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+def apiBaseUrlDebug = localProps.getProperty('api.baseUrl', 'http://10.0.2.2:8000/')
+
 android {
     namespace 'com.ispc.todostock'
     compileSdk 33
-    buildFeatures {
-        buildConfig = true
-    }
-
 
     defaultConfig {
         applicationId "com.ispc.todostock"
+        // TK90: decisión pendiente del equipo (24 o 21). Ver nota en el PR.
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-       
-        // --- CÓDIGO NUEVO PARA LEER LA IP ---
-        // Leemos el archivo local.properties
-        Properties properties = new Properties()
-        if (project.rootProject.file('local.properties').canRead()) {
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        }
-        
-        // Buscamos api.baseUrl. Si el compañero no la configuró, usamos la del emulador por defecto.
-        def backendUrl = properties.getProperty('api.baseUrl', 'http://10.0.2.2:8000/')
-        
-        // Guardamos la URL en BuildConfig para que la use el ApiClient
-        buildConfigField "String", "BASE_URL", "\"${backendUrl}\""
-        // -------------------------------------
+    }
+
+    // TK90: desde Android Gradle Plugin 8 la clase BuildConfig no se genera sola.
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDebug}\""
+        }
         release {
+            // TK43 reemplaza esta URL por la del backend desplegado (HTTPS).
+            buildConfigField "String", "BASE_URL", "\"https://PENDIENTE-TK43.invalid/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -50,22 +54,25 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    // --- NUEVAS DEPENDENCIAS (TK90) ---
-    // Retrofit y conversor JSON (Gson)
+    // TK90: OkHttp trae la librería estándar de Kotlin; esta línea alinea sus versiones
+    // y evita el error de compilación "Duplicate class kotlin...".
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+
+    // TK90: red
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
-    // OkHttp y su interceptor
-    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
-
-    // Almacenamiento seguro (para el token) - Requiere minSdk 23+
+    // TK90: guardado seguro del token (EncryptedSharedPreferences). Requiere minSdk 23 o superior.
     implementation 'androidx.security:security-crypto:1.0.0'
-    // Testing: Mockito y MockWebServer
-    testImplementation 'org.mockito:mockito-core:5.3.1'
-    testImplementation 'com.squareup.okhttp3:mockwebserver:4.11.0'
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    // TK90: Mockito 4.x es la última línea compatible con Java 8.
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
