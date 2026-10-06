@@ -18,7 +18,20 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", "\"https://api.tubackend.com/\""
+       
+        // --- CÓDIGO NUEVO PARA LEER LA IP ---
+        // Leemos el archivo local.properties
+        Properties properties = new Properties()
+        if (project.rootProject.file('local.properties').canRead()) {
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        }
+        
+        // Buscamos api.baseUrl. Si el compañero no la configuró, usamos la del emulador por defecto.
+        def backendUrl = properties.getProperty('api.baseUrl', 'http://10.0.2.2:8000/')
+        
+        // Guardamos la URL en BuildConfig para que la use el ApiClient
+        buildConfigField "String", "BASE_URL", "\"${backendUrl}\""
+        // -------------------------------------
     }
 
     buildTypes {

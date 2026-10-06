@@ -65,6 +65,21 @@ feature/aylen-XXXXX       ─┘
 4. Configurar la URL base de la API en *(completar: archivo de configuración/constants)*.
 5. Ejecutar en un emulador (AVD, Android 5.0+) o en un dispositivo físico con depuración USB habilitada.
 ---
+
+## Configuración de Conexión a la API (Backend)
+
+El proyecto está configurado para conectarse al backend de forma dinámica, permitiendo que cada desarrollador use su propia IP local sin generar conflictos en Git.
+
+**Si probás con el emulador de Android Studio:**
+No necesitás hacer nada. Por defecto, la app se conectará a `http://10.0.2.2:8000/`.
+
+**Si probás con un celular físico conectado por USB:**
+1. Abrí tu consola de Windows y ejecutá `ipconfig` para averiguar la IP de tu computadora (IPv4) en la red Wi-Fi.
+2. Abrí el archivo `local.properties` (ubicado en la raíz del proyecto).
+3. Agregá la siguiente línea al final del archivo, reemplazando con tu IP real:
+   ```properties
+   api.baseUrl=http://192.168.X.X:8000/
+
  
 ##  Gestión del proyecto
  
