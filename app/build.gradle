@@ -19,7 +19,6 @@ android {
 
     defaultConfig {
         applicationId "com.ispc.todostock"
-        // TK90: decisión pendiente del equipo (24 o 21). Ver nota en el PR.
         minSdk 24
         targetSdk 33
         versionCode 1
