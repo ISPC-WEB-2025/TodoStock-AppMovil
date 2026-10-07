@@ -2,16 +2,19 @@ plugins {
     id 'com.android.application'
 }
 
-// TK90: la URL del backend para desarrollo se puede cambiar sin tocar el código,
-// agregando en local.properties (archivo que NO se sube al repo) una línea como:
-//     api.baseUrl=http://192.168.0.15:8000/
-// Si no existe esa línea, se usa la del emulador (10.0.2.2 = la PC donde corre el emulador).
+// TK90: URL del backend desplegado (el mismo que usa la web TodoStock).
+def apiBaseUrlDesplegado = 'https://todostock.alwaysdata.net/'
+
+// Por defecto la app usa el backend desplegado. Quien quiera probar contra un backend
+// local agrega en local.properties (archivo que NO se sube al repo) una línea como:
+//     api.baseUrl=http://10.0.2.2:8000/        (emulador)
+//     api.baseUrl=http://192.168.0.15:8000/    (celular físico)
 def localProps = new Properties()
 def localPropsFile = rootProject.file('local.properties')
 if (localPropsFile.exists()) {
     localPropsFile.withInputStream { localProps.load(it) }
 }
-def apiBaseUrlDebug = localProps.getProperty('api.baseUrl', 'http://10.0.2.2:8000/')
+def apiBaseUrlDebug = localProps.getProperty('api.baseUrl', apiBaseUrlDesplegado)
 
 android {
     namespace 'com.ispc.todostock'
@@ -37,8 +40,7 @@ android {
             buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDebug}\""
         }
         release {
-            // TK43 reemplaza esta URL por la del backend desplegado (HTTPS).
-            buildConfigField "String", "BASE_URL", "\"https://PENDIENTE-TK43.invalid/\""
+            buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDesplegado}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
