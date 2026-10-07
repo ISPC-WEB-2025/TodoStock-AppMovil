@@ -68,4 +68,19 @@
         android:textStyle="bold"
         android:background="@drawable/boton_redondeado" />
 
+    <!-- Enlace a Registro -->
+    <TextView
+        android:id="@+id/tvIrARegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:text="@string/login_ir_a_registro"
+        android:textColor="@color/color_botones"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
 </LinearLayout>

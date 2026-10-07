@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK34: estilo de los campos del formulario de Registro.
+     Es un campo con borde (OutlinedBox): la etiqueta sube y se acomoda sobre el borde
+     sin superponerse, y sigue visible cuando el campo tiene texto. -->
+<resources>
+    <style name="CampoRegistro" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/gris_fondo_input</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeColor">@color/color_botones</item>
+        <item name="hintTextColor">@color/color_botones</item>
+    </style>
+</resources>
