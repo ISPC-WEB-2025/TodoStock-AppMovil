@@ -9,8 +9,9 @@ Captures/
 build/
 */build/
 
-# Archivos de entorno y configuración de Android Studio / IntelliJ IDEA
+# Archivos de entorno y configuración de Android Studio / IntelliJ IDEA / VS Code
 .idea/
+.vscode/
 *.iml
 .DS_Store
 
