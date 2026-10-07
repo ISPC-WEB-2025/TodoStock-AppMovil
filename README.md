@@ -11,9 +11,12 @@ Muchas pymes controlan su inventario con planillas o procesos manuales, lo que g
 
 | Rol | Puede hacer |
 |---|---|
-| **Administrador** | Carga y gestión de productos, consulta de stock consolidado y por sucursal, registro de movimientos de stock entre sucursales, selección de sucursal activa, administración de usuarios/empleados (desde backend web/API) y consulta de soporte |
+| **Administrador** | Carga y gestión de productos, consulta de stock consolidado y por sucursal, registro de movimientos de stock entre sucursales, selección de sucursal activa, aprobación/asignación de rol a usuarios registrados y soporte |
 | **Empleado** | Consulta de stock por sucursal, registro y consulta de movimientos de stock (entradas, salidas y traslados entre sucursales), selección de sucursal activa, edición de perfil y contacto a soporte |
 | **Ambos** | Iniciar sesión (autenticación JWT), ver y seleccionar sucursal activa, ver y editar perfil, cerrar sesión y enviar mensajes a soporte |
+
+#### 📝 Registro de Usuarios
+Cualquier usuario puede solicitar el alta desde el formulario de registro ingresando **nombre, email, DNI, fecha de nacimiento y contraseña**. Tras registrarse, la cuenta queda en estado **pendiente** hasta que un **Administrador** le habilite el acceso y le asigne su rol correspondiente (Administrador o Empleado).
 
 ---
 
@@ -34,8 +37,7 @@ Muchas pymes controlan su inventario con planillas o procesos manuales, lo que g
 | Candelaria | Desarrollo Full Stack |
 | Miguel | Desarrollo Full Stack |
 | Pedro | Desarrollo Full Stack |
-| Virginia | Scrum Master / Desarrollo Full Stack |
-| Aylen | Desarrollo Full Stack |
+| Aylen | Scrum Master / Desarrollo Full Stack |
 | Octavio | Documentación y QA |
 
 ---
@@ -53,8 +55,8 @@ Basado en Gitflow simplificado:
 feature/candelaria-XXXXX  ─┐
 feature/miguel-XXXXX      ─┤
 feature/pedro-XXXXX       ─┼──▶ develop ──▶ release ──▶ main
-feature/virginia-XXXXX    ─┤
-feature/aylen-XXXXX       ─┘
+feature/aylen-XXXXX       ─┤
+feature/octavio-XXXXX     ─┘
 ```
 
 ---
@@ -67,49 +69,42 @@ feature/aylen-XXXXX       ─┘
    ```
 2. Abrir el proyecto en **Android Studio**.
 3. Sincronizar Gradle (`Sync Project with Gradle Files`).
-4. Configurar la URL base de la API según tu entorno (ver sección de conexión a continuación).
-5. Ejecutar en un emulador (AVD, Android 7.0+ / API 24+) o en un dispositivo físico con depuración USB habilitada.
+4. Ejecutar en un emulador (AVD, Android 7.0+ / API 24+) o en un dispositivo físico con depuración USB habilitada.
 
 ---
 
 ## 🔌 Configuración de Conexión a la API (Backend)
 
-El proyecto está configurado para conectarse al backend de forma dinámica, permitiendo que cada desarrollador use su propia IP local sin generar conflictos en Git.
+Por defecto, la aplicación se conecta automáticamente al **backend en producción desplegado en la nube**:
+👉 **`https://todostock.alwaysdata.net/api/`** *(es el mismo backend centralizado que utiliza la plataforma web TodoStock)*.
+
+Por ende, **ya no hace falta levantar ningún servidor de forma local** para ejecutar ni probar la aplicación móvil.
+
+### ⚙️ Opción para Desarrollo Local (Opcional)
+Si querés conectar la app a una instancia local de backend en lugar del servidor desplegado, podés configurarlo mediante `local.properties`:
 
 **Si probás con el emulador de Android Studio:**
-
-1. Levantá el backend en tu computadora:
-   ```bash
-   python manage.py runserver
+1. Levantá el backend localmente: `python manage.py runserver`
+2. En `local.properties` (en la raíz del proyecto), configurá:
+   ```properties
+   api.baseUrl=http://10.0.2.2:8000/
    ```
-2. No necesitás configurar nada más. Por defecto, la app se conecta a `http://10.0.2.2:8000/`, que es la dirección con la que el emulador llega a tu computadora.
 
-**Si probás con un celular físico:**
-
-1. Conectá el celular a la misma red Wi-Fi que tu computadora.
-2. Levantá el backend aceptando conexiones de otros dispositivos de la red:
-   ```bash
-   python manage.py runserver 0.0.0.0:8000
-   ```
-3. Abrí la consola de Windows y ejecutá `ipconfig` para averiguar la IP de tu computadora (IPv4) en la red Wi-Fi.
-4. Abrí el archivo `local.properties` (ubicado en la raíz del proyecto; no se sube al repositorio).
-5. Agregá la siguiente línea al final del archivo, reemplazando con tu IP real:
+**Si probás con un celular físico conectado por Wi-Fi / USB:**
+1. Conectá el celular a la misma red Wi-Fi de tu computadora.
+2. Levantá el backend local aceptando conexiones: `python manage.py runserver 0.0.0.0:8000`
+3. Agregá en `local.properties`:
    ```properties
    api.baseUrl=http://192.168.X.X:8000/
    ```
-6. En Android Studio, sincronizá Gradle (Sync Now) y volvé a ejecutar la app.
-
-**Si la app no logra conectarse:**
-
-- Verificá que la URL termine con `/`.
-- Si tu IP cambió (pasa al reconectarte al Wi-Fi), actualizala en `local.properties` y sincronizá de nuevo.
-- Permití el acceso de Python en el Firewall de Windows cuando lo pregunte.
-- Revisá que la IP de tu computadora esté permitida en `ALLOWED_HOSTS` del backend.
+4. Sincronizá Gradle (`Sync Now`) y volvé a ejecutar la app.
 
 ---
 
-## 📊 Gestión del proyecto
+## 📊 Gestión y Enlaces del Proyecto
 
+- **API REST Backend (Desplegado):** https://todostock.alwaysdata.net/api/ *(mismo backend que utiliza la plataforma web TodoStock)*
+- **Aplicación Web:** https://todo-stock.vercel.app/
 - **Tablero Kanban:** https://github.com/orgs/ISPC-WEB-2025/projects/18
 - **Milestones / Sprints:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/milestones
 - **Wiki del proyecto:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki
@@ -119,10 +114,10 @@ El proyecto está configurado para conectarse al backend de forma dinámica, per
 
 ## 🔒 Seguridad
 
-- Autenticación mediante **JWT** (Access y Refresh Tokens).
-- Validación de credenciales procesada de forma segura por el servidor backend (Django REST Framework) con hashing de contraseñas.
-- Gestión de permisos y accesos según rol (**Administrador** / **Empleado**).
-- Control de sesiones y comunicación vía HTTPS (SSL/TLS).
+- Autenticación segura mediante **JWT** (Access y Refresh Tokens).
+- **Regla de contraseña:** Mínimo **9 caracteres**, debiendo incluir letras, números y al menos **un carácter especial**.
+- **Gestión de Registro y Permisos:** Los usuarios registrados ingresan en estado pendiente hasta la asignación de rol (**Administrador** / **Empleado**) por parte de un Administrador.
+- Control de sesiones y comunicación encriptada vía **HTTPS (SSL/TLS)**.
 - Detalle completo del plan de seguridad en la sección **Ciberseguridad** de la Wiki.
 
 ---
