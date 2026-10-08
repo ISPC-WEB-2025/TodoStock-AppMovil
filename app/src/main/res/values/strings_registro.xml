@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK34 / TK47: textos de la pantalla de Registro.
+     Van en un archivo aparte para no generar conflictos con strings.xml. -->
+<resources>
+    <string name="registro_titulo">Registro</string>
+    <string name="registro_volver">Volver a iniciar Sesión</string>
+    <string name="registro_descripcion">Completá tus datos para solicitar una cuenta.</string>
+
+    <string name="registro_hint_nombre">Nombre completo</string>
+    <string name="registro_hint_email">Email</string>
+    <string name="registro_hint_dni">DNI (sin puntos)</string>
+    <string name="registro_hint_fecha">Fecha de nacimiento</string>
+    <string name="registro_hint_password">Contraseña</string>
+    <string name="registro_hint_confirmar">Repetir contraseña</string>
+    <string name="registro_ayuda_password">Mínimo 9 caracteres, con letras, números y un carácter especial, sin espacios.</string>
+
+    <string name="registro_acepto_terminos">Acepto los términos y condiciones</string>
+    <string name="registro_ver_terminos">Leer términos y condiciones</string>
+    <string name="registro_terminos_titulo">Términos y condiciones</string>
+    <string name="registro_terminos_texto_provisorio">Texto provisorio. Los términos y condiciones y la política de privacidad definitivos se incorporan en la tarea TK52.</string>
+
+    <string name="registro_boton">REGISTRARME</string>
+    <string name="registro_boton_enviando">ENVIANDO…</string>
+    <string name="registro_aceptar">Aceptar</string>
+
+    <string name="registro_error_nombre">Ingresá tu nombre completo (mínimo %1$d caracteres).</string>
+    <string name="registro_error_email">Ingresá un email válido.</string>
+    <string name="registro_error_dni">El DNI debe tener 7 u 8 dígitos, sin puntos.</string>
+    <string name="registro_error_fecha">Elegí tu fecha de nacimiento.</string>
+    <string name="registro_error_password">La contraseña debe %1$s.</string>
+    <string name="registro_error_password_espacios">La contraseña no debe tener espacios.</string>
+    <string name="registro_password_y">e</string>
+    <string name="registro_password_longitud">tener al menos %1$d caracteres</string>
+    <string name="registro_password_letra">incluir una letra</string>
+    <string name="registro_password_numero">incluir un número</string>
+    <string name="registro_password_especial">incluir un carácter especial</string>
+    <string name="registro_error_confirmacion">Las contraseñas no coinciden.</string>
+    <string name="registro_error_terminos">Tenés que aceptar los términos y condiciones para registrarte.</string>
+    <string name="registro_error_generico">No se pudo completar el registro. Verificá que el DNI y el email no estén ya registrados.</string>
+    <string name="registro_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
+
+    <string name="registro_exito_titulo">Cuenta creada</string>
+    <string name="registro_exito_mensaje">Tu cuenta queda pendiente de aprobación. Vas a poder ingresar cuando un Administrador la acepte y te asigne un rol.</string>
+
+    <string name="login_ir_a_registro">¿No tenés cuenta? Registrate</string>
+</resources>
