@@ -15,8 +15,9 @@ import java.util.regex.Pattern;
  * unitarios locales (TK60) sin emulador.
  *
  * La regla de contraseña es la misma que aplica el backend al registrar
- * (mínimo 9, letra, número, carácter especial y sin espacios). El backend NO
- * valida el formato del DNI, así que para ese campo esta es la única barrera.
+ * (mínimo 9, letra, número, carácter especial y sin espacios). Al 7/10/2026
+ *  el backend no valida el formato del DNI (pendiente de revisión en el
+ *  backend), así que la app lo valida antes de enviar.
  */
 public final class Validadores {
 
