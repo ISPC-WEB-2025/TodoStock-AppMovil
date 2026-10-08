@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Títulos y Encabezados Legales -->
+    <string name="titulo_terminos_y_condiciones">Términos y Condiciones de Uso</string>
+    <string name="titulo_politica_privacidad">Política de Privacidad y Protección de Datos</string>
+    <string name="titulo_boton_arrepentimiento">Derecho de Arrepentimiento / Cancelación</string>
+
+    <!-- Casilla de Verificación (Checkbox Registro) -->
+    <string name="label_aceptar_terminos_privacidad">Acepto los Términos y Condiciones y la Política de Privacidad de TodoStock</string>
+    <string name="error_terminos_requeridos">Debe aceptar los Términos y Condiciones y la Política de Privacidad para registrarse.</string>
+
+    <!-- Botón de Arrepentimiento / Darme de Baja -->
+    <string name="btn_darme_de_baja">Darme de baja (Arrepentimiento)</string>
+    <string name="titulo_dialogo_baja">Confirmar baja de cuenta</string>
+    <string name="mensaje_dialogo_baja">¿Está seguro de que desea dar de baja su cuenta? Su cuenta será desactivada y sus datos personales serán anonimizados conforme a la Ley N° 25.326 y Ley N° 24.240. Esta acción no se puede deshacer.</string>
+    <string name="btn_confirmar_baja">Sí, darme de baja</string>
+    <string name="btn_cancelar_baja">Cancelar</string>
+    <string name="confirmacion_baja_exitosa">Su cuenta ha sido desactivada correctamente. Se ha procesado la baja de sus datos personales.</string>
+
+    <!-- Notificación de Registro Pendiente -->
+    <string name="mensaje_registro_pendiente">Registro completado. Su usuario se encuentra en estado PENDIENTE DE APROBACIÓN hasta que un Administrador le asigne un rol activo.</string>
+</resources>

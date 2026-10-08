@@ -1,0 +1,44 @@
+====================================================================
+      POLÍTICA DE PRIVACIDAD Y PROTECCIÓN DE DATOS PERSONALES
+                        TODOSTOCK APP
+====================================================================
+
+Fecha de última actualización: Septiembre de 2026
+Versión: 1.0 (Sprint 2)
+Responsable de Tratamiento: Equipo CodeLab / ISPC
+
+1. MARCO LEGAL Y COMPROMISO DE PRIVACIDAD
+La presente Política de Privacidad describe el tratamiento de los datos personales recolectados a través de la aplicación móvil TodoStock. Nuestro compromiso se rige estrictamente por la Ley N° 25.326 de Protección de Datos Personales de la República Argentina (LPDP), las disposiciones normativas de la Agencia de Acceso a la Información Pública (AAIP) y los principios internacionales de Privacy by Design (Privacidad desde el Diseño) y Privacy by Default establecidos en el Reglamento General de Protección de Datos (RGPD / GDPR - UE 2016/679).
+
+2. DATOS PERSONALES RECOLECTADOS
+Para la prestación de los servicios de gestión de inventario, recolectamos las siguientes categorías de datos:
+a) Datos de Identificación Personal: Nombre completo, dirección de correo electrónico (email), Documento Nacional de Identidad (DNI) y fecha de nacimiento.
+b) Credenciales de Autenticación: Contraseña cifrada en el servidor mediante algoritmos de hash unidireccional de alta entropía (BCrypt / PBKDF2). Las contraseñas nunca se almacenan en texto plano.
+c) Datos Técnicos y de Navegación: Identificadores de sesión JWT (JSON Web Tokens) almacenados de forma cifrada en el dispositivo (EncryptedSharedPreferences), dirección IP y registros de auditoría de inicio de sesión y operaciones sobre el stock.
+
+3. FINALIDAD DEL TRATAMIENTO DE DATOS
+Los datos personales recolectados son utilizados exclusivamente para:
+- Autenticar la identidad del usuario y gestionar el control de acceso según su rol (Administrador o Empleado).
+- Permitir la asignación de permisos por parte del Administrador tras el registro (estado pendiente).
+- Garantizar la trazabilidad y auditoría de los movimientos de mercadería e inventario (registro de auditoría de seguridad).
+- Brindar soporte técnico y gestionar solicitudes de contacto o baja del servicio.
+
+4. DERECHOS ARCO (ACCESO, RECTIFICACIÓN, CANCELACIÓN Y OPOSICIÓN)
+De conformidad con los Arts. 14 y 16 de la Ley 25.326:
+4.1. Derecho de Acceso: El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses.
+4.2. Derecho de Rectificación y Actualización: El usuario puede solicitar la corrección o actualización de sus datos personales inexactos a través de la sección de perfil o contactando al soporte.
+4.3. Derecho de Cancelación / Bajas: El usuario puede solicitar la supresión o anonimización de sus datos personales utilizando la función "Darme de baja" disponible en la aplicación.
+
+LA AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA (AAIP), Órgano de Control de la Ley N° 25.326, tiene la atribución de atender las denuncias y reclamos que se interpongan con relación al incumplimiento de las normas sobre protección de datos personales.
+
+5. SEGURIDAD, ALMACENAMIENTO Y TRANSFERENCIA DE DATOS
+5.1. Seguridad en Tránsito: Todas las comunicaciones entre la aplicación móvil y la API REST del backend se realizan a través de conexiones cifradas mediante protocolo HTTPS / TLS 1.2 o superior.
+5.2. Seguridad en Reposo: Los tokens de autenticación local se guardan utilizando cifrado de nivel de sistema operativo (`EncryptedSharedPreferences`).
+5.3. Confidencialidad y No Cesión: No vendemos, alquilamos ni cederemos datos personales a terceros bajo ninguna circunstancia, salvo requerimiento judicial conforme a derecho.
+
+6. BOTÓN DE ARREPENTIMIENTO Y ANONIMIZACIÓN DE DATOS
+En cumplimiento de la Ley 24.240 y la Res. SCI N° 272/2020:
+El usuario dispone de la función "Darme de baja" desde el Menú Principal o Perfil. Al ejecutar esta opción:
+- Se solicita confirmación explícita al usuario.
+- Se registra el evento de revocación en la bitácora de auditoría.
+- Se desactiva la cuenta en la base de datos y se procede a la eliminación o anonimización irreversible de sus datos de identificación personal (reemplazando su nombre/email por identificadores anónimos en registros históricos de movimientos).
