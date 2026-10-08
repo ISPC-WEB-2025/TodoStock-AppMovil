@@ -124,6 +124,27 @@ public final class Validadores {
         return new SimpleDateFormat(FORMATO_FECHA_API, Locale.US).format(fecha);
     }
 
+    // ---------- Movimientos (TK26 / TK27) ----------
+
+    /**
+     * La cantidad de un movimiento tiene que ser un número entero mayor a cero.
+     * Rechaza también un texto vacío o un número demasiado grande, que hoy
+     * cerraría la app al convertirlo.
+     */
+    public static boolean cantidadValida(String cantidad) {
+        if (cantidad == null) return false;
+        try {
+            return Integer.parseInt(cantidad.trim()) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /** En un traslado, la sucursal de origen y la de destino tienen que ser distintas. */
+    public static boolean origenYDestinoDistintos(int idOrigen, int idDestino) {
+        return idOrigen != idDestino;
+    }
+
     private static Date parsear(String fechaPantalla) {
         if (fechaPantalla == null || fechaPantalla.trim().length() != FORMATO_FECHA_PANTALLA.length()) {
             return null;

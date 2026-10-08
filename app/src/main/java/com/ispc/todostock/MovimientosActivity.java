@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import com.ispc.todostock.validacion.Validadores;
 
 public class MovimientosActivity extends AppCompatActivity {
 
@@ -134,7 +135,7 @@ public class MovimientosActivity extends AppCompatActivity {
                 }
 
                 // Validar que el origen y el destino no sean iguales (TK26)
-                if (origenPos == destinoPos) {
+                if (!Validadores.origenYDestinoDistintos(origenPos, destinoPos)) {
                     Toast.makeText(MovimientosActivity.this, "El origen y el destino no pueden ser iguales", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -145,10 +146,8 @@ public class MovimientosActivity extends AppCompatActivity {
                     return;
                 }
 
-                int cantidad = Integer.parseInt(cantidadStr);
-
-                // Validar que la cantidad sea mayor a cero (TK26)
-                if (cantidad <= 0) {
+                // Validar que la cantidad sea un número mayor a cero (TK26)
+                if (!Validadores.cantidadValida(cantidadStr)) {
                     Toast.makeText(MovimientosActivity.this, "La cantidad debe ser mayor a cero", Toast.LENGTH_SHORT).show();
                     return;
                 }
