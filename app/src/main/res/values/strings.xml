@@ -14,4 +14,9 @@
     <string name="carga_producto_hint_precio">Precio</string>
     <string name="carga_producto_hint_codigo">Código</string>
     <string name="carga_producto_boton_guardar">GUARDAR</string>
+    <string name="carga_producto_error_nombre">El nombre es obligatorio</string>
+    <string name="carga_producto_error_descripcion">La descripción es obligatoria</string>
+    <string name="carga_producto_error_precio">El precio es obligatorio</string>
+    <string name="carga_producto_error_codigo">El código es obligatorio</string>
+    <string name="carga_producto_ok">Producto válido, listo para guardar</string>
 </resources>
