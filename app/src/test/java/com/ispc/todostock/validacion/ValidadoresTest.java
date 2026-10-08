@@ -189,4 +189,26 @@ public class ValidadoresTest {
         assertNull(Validadores.fechaAFormatoApi("31/02/2000"));
         assertNull(Validadores.fechaAFormatoApi(""));
     }
+
+
+    // ---------- Movimientos (TK26 / TK27) ----------
+
+    /** Valor límite: 0 se rechaza y 1 se acepta. Negativos, vacíos, texto y números fuera de rango se rechazan. */
+    @Test
+    public void cantidad_valorLimiteYFormatoInvalido_aceptaSoloEnterosMayoresACero() {
+        assertFalse(Validadores.cantidadValida("0"));
+        assertTrue(Validadores.cantidadValida("1"));
+        assertFalse(Validadores.cantidadValida("-1"));
+        assertFalse(Validadores.cantidadValida(""));
+        assertFalse(Validadores.cantidadValida(null));
+        assertFalse(Validadores.cantidadValida("abc"));
+        assertFalse(Validadores.cantidadValida("99999999999"));
+    }
+
+    /** Clases de equivalencia: origen igual a destino se rechaza; distintos se acepta. */
+    @Test
+    public void origenYDestino_igualesSeRechazanYDistintosSeAceptan() {
+        assertFalse(Validadores.origenYDestinoDistintos(1, 1));
+        assertTrue(Validadores.origenYDestinoDistintos(1, 2));
+    }
 }
