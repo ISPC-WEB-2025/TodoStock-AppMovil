@@ -14,4 +14,5 @@
     <string name="carga_producto_hint_precio">Precio</string>
     <string name="carga_producto_hint_codigo">Código</string>
     <string name="carga_producto_boton_guardar">GUARDAR</string>
+    <string name="contacto_hint_asunto">Asunto</string>
 </resources>
