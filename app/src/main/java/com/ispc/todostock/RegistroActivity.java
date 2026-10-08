@@ -212,9 +212,8 @@ public class RegistroActivity extends AppCompatActivity {
                 if (respuesta.isSuccessful()) {
                     mostrarRegistroExitoso();
                 } else if (respuesta.code() == 400) {
-                    mostrarErrorDelServidor(leerMensajeDeError(respuesta));
+                    mostrarErrorDelServidor(leerCuerpoDeError(respuesta));
                 } else {
-                    // El backend responde 500 cuando el DNI ya está registrado.
                     mostrarErrorGeneral(getString(R.string.registro_error_generico));
                 }
             }
@@ -228,25 +227,37 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
-    /** Lee el campo "error" del cuerpo de una respuesta 400. Devuelve null si no lo encuentra. */
-    private String leerMensajeDeError(Response<ResponseBody> respuesta) {
+    /** Lee el cuerpo JSON de una respuesta de error. Devuelve null si no se puede leer. */
+    private JSONObject leerCuerpoDeError(Response<ResponseBody> respuesta) {
         try (ResponseBody cuerpo = respuesta.errorBody()) {
             if (cuerpo == null) return null;
-            String mensaje = new JSONObject(cuerpo.string()).optString("error", "");
-            return mensaje.isEmpty() ? null : mensaje;
+            return new JSONObject(cuerpo.string());
         } catch (Exception e) {
             return null;
         }
     }
 
-    private void mostrarErrorDelServidor(String mensaje) {
-        if (mensaje == null) {
+    /**
+     * Muestra el error 400 del backend debajo del campo que corresponde.
+     * Usa "detalles" para saber qué campo falló y muestra un texto propio,
+     * porque los mensajes del servidor son los genéricos de Django.
+     * La app ya validó el formato del email y del DNI antes de enviar, así que
+     * un error del servidor en esos campos significa que ya están registrados.
+     */
+    private void mostrarErrorDelServidor(JSONObject cuerpo) {
+        boolean mostrado = false;
+        JSONObject detalles = cuerpo == null ? null : cuerpo.optJSONObject("detalles");
+
+        if (detalles != null && detalles.has("email")) {
+            tilEmail.setError(getString(R.string.registro_error_email_registrado));
+            mostrado = true;
+        }
+        if (detalles != null && detalles.has("dni")) {
+            tilDni.setError(getString(R.string.registro_error_dni_registrado));
+            mostrado = true;
+        }
+        if (!mostrado) {
             mostrarErrorGeneral(getString(R.string.registro_error_generico));
-        } else if (mensaje.toLowerCase(Locale.ROOT).contains("email")) {
-            // "Este email ya existe.": se muestra en el campo que corresponde.
-            tilEmail.setError(mensaje);
-        } else {
-            mostrarErrorGeneral(mensaje);
         }
     }
 

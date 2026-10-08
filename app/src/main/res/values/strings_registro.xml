@@ -37,6 +37,8 @@
     <string name="registro_error_confirmacion">Las contraseñas no coinciden.</string>
     <string name="registro_error_terminos">Tenés que aceptar los términos y condiciones para registrarte.</string>
     <string name="registro_error_generico">No se pudo completar el registro. Verificá que el DNI y el email no estén ya registrados.</string>
+    <string name="registro_error_email_registrado">Este email ya está registrado.</string>
+    <string name="registro_error_dni_registrado">Este DNI ya está registrado.</string>
     <string name="registro_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
 
     <string name="registro_exito_titulo">Cuenta creada</string>
