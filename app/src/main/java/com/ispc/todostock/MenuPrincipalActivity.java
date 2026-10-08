@@ -97,12 +97,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavCargaProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Módulo Carga de Producto en desarrollo", Toast.LENGTH_SHORT).show();
-            /*
-            Intent intent = new Intent(MenuPrincipalActivity.this, CargaProductoActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
-            */
+                Intent intent = new Intent(MenuPrincipalActivity.this, CargaProductoActivity.class);
+                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
+                startActivity(intent);
             }
         });
 
