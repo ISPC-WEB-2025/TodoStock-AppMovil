@@ -24,4 +24,9 @@
     <string name="contacto_error_generico">No se pudo enviar el mensaje. Intentá de nuevo más tarde.</string>
     <string name="contacto_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
     <string name="contacto_mensaje_con_nombre">Nombre: %1$s\n\n%2$s</string>
+    <string name="carga_producto_error_nombre">El nombre es obligatorio</string>
+    <string name="carga_producto_error_descripcion">La descripción es obligatoria</string>
+    <string name="carga_producto_error_precio">El precio es obligatorio</string>
+    <string name="carga_producto_error_codigo">El código es obligatorio</string>
+    <string name="carga_producto_ok">Producto válido, listo para guardar</string>
 </resources>
