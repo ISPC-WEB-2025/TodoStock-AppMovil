@@ -17,3 +17,8 @@ build/
 # Reportes de testing y métricas
 lint/
 baseline-prof.txt
+
+# Notas y backlog local
+backlog.md
+*backlog*.md
+.issues/

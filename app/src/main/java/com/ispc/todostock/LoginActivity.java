@@ -25,6 +25,9 @@ public class LoginActivity extends AppCompatActivity {
         etUsuario = findViewById(R.id.etUsuario);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
+        // TK34: enlace a la pantalla de Registro
+        findViewById(R.id.tvIrARegistro).setOnClickListener(v ->
+                startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
 
         // 2. Escuchar el evento de clic del botón
         btnLogin.setOnClickListener(new View.OnClickListener() {
