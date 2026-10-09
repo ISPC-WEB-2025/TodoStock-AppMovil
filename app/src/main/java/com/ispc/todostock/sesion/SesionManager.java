@@ -7,6 +7,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.ispc.todostock.network.LoginResponse;
+import com.ispc.todostock.network.ProveedorToken;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -20,7 +21,7 @@ import java.security.GeneralSecurityException;
  * Hay una sola sesión por app, así que se usa siempre con:
  *     SesionManager sesion = SesionManager.getInstance(context);
  */
-public final class SesionManager {
+public final class SesionManager implements ProveedorToken {
 
     private static final String ARCHIVO = "sesion_todostock";
 
@@ -82,6 +83,7 @@ public final class SesionManager {
     }
 
     /** Token de acceso, o null si no hay sesión. Lo usa el interceptor (TK06). */
+    @Override
     public String getAccessToken() {
         return preferencias.getString(CLAVE_ACCESS, null);
     }

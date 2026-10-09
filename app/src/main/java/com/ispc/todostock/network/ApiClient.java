@@ -25,8 +25,20 @@ public final class ApiClient {
 
     private static Retrofit retrofit;
 
+    // TK06: de dónde se toma el token. Lo configura TodoStockApp al iniciar la app.
+    private static ProveedorToken proveedorToken;
+
     private ApiClient() {
         // Clase utilitaria: no se instancia.
+    }
+
+    /**
+     * TK06: configura de dónde se toma el token. Se llama una sola vez, al iniciar
+     * la app (TodoStockApp), antes de cualquier pedido al backend.
+     */
+    public static synchronized void init(ProveedorToken proveedor) {
+        proveedorToken = proveedor;
+        retrofit = null; // se vuelve a crear con el interceptor
     }
 
     /** Devuelve la implementación de una interfaz de servicio de Retrofit. */
@@ -51,8 +63,10 @@ public final class ApiClient {
                 .readTimeout(TIMEOUT_SEGUNDOS, TimeUnit.SECONDS)
                 .writeTimeout(TIMEOUT_SEGUNDOS, TimeUnit.SECONDS);
 
-        // TK06 (Miguel): agregar acá el interceptor que adjunta el token, por ejemplo:
-        //     builder.addInterceptor(new AuthInterceptor(...));
+        // TK06: adjunta "Authorization: Bearer <token>" a cada pedido si hay sesión.
+        if (proveedorToken != null) {
+            builder.addInterceptor(new AuthInterceptor(proveedorToken));
+        }
 
         if (BuildConfig.DEBUG) {
             // Solo en desarrollo: muestra en Logcat el método, la URL y el código de respuesta.
