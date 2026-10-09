@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK05: textos del inicio de sesión.
+     Van en un archivo aparte para no generar conflictos con strings.xml. -->
+<resources>
+    <string name="login_hint_email">Email</string>
+    <string name="login_boton_ingresando">INGRESANDO…</string>
+
+    <string name="login_error_email">Ingresá un email válido.</string>
+    <string name="login_error_password">Ingresá tu contraseña.</string>
+    <string name="login_error_credenciales">Email o contraseña incorrectos.</string>
+    <string name="login_error_generico">No se pudo iniciar sesión. Intentá de nuevo más tarde.</string>
+    <string name="login_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
+
+    <string name="login_pendiente_titulo">Cuenta pendiente de aprobación</string>
+    <string name="login_pendiente_mensaje">Tu cuenta todavía no fue aprobada. Vas a poder ingresar cuando un Administrador la acepte y te asigne un rol.</string>
+    <string name="login_aceptar">Aceptar</string>
+
+    <string name="login_rol_admin">Administrador</string>
+    <string name="login_rol_empleado">Empleado</string>
+</resources>
