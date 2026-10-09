@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK27: textos de la pantalla de Movimientos.
+     Van en un archivo aparte para no generar conflictos con strings.xml. -->
+<resources>
+    <string name="mov_cargando">Cargando…</string>
+    <string name="mov_seleccione_sucursal">Seleccione sucursal</string>
+    <string name="mov_seleccione_producto">Seleccione producto</string>
+    <string name="mov_elija_origen">Elija primero la sucursal de origen</string>
+    <string name="mov_sin_stock">El origen no tiene productos con stock</string>
+    <string name="mov_producto_item">%1$s (%2$d disp.)</string>
+    <string name="mov_boton_enviando">ENVIANDO…</string>
+
+    <string name="mov_error_producto">Por favor seleccione un producto</string>
+    <string name="mov_error_sucursales">Debe seleccionar origen y destino</string>
+    <string name="mov_error_iguales">El origen y el destino no pueden ser iguales</string>
+    <string name="mov_error_cantidad_vacia">Por favor ingrese una cantidad</string>
+    <string name="mov_error_cantidad">La cantidad debe ser mayor a cero</string>
+    <string name="mov_error_supera_stock">La cantidad supera el stock disponible en el origen (%1$d).</string>
+
+    <string name="mov_exito_titulo">Traslado registrado</string>
+    <string name="mov_exito_mensaje">Se trasladaron %1$d unidades de %2$s de %3$s a %4$s.</string>
+
+    <string name="mov_error_titulo">No se pudo registrar el movimiento</string>
+    <string name="mov_error_stock_servidor">No hay stock suficiente en el origen. Disponible: %1$d.</string>
+    <string name="mov_error_generico">Ocurrió un error al registrar el movimiento. Intentá de nuevo.</string>
+    <string name="mov_error_permiso">No tenés permiso para registrar este movimiento.</string>
+    <string name="mov_error_carga">No se pudieron cargar los datos del servidor.</string>
+    <string name="mov_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
+
+    <string name="mov_sesion_vencida_titulo">Sesión vencida</string>
+    <string name="mov_sesion_vencida_mensaje">Tu sesión venció. Volvé a iniciar sesión para continuar.</string>
+
+    <string name="mov_aceptar">Aceptar</string>
+    <string name="mov_reintentar">Reintentar</string>
+    <string name="mov_volver">Volver</string>
+</resources>
