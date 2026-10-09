@@ -49,6 +49,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    // TK90 (mínimos de automatización): desactiva las animaciones del dispositivo
+    // al correr los tests de Espresso, para que no fallen de forma intermitente.
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 dependencies {
@@ -69,11 +75,21 @@ dependencies {
     // TK90: guardado seguro del token (EncryptedSharedPreferences). Requiere minSdk 23 o superior.
     implementation 'androidx.security:security-crypto:1.0.0'
 
+    // TK90 (mínimos de automatización): ViewModel y LiveData para el LoginViewModel (TK112).
+    // Misma versión que ya trae appcompat 1.6.1, para no mezclar versiones.
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
+
     // Testing
     testImplementation 'junit:junit:4.13.2'
     // TK90: Mockito 4.x es la última línea compatible con Java 8.
     testImplementation 'org.mockito:mockito-core:4.11.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    // TK90 (mínimos de automatización): InstantTaskExecutorRule, para que LiveData
+    // funcione en los tests unitarios del ViewModel (AUT-UNIT-02).
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // TK90 (mínimos de automatización): AccessibilityChecks en los tests de Espresso (ACC-01).
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.5.1'
 }
