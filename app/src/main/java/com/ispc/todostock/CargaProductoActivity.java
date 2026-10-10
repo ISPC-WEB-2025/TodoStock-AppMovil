@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.ispc.todostock.sesion.SesionManager;
 
 public class CargaProductoActivity extends AppCompatActivity {
 
@@ -16,6 +17,17 @@ public class CargaProductoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // TK48: defensa en profundidad — si un Empleado llega aquí por alguna vía directa
+        // (sin pasar por el menú), la pantalla se cierra antes de mostrarse.
+        // El menú ya oculta este acceso (aplicarVisibilidadPorRol en MenuPrincipalActivity),
+        // pero esta capa adicional previene escalada de privilegios.
+        if (!SesionManager.getInstance(this).esAdmin()) {
+            Toast.makeText(this, getString(R.string.menu_error_acceso_denegado), Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_carga_producto);
 
         Toolbar toolbar = findViewById(R.id.toolbarMenu);
