@@ -114,4 +114,19 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- TK52: Darme de baja (derecho de arrepentimiento). Lo ven los dos roles.
+         Fuera del ScrollView: queda siempre abajo de todo, más chico que las opciones. -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDarmeDeBaja"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:minHeight="48dp"
+        android:text="@string/baja_boton"
+        android:textAllCaps="false"
+        android:textColor="@color/color_errores"
+        android:textSize="14sp" />
+
 </LinearLayout>
