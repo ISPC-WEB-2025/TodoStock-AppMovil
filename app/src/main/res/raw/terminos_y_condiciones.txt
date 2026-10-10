@@ -1,0 +1,37 @@
+====================================================================
+               TÉRMINOS Y CONDICIONES DE USO - TODOSTOCK APP
+====================================================================
+
+Fecha de última actualización: Septiembre de 2026
+Versión: 1.0 (Sprint 2)
+Desarrollado por: Equipo CodeLab / ISPC
+
+1. ACEPTACIÓN DE LOS TÉRMINOS
+Al descargar, acceder, registrarse o utilizar la aplicación móvil TodoStock (en adelante, la "Aplicación"), el usuario declara haber leído, comprendido y aceptado expresamente los presentes Términos y Condiciones de Uso. Si el usuario no está de acuerdo con estos términos, deberá abstenerse de utilizar la Aplicación.
+
+2. DESCRIPCIÓN DEL SERVICIO
+TodoStock es una solución informática de gestión de inventario en tiempo real diseñada para pequeñas y medianas empresas. La Aplicación permite la consulta de productos, gestión de existencias por sucursal, registro de movimientos de entrada/salida y traslados de mercadería intersucursales, así como el acceso a funciones específicas según el rol asignado.
+
+3. REGISTRO, CUENTAS Y SEGURIDAD
+3.1. Requisitos de Registro: Para solicitar una cuenta, el usuario debe completar el formulario de registro proporcionando datos veraces y actualizados: Nombre completo, Correo electrónico (Email), Documento Nacional de Identidad (DNI), Fecha de nacimiento y Contraseña.
+3.2. Política de Contraseñas: La contraseña registrada debe cumplir estrictamente con los estándares mínimos de seguridad: longitud mínima de 9 caracteres, incluyendo al menos letras (mayúsculas/minúsculas), números y un carácter especial.
+3.3. Estado Pendiente y Asignación de Roles: Todo nuevo usuario registrado ingresará automáticamente en estado "PENDIENTE DE APROBACIÓN". El acceso a las funcionalidades operativas del sistema quedará supeditado a que un usuario con rol Administrador apruebe la solicitud y le asigne el rol correspondiente (Administrador o Empleado).
+3.4. Custodia de Credenciales: El usuario es el único responsable de mantener la confidencialidad de sus credenciales de acceso y de todas las actividades realizadas desde su cuenta.
+
+4. USO ACEPTABLE Y OBLIGACIONES DEL USUARIO
+Queda estrictamente prohibido:
+a) Utilizar la Aplicación para fines ilícitos o no autorizados.
+b) Intentar vulnerar la seguridad, autenticación o mecanismos de cifrado del sistema.
+c) Ingresar datos falsos, inexactos o pertenecientes a terceros sin su consentimiento.
+d) Realizar ingeniería inversa, descompilación o alteración del código fuente de la Aplicación.
+
+5. DERECHO DE ARREPENTIMIENTO Y OPCIÓN "DARME DE BAJA"
+En cumplimiento de la Ley de Defensa del Consumidor N° 24.240, la Resolución N° 272/2020 de la Secretaría de Comercio Interior y la normativa de protección de datos personales:
+5.1. El usuario tiene derecho a solicitar en cualquier momento la baja de su registro y la revocación de su cuenta a través de la opción "Darme de baja / Botón de Arrepentimiento" accesible desde la Aplicación.
+5.2. Al confirmar la solicitud de baja, la cuenta quedará desactivada de forma inmediata y se iniciará el proceso de eliminación o anonimización de sus datos personales de la base de datos operativa, conservando únicamente registros disasociados en la bitácora de auditoría para fines legales o de control del sistema.
+
+6. PROPIEDAD INTELECTUAL
+Todos los derechos de propiedad intelectual, marcas, logotipos, diseño de interfaz, código fuente y contenidos de TodoStock son propiedad exclusiva de CodeLab / ISPC. Queda prohibida su reproducción o distribución no autorizada.
+
+7. MODIFICACIONES DE LOS TÉRMINOS
+CodeLab se reserva el derecho de modificar o actualizar los presentes Términos y Condiciones en cualquier momento. Las modificaciones entrarán en vigencia a partir de su publicación en la Aplicación o en la Wiki oficial del proyecto.
