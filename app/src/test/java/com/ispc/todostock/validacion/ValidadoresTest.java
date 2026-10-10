@@ -19,8 +19,8 @@ import java.util.Set;
  * TK60 [AUT-UNIT-01] - Tests unitarios de los validadores del Registro.
  *
  * Corren en la JVM local, sin emulador. Cada test sigue el patrón AAA
- * (Arrange, Act, Assert) y está diseñado con clases de equivalencia y
- * valores límite.
+ * (Arrange, Act, Assert, AUT-UNIT-04) y está diseñado con clases de
+ * equivalencia y valores límite.
  *
  * Trazabilidad: historia US07 (Registro de usuario), tareas TK34 y TK47.
  */
@@ -100,11 +100,17 @@ public class ValidadoresTest {
         // Arrange
         String password = "Prueba123!";
 
-        // Act y Assert
-        assertTrue(Validadores.passwordsCoinciden(password, "Prueba123!"));
-        assertFalse(Validadores.passwordsCoinciden(password, "Prueba123! "));
-        assertFalse(Validadores.passwordsCoinciden(password, "prueba123!"));
-        assertFalse(Validadores.passwordsCoinciden(null, null));
+        // Act
+        boolean identica = Validadores.passwordsCoinciden(password, "Prueba123!");
+        boolean conEspacioDeMas = Validadores.passwordsCoinciden(password, "Prueba123! ");
+        boolean conMayusculaDistinta = Validadores.passwordsCoinciden(password, "prueba123!");
+        boolean ambasNulas = Validadores.passwordsCoinciden(null, null);
+
+        // Assert
+        assertTrue(identica);
+        assertFalse(conEspacioDeMas);
+        assertFalse(conMayusculaDistinta);
+        assertFalse(ambasNulas);
     }
 
     // ---------- DNI (TK34) ----------
@@ -118,41 +124,87 @@ public class ValidadoresTest {
         String ocho = "12345678";
         String nueve = "123456789";
 
-        // Act y Assert
-        assertFalse(Validadores.dniValido(seis));
-        assertTrue(Validadores.dniValido(siete));
-        assertTrue(Validadores.dniValido(ocho));
-        assertFalse(Validadores.dniValido(nueve));
+        // Act
+        boolean validoCon6 = Validadores.dniValido(seis);
+        boolean validoCon7 = Validadores.dniValido(siete);
+        boolean validoCon8 = Validadores.dniValido(ocho);
+        boolean validoCon9 = Validadores.dniValido(nueve);
+
+        // Assert
+        assertFalse(validoCon6);
+        assertTrue(validoCon7);
+        assertTrue(validoCon8);
+        assertFalse(validoCon9);
     }
 
     /** Clases inválidas: con puntos, con letras, vacío y nulo. */
     @Test
     public void dni_conFormatoInvalido_seRechaza() {
-        assertFalse(Validadores.dniValido("30.111.222"));
-        assertFalse(Validadores.dniValido("3011122A"));
-        assertFalse(Validadores.dniValido(""));
-        assertFalse(Validadores.dniValido(null));
+        // Arrange
+        String conPuntos = "30.111.222";
+        String conLetra = "3011122A";
+        String vacio = "";
+
+        // Act
+        boolean validoConPuntos = Validadores.dniValido(conPuntos);
+        boolean validoConLetra = Validadores.dniValido(conLetra);
+        boolean validoVacio = Validadores.dniValido(vacio);
+        boolean validoNulo = Validadores.dniValido(null);
+
+        // Assert
+        assertFalse(validoConPuntos);
+        assertFalse(validoConLetra);
+        assertFalse(validoVacio);
+        assertFalse(validoNulo);
     }
 
     // ---------- Email y nombre (TK34) ----------
 
     @Test
     public void email_aceptaFormatoValidoYRechazaElResto() {
-        assertTrue(Validadores.emailValido("test_aylen1@test.com"));
-        assertFalse(Validadores.emailValido("prueba@test"));      // sin dominio completo
-        assertFalse(Validadores.emailValido("prueba.test.com"));  // sin arroba
-        assertFalse(Validadores.emailValido("@test.com"));        // sin usuario
-        assertFalse(Validadores.emailValido(""));
-        assertFalse(Validadores.emailValido(null));
+        // Arrange
+        String valido = "test_aylen1@test.com";
+        String sinDominioCompleto = "prueba@test";
+        String sinArroba = "prueba.test.com";
+        String sinUsuario = "@test.com";
+        String vacio = "";
+
+        // Act
+        boolean aceptaValido = Validadores.emailValido(valido);
+        boolean aceptaSinDominio = Validadores.emailValido(sinDominioCompleto);
+        boolean aceptaSinArroba = Validadores.emailValido(sinArroba);
+        boolean aceptaSinUsuario = Validadores.emailValido(sinUsuario);
+        boolean aceptaVacio = Validadores.emailValido(vacio);
+        boolean aceptaNulo = Validadores.emailValido(null);
+
+        // Assert
+        assertTrue(aceptaValido);
+        assertFalse(aceptaSinDominio);
+        assertFalse(aceptaSinArroba);
+        assertFalse(aceptaSinUsuario);
+        assertFalse(aceptaVacio);
+        assertFalse(aceptaNulo);
     }
 
     /** Valor límite: 5 caracteres se rechaza, 6 se acepta. Los espacios de los bordes no cuentan. */
     @Test
     public void nombre_valorLimite_rechaza5YAcepta6() {
-        assertFalse(Validadores.nombreValido("Ana P"));
-        assertTrue(Validadores.nombreValido("Ana Pa"));
-        assertFalse(Validadores.nombreValido("   Ana   "));
-        assertFalse(Validadores.nombreValido(null));
+        // Arrange
+        String cincoCaracteres = "Ana P";
+        String seisCaracteres = "Ana Pa";
+        String conEspaciosEnLosBordes = "   Ana   ";
+
+        // Act
+        boolean validoCon5 = Validadores.nombreValido(cincoCaracteres);
+        boolean validoCon6 = Validadores.nombreValido(seisCaracteres);
+        boolean validoConEspacios = Validadores.nombreValido(conEspaciosEnLosBordes);
+        boolean validoNulo = Validadores.nombreValido(null);
+
+        // Assert
+        assertFalse(validoCon5);
+        assertTrue(validoCon6);
+        assertFalse(validoConEspacios);
+        assertFalse(validoNulo);
     }
 
     // ---------- Fecha de nacimiento (TK34) ----------
@@ -163,10 +215,15 @@ public class ValidadoresTest {
         // Arrange: se fija "hoy" para que el test dé siempre el mismo resultado
         Date hoy = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse("07/10/2026");
 
-        // Act y Assert
-        assertTrue(Validadores.fechaNacimientoValida("10/05/1995", hoy));
-        assertTrue(Validadores.fechaNacimientoValida("07/10/2026", hoy));
-        assertFalse(Validadores.fechaNacimientoValida("08/10/2026", hoy));
+        // Act
+        boolean validaEnElPasado = Validadores.fechaNacimientoValida("10/05/1995", hoy);
+        boolean validaHoy = Validadores.fechaNacimientoValida("07/10/2026", hoy);
+        boolean validaManana = Validadores.fechaNacimientoValida("08/10/2026", hoy);
+
+        // Assert
+        assertTrue(validaEnElPasado);
+        assertTrue(validaHoy);
+        assertFalse(validaManana);
     }
 
     /** Fechas inexistentes, mal escritas o vacías se rechazan. */
@@ -175,19 +232,36 @@ public class ValidadoresTest {
         // Arrange
         Date hoy = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse("07/10/2026");
 
-        // Act y Assert
-        assertFalse(Validadores.fechaNacimientoValida("31/02/2000", hoy));
-        assertFalse(Validadores.fechaNacimientoValida("1/5/95", hoy));
-        assertFalse(Validadores.fechaNacimientoValida("", hoy));
-        assertFalse(Validadores.fechaNacimientoValida(null, hoy));
+        // Act
+        boolean validaInexistente = Validadores.fechaNacimientoValida("31/02/2000", hoy);
+        boolean validaMalFormada = Validadores.fechaNacimientoValida("1/5/95", hoy);
+        boolean validaVacia = Validadores.fechaNacimientoValida("", hoy);
+        boolean validaNula = Validadores.fechaNacimientoValida(null, hoy);
+
+        // Assert
+        assertFalse(validaInexistente);
+        assertFalse(validaMalFormada);
+        assertFalse(validaVacia);
+        assertFalse(validaNula);
     }
 
     /** La fecha se convierte al formato que espera el backend (campo fdn). */
     @Test
     public void fechaAFormatoApi_convierteAlFormatoDelBackend() {
-        assertEquals("1995-05-10", Validadores.fechaAFormatoApi("10/05/1995"));
-        assertNull(Validadores.fechaAFormatoApi("31/02/2000"));
-        assertNull(Validadores.fechaAFormatoApi(""));
+        // Arrange
+        String fechaValida = "10/05/1995";
+        String fechaInexistente = "31/02/2000";
+        String vacia = "";
+
+        // Act
+        String convertida = Validadores.fechaAFormatoApi(fechaValida);
+        String convertidaInexistente = Validadores.fechaAFormatoApi(fechaInexistente);
+        String convertidaVacia = Validadores.fechaAFormatoApi(vacia);
+
+        // Assert
+        assertEquals("1995-05-10", convertida);
+        assertNull(convertidaInexistente);
+        assertNull(convertidaVacia);
     }
 
 
@@ -196,19 +270,46 @@ public class ValidadoresTest {
     /** Valor límite: 0 se rechaza y 1 se acepta. Negativos, vacíos, texto y números fuera de rango se rechazan. */
     @Test
     public void cantidad_valorLimiteYFormatoInvalido_aceptaSoloEnterosMayoresACero() {
-        assertFalse(Validadores.cantidadValida("0"));
-        assertTrue(Validadores.cantidadValida("1"));
-        assertFalse(Validadores.cantidadValida("-1"));
-        assertFalse(Validadores.cantidadValida(""));
-        assertFalse(Validadores.cantidadValida(null));
-        assertFalse(Validadores.cantidadValida("abc"));
-        assertFalse(Validadores.cantidadValida("99999999999"));
+        // Arrange
+        String cero = "0";
+        String uno = "1";
+        String negativo = "-1";
+        String vacia = "";
+        String texto = "abc";
+        String fueraDeRango = "99999999999";
+
+        // Act
+        boolean validaCero = Validadores.cantidadValida(cero);
+        boolean validaUno = Validadores.cantidadValida(uno);
+        boolean validaNegativo = Validadores.cantidadValida(negativo);
+        boolean validaVacia = Validadores.cantidadValida(vacia);
+        boolean validaNula = Validadores.cantidadValida(null);
+        boolean validaTexto = Validadores.cantidadValida(texto);
+        boolean validaFueraDeRango = Validadores.cantidadValida(fueraDeRango);
+
+        // Assert
+        assertFalse(validaCero);
+        assertTrue(validaUno);
+        assertFalse(validaNegativo);
+        assertFalse(validaVacia);
+        assertFalse(validaNula);
+        assertFalse(validaTexto);
+        assertFalse(validaFueraDeRango);
     }
 
     /** Clases de equivalencia: origen igual a destino se rechaza; distintos se acepta. */
     @Test
     public void origenYDestino_igualesSeRechazanYDistintosSeAceptan() {
-        assertFalse(Validadores.origenYDestinoDistintos(1, 1));
-        assertTrue(Validadores.origenYDestinoDistintos(1, 2));
+        // Arrange
+        int sucursalA = 1;
+        int sucursalB = 2;
+
+        // Act
+        boolean aceptaIguales = Validadores.origenYDestinoDistintos(sucursalA, sucursalA);
+        boolean aceptaDistintas = Validadores.origenYDestinoDistintos(sucursalA, sucursalB);
+
+        // Assert
+        assertFalse(aceptaIguales);
+        assertTrue(aceptaDistintas);
     }
 }
