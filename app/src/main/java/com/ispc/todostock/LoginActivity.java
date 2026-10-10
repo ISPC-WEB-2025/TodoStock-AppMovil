@@ -6,20 +6,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.ispc.todostock.network.ApiClient;
-import com.ispc.todostock.network.AuthApiService;
-import com.ispc.todostock.network.LoginRequest;
 import com.ispc.todostock.network.LoginResponse;
+import com.ispc.todostock.repositorio.ResultadoLogin;
 import com.ispc.todostock.sesion.SesionManager;
-import com.ispc.todostock.validacion.Validadores;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * TK05 - Inicio de sesión contra la API.
@@ -27,6 +20,10 @@ import retrofit2.Response;
  * Envía email y contraseña a POST /api/usuarios/login/. Si el backend responde 200,
  * guarda el token y los datos del usuario en SesionManager (cifrados) y abre el menú.
  * 401: email o contraseña incorrectos. 403: cuenta pendiente de aprobación.
+ *
+ * TK112: la validación y el pedido al backend están en LoginViewModel (y este usa
+ * AuthRepository). Esta pantalla solo lee los campos, muestra lo que publica el
+ * ViewModel, guarda la sesión y abre el menú.
  */
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
 
     private CharSequence textoBotonOriginal;
-    private Call<LoginResponse> llamadaEnCurso;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,70 +48,45 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.tvIrARegistro).setOnClickListener(v ->
                 startActivity(new Intent(LoginActivity.this, RegistroActivity.class)));
 
-        btnLogin.setOnClickListener(v -> intentarLogin());
+        // TK112: el ViewModel sobrevive al giro de pantalla, así el pedido en curso no se pierde.
+        viewModel = new ViewModelProvider(this, LoginViewModel.FACTORY).get(LoginViewModel.class);
+
+        viewModel.getCargando().observe(this, this::mostrarEnviando);
+        viewModel.getErrorEmail().observe(this, error ->
+                etUsuario.setError(Boolean.TRUE.equals(error) ? getString(R.string.login_error_email) : null));
+        viewModel.getErrorPassword().observe(this, error ->
+                etPassword.setError(Boolean.TRUE.equals(error) ? getString(R.string.login_error_password) : null));
+        viewModel.getResultado().observe(this, this::mostrarResultado);
+
+        btnLogin.setOnClickListener(v -> viewModel.login(
+                etUsuario.getText().toString(),
+                etPassword.getText().toString()));
     }
 
-    @Override
-    protected void onDestroy() {
-        // Si se cierra la pantalla con un pedido en curso, se cancela.
-        if (llamadaEnCurso != null) {
-            llamadaEnCurso.cancel();
-        }
-        super.onDestroy();
-    }
+    /** Muestra lo que respondió el backend. */
+    private void mostrarResultado(ResultadoLogin resultado) {
+        if (resultado == null) return;   // No hay ningún resultado pendiente de mostrar.
+        viewModel.resultadoMostrado();
 
-    /** Valida los campos y, si están bien, envía el pedido al backend. */
-    private void intentarLogin() {
-        String email = etUsuario.getText().toString().trim();
-        String password = etPassword.getText().toString();
-
-        etUsuario.setError(null);
-        etPassword.setError(null);
-
-        boolean valido = true;
-        if (!Validadores.emailValido(email)) {
-            etUsuario.setError(getString(R.string.login_error_email));
-            valido = false;
-        }
-        if (password.isEmpty()) {
-            etPassword.setError(getString(R.string.login_error_password));
-            valido = false;
-        }
-        if (valido) {
-            enviar(new LoginRequest(email, password));
-        }
-    }
-
-    private void enviar(LoginRequest datos) {
-        mostrarEnviando(true);
-
-        llamadaEnCurso = ApiClient.create(AuthApiService.class).login(datos);
-        llamadaEnCurso.enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<LoginResponse> call,
-                                   @NonNull Response<LoginResponse> respuesta) {
-                if (isFinishing() || isDestroyed()) return;
-                mostrarEnviando(false);
-
-                if (respuesta.isSuccessful() && respuesta.body() != null) {
-                    iniciarSesion(respuesta.body());
-                } else if (respuesta.code() == 401) {
-                    etPassword.setError(getString(R.string.login_error_credenciales));
-                    mostrarMensaje(getString(R.string.login_error_credenciales));
-                } else if (respuesta.code() == 403) {
-                    mostrarCuentaPendiente();
-                } else {
-                    mostrarMensaje(getString(R.string.login_error_generico));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable error) {
-                if (call.isCanceled() || isFinishing() || isDestroyed()) return;
-                mostrarEnviando(false);
+        switch (resultado.getTipo()) {
+            case EXITO:
+                iniciarSesion(resultado.getDatos());
+                break;
+            case CREDENCIALES_INCORRECTAS:
+                etPassword.setError(getString(R.string.login_error_credenciales));
+                mostrarMensaje(getString(R.string.login_error_credenciales));
+                break;
+            case CUENTA_PENDIENTE:
+                mostrarCuentaPendiente();
+                break;
+            case SIN_CONEXION:
                 mostrarMensaje(getString(R.string.login_error_conexion));
-            }
-        });
+                break;
+            case ERROR_SERVIDOR:
+            default:
+                mostrarMensaje(getString(R.string.login_error_generico));
+                break;
+        }
     }
 
     /** Guarda la sesión y abre el menú principal con el nombre y el rol del usuario. */
@@ -145,8 +117,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /** Mientras se espera la respuesta, el botón queda deshabilitado para no enviar dos veces. */
-    private void mostrarEnviando(boolean enviando) {
-        btnLogin.setEnabled(!enviando);
-        btnLogin.setText(enviando ? getString(R.string.login_boton_ingresando) : textoBotonOriginal);
+    private void mostrarEnviando(Boolean enviando) {
+        boolean activo = Boolean.TRUE.equals(enviando);
+        btnLogin.setEnabled(!activo);
+        btnLogin.setText(activo ? getString(R.string.login_boton_ingresando) : textoBotonOriginal);
     }
 }
