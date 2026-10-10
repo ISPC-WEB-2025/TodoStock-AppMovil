@@ -1,115 +1,146 @@
 package com.ispc.todostock;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.TextView;
+import com.google.android.material.button.MaterialButton;
+import com.ispc.todostock.network.ApiClient;
+import com.ispc.todostock.network.InventarioApiService;
+import com.ispc.todostock.network.StockSucursalDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Bundle;
-import android.view.View;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+/**
+ * TK16: stock real de la sucursal elegida, pedido a la API.
+ * Responsable: Virginia Garcia
+ */
 public class GestionStockActivity extends AppCompatActivity {
 
-    private Toolbar toolbarStock;
-    private int sucursalIdActual = 1;
-    private TextView tvSucursalFiltro;
+    private static final int SIN_SUCURSAL = -1;
+
+    private int sucursalIdActual = SIN_SUCURSAL;
+
     private RecyclerView rvStock;
+    private ProgressBar pbStock;
+    private View llMensajeStock;
+    private TextView tvMensajeStock;
+    private MaterialButton btnReintentarStock;
     private StockAdapter adapter;
-    private List<StockItem> todosLosProductosMock;
+
+    private Call<List<StockSucursalDto>> llamadaActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestion_stock);
 
-        // 1. Vinculación del Toolbar
-        toolbarStock = findViewById(R.id.toolbarStock);
+        Toolbar toolbarStock = findViewById(R.id.toolbarStock);
+        toolbarStock.setNavigationOnClickListener(v -> finish());
 
-        // 2. Click en el icono de navegación (flecha_atras)
-        toolbarStock.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        tvSucursalFiltro = findViewById(R.id.tvSucursalFiltro);
+        TextView tvSucursalFiltro = findViewById(R.id.tvSucursalFiltro);
         rvStock = findViewById(R.id.rvStock);
+        pbStock = findViewById(R.id.pbStock);
+        llMensajeStock = findViewById(R.id.llMensajeStock);
+        tvMensajeStock = findViewById(R.id.tvMensajeStock);
+        btnReintentarStock = findViewById(R.id.btnReintentarStock);
 
-        // 1. Recibir sucursal_id y nombre por Intent (TK15)
-        String sucursalNombre = "Sucursal #" + sucursalIdActual;
-
+        // Sucursal elegida en la pantalla anterior (llega por Intent)
+        String sucursalNombre = null;
         if (getIntent() != null) {
-            if (getIntent().hasExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID)) {
-                sucursalIdActual = getIntent().getIntExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID, 1);
-                sucursalNombre = "Sucursal #" + sucursalIdActual;
-            }
-            if (getIntent().hasExtra("sucursal_nombre")) {
-                sucursalNombre = getIntent().getStringExtra("sucursal_nombre");
-            }
+            sucursalIdActual = getIntent().getIntExtra(MenuPrincipalActivity.EXTRA_SUCURSAL_ID, SIN_SUCURSAL);
+            sucursalNombre = getIntent().getStringExtra("sucursal_nombre");
         }
-
+        if (sucursalNombre == null) {
+            sucursalNombre = "Sucursal #" + sucursalIdActual;
+        }
         tvSucursalFiltro.setText("Mostrando inventario de: " + sucursalNombre);
 
-        // 2. Configurar RecyclerView con LayoutManager
         rvStock.setLayoutManager(new LinearLayoutManager(this));
-
-        // 3. Inicializar datos mock
-        poblarDatosMockGlobales();
-
-        // 4. Filtrar según la sucursal activa
-        List<StockItem> productosFiltrados = filtrarPorSucursal(sucursalIdActual);
-
-        // 5. Asignar Adapter
-        adapter = new StockAdapter(this, productosFiltrados);
+        adapter = new StockAdapter(this, new ArrayList<>());
         rvStock.setAdapter(adapter);
-    }
 
-    private void poblarDatosMockGlobales() {
-        todosLosProductosMock = new ArrayList<>();
+        btnReintentarStock.setOnClickListener(v -> cargarStock());
 
-        // Productos para Sucursal 1 (Centro)
-        todosLosProductosMock.add(new StockItem(1, 1, "Lama aluminio 43mm BLANCO", "LAM-43-BLA", 25, 8));
-        todosLosProductosMock.add(new StockItem(2, 1, "Lama aluminio 43mm NEGRO", "LAM-43-NEG", 4, 8));    // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(3, 1, "Lama aluminio 43mm PLATA", "LAM-43-PLA", 15, 6));
-        todosLosProductosMock.add(new StockItem(4, 1, "Lama aluminio 43mm BRONCE", "LAM-43-BRO", 10, 5));
-
-        todosLosProductosMock.add(new StockItem(5, 1, "Guía embutir recambio BLANCO", "GUI-EMB-BLA", 30, 10));
-        todosLosProductosMock.add(new StockItem(6, 1, "Guía embutir recambio NEGRO", "GUI-EMB-NEG", 6, 10));   // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(7, 1, "Guía embutir recambio PLATA", "GUI-EMB-PLA", 18, 8));
-        todosLosProductosMock.add(new StockItem(8, 1, "Guía embutir recambio BRONCE", "GUI-EMB-BRO", 12, 6));
-
-        todosLosProductosMock.add(new StockItem(9, 1, "Guía mosquitero BLANCO", "GUI-MOS-BLA", 22, 8));
-        todosLosProductosMock.add(new StockItem(10, 1, "Guía mosquitero NEGRO", "GUI-MOS-NEG", 5, 8));         // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(11, 1, "Guía mosquitero PLATA", "GUI-MOS-PLA", 16, 6));
-        todosLosProductosMock.add(new StockItem(12, 1, "Guía mosquitero BRONCE", "GUI-MOS-BRO", 11, 5));
-
-        todosLosProductosMock.add(new StockItem(13, 1, "Cabezal mosquitero BLANCO", "CAB-MOS-BLA", 20, 5));
-        todosLosProductosMock.add(new StockItem(14, 1, "Cabezal mosquitero NEGRO", "CAB-MOS-NEG", 3, 5));      // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(15, 1, "Cabezal mosquitero PLATA", "CAB-MOS-PLA", 14, 5));
-        todosLosProductosMock.add(new StockItem(16, 1, "Cabezal mosquitero BRONCE", "CAB-MOS-BRO", 9, 4));
-
-// Productos para Sucursal 2 (Nueva Córdoba)
-        todosLosProductosMock.add(new StockItem(17, 2, "Lama aluminio 43mm BLANCO", "LAM-43-BLA", 5, 8));      // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(18, 2, "Lama aluminio 43mm NEGRO", "LAM-43-NEG", 22, 8));
-        todosLosProductosMock.add(new StockItem(19, 2, "Guía embutir recambio PLATA", "GUI-EMB-PLA", 7, 8));   // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(20, 2, "Guía mosquitero BLANCO", "GUI-MOS-BLA", 9, 8));        // ¡Bajo stock!
-        todosLosProductosMock.add(new StockItem(21, 2, "Cabezal mosquitero BRONCE", "CAB-MOS-BRO", 16, 4));
-    }
-
-    private List<StockItem> filtrarPorSucursal(int idSucursal) {
-        List<StockItem> filtrados = new ArrayList<>();
-        for (StockItem item : todosLosProductosMock) {
-            if (item.getSucursalId() == idSucursal) {
-                filtrados.add(item);
-            }
+        if (sucursalIdActual == SIN_SUCURSAL) {
+            mostrarMensaje("No se indicó la sucursal. Volvé atrás y elegí una.", false);
+        } else {
+            cargarStock();
         }
-        return filtrados;
     }
 
+    private void cargarStock() {
+        mostrarCargando();
+
+        InventarioApiService api = ApiClient.create(InventarioApiService.class);
+        llamadaActual = api.getStockDeSucursal(sucursalIdActual, false);
+        llamadaActual.enqueue(new Callback<List<StockSucursalDto>>() {
+            @Override
+            public void onResponse(Call<List<StockSucursalDto>> call, Response<List<StockSucursalDto>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<StockItem> items = new ArrayList<>();
+                    for (StockSucursalDto dto : response.body()) {
+                        items.add(StockItem.desde(dto));
+                    }
+                    if (items.isEmpty()) {
+                        mostrarMensaje("Esta sucursal todavía no tiene productos cargados.", false);
+                    } else {
+                        adapter.actualizarLista(items);
+                        mostrarLista();
+                    }
+                } else if (response.code() == 401) {
+                    mostrarMensaje("Tu sesión venció. Volvé a iniciar sesión.", false);
+                } else {
+                    mostrarMensaje("No se pudo cargar el stock (código " + response.code() + ").", true);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<StockSucursalDto>> call, Throwable t) {
+                if (call.isCanceled()) {
+                    return; // la pantalla se cerró, no hay nada que mostrar
+                }
+                mostrarMensaje("No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.", true);
+            }
+        });
     }
 
+    private void mostrarCargando() {
+        pbStock.setVisibility(View.VISIBLE);
+        llMensajeStock.setVisibility(View.GONE);
+        rvStock.setVisibility(View.GONE);
+    }
+
+    private void mostrarLista() {
+        pbStock.setVisibility(View.GONE);
+        llMensajeStock.setVisibility(View.GONE);
+        rvStock.setVisibility(View.VISIBLE);
+    }
+
+    private void mostrarMensaje(String mensaje, boolean conReintento) {
+        pbStock.setVisibility(View.GONE);
+        rvStock.setVisibility(View.GONE);
+        tvMensajeStock.setText(mensaje);
+        btnReintentarStock.setVisibility(conReintento ? View.VISIBLE : View.GONE);
+        llMensajeStock.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (llamadaActual != null) {
+            llamadaActual.cancel();
+        }
+    }
+}

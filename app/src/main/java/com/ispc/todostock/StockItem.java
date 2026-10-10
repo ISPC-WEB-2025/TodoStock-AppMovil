@@ -1,5 +1,7 @@
 package com.ispc.todostock;
 
+import com.ispc.todostock.network.StockSucursalDto;
+
 public class StockItem {
     private int id;
     private int sucursalId;
@@ -15,6 +17,20 @@ public class StockItem {
         this.codigo = codigo;
         this.cantidad = cantidad;
         this.stockMinimo = stockMinimo;
+    }
+
+    /**
+     * TK16: convierte un producto tal como lo devuelve la API en el objeto
+     * que usa la pantalla de Stock.
+     */
+    public static StockItem desde(StockSucursalDto dto) {
+        return new StockItem(
+                dto.getIdProducto(),
+                dto.getIdSucursal(),
+                dto.getNombreProducto(),
+                dto.getCodigoProducto(),
+                dto.getCantidad(),
+                dto.getStockMinimo());
     }
 
     public int getId() {
