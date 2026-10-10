@@ -8,9 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.ispc.todostock.cuenta.BajaDeCuenta;
 
 /**
-  * Contrato de extras de Intent definidos para las pantallas hijas:
+ * Contrato de extras de Intent definidos para las pantallas hijas:
  * - EXTRA_ROL_USUARIO (rol_usuario): String con el rol actual (Administrador o Vendedor)
  * - EXTRA_SUCURSAL_ID (sucursal_id): int con el ID de sucursal seleccionada (default: 1)
  * * Cada pantalla hija recibe estos extras con valores por defecto para que no fallen en Sprint 1.
@@ -72,9 +73,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavSucursal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent intent = new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
+                Intent intent = new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class);
+                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
+                startActivity(intent);
 
 
             }
@@ -85,10 +86,10 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            Intent intent = new Intent(MenuPrincipalActivity.this, GestionStockActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            intent.putExtra(EXTRA_SUCURSAL_ID, sucursalSeleccionadaId);
-            startActivity(intent);
+                Intent intent = new Intent(MenuPrincipalActivity.this, GestionStockActivity.class);
+                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
+                intent.putExtra(EXTRA_SUCURSAL_ID, sucursalSeleccionadaId);
+                startActivity(intent);
 
             }
         });
@@ -118,11 +119,14 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            Intent intent = new Intent(MenuPrincipalActivity.this, ContactoActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
+                Intent intent = new Intent(MenuPrincipalActivity.this, ContactoActivity.class);
+                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
+                startActivity(intent);
             }
         });
+
+        // TK52: Darme de baja (la lógica está en BajaDeCuenta)
+        findViewById(R.id.btnDarmeDeBaja).setOnClickListener(v -> new BajaDeCuenta(this).iniciar());
 
         // Cerrar sesion: Vuelve a LoginActivity (asumiendo que LoginActivity ya existe)
         btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
