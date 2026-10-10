@@ -55,4 +55,4 @@ public final class ResultadoLogin {
     public boolean esExito() {
         return tipo == Tipo.EXITO;
     }
-}git
+}
