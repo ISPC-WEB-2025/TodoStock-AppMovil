@@ -11,8 +11,8 @@
     <string name="login_error_generico">No se pudo iniciar sesión. Intentá de nuevo más tarde.</string>
     <string name="login_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
 
-    <string name="login_pendiente_titulo">Cuenta pendiente de aprobación</string>
-    <string name="login_pendiente_mensaje">Tu cuenta todavía no fue aprobada. Vas a poder ingresar cuando un Administrador la acepte y te asigne un rol.</string>
+    <string name="login_pendiente_titulo">Esta cuenta no está activa</string>
+    <string name="login_pendiente_mensaje">Si te registraste hace poco, un administrador tiene que aprobarla. Si la diste de baja y te arrepentiste, pedile que la reactive.</string>
     <string name="login_aceptar">Aceptar</string>
 
     <string name="login_rol_admin">Administrador</string>

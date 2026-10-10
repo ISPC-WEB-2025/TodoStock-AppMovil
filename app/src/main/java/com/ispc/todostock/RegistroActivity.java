@@ -1,6 +1,8 @@
 package com.ispc.todostock;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,6 +49,7 @@ public class RegistroActivity extends AppCompatActivity {
     private TextInputLayout tilNombre, tilEmail, tilDni, tilFecha, tilPassword, tilConfirmar;
     private EditText etNombre, etEmail, etDni, etFecha, etPassword, etConfirmar;
     private CheckBox cbTerminos;
+    private ColorStateList colorCasillaOriginal;
     private TextView tvErrorTerminos, tvErrorGeneral;
     private Button btnRegistrarme;
 
@@ -68,6 +73,7 @@ public class RegistroActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etConfirmar = findViewById(R.id.etConfirmar);
         cbTerminos = findViewById(R.id.cbTerminos);
+        colorCasillaOriginal = CompoundButtonCompat.getButtonTintList(cbTerminos);
         tvErrorTerminos = findViewById(R.id.tvErrorTerminos);
         tvErrorGeneral = findViewById(R.id.tvErrorGeneral);
         btnRegistrarme = findViewById(R.id.btnRegistrarme);
@@ -77,8 +83,15 @@ public class RegistroActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
 
         etFecha.setOnClickListener(v -> mostrarSelectorDeFecha());
-        findViewById(R.id.tvVerTerminos).setOnClickListener(v -> mostrarTerminos());
+        // TK52: abre la pantalla con los términos y la política de privacidad.
+        findViewById(R.id.tvVerTerminos).setOnClickListener(v ->
+                startActivity(new Intent(this, TerminosActivity.class)));
         btnRegistrarme.setOnClickListener(v -> intentarRegistro());
+
+        // TK52: al marcar la casilla se va el error de los términos.
+        cbTerminos.setOnCheckedChangeListener((casilla, marcada) -> {
+            if (marcada) mostrarErrorTerminos(false);
+        });
     }
 
     @Override
@@ -102,15 +115,6 @@ public class RegistroActivity extends AppCompatActivity {
         // No se pueden elegir fechas futuras.
         dialogo.getDatePicker().setMaxDate(System.currentTimeMillis());
         dialogo.show();
-    }
-
-    private void mostrarTerminos() {
-        // TK52 reemplaza este diálogo por la pantalla con los textos definitivos (TK105).
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.registro_terminos_titulo)
-                .setMessage(R.string.registro_terminos_texto_provisorio)
-                .setPositiveButton(R.string.registro_aceptar, null)
-                .show();
     }
 
     private void intentarRegistro() {
@@ -155,7 +159,7 @@ public class RegistroActivity extends AppCompatActivity {
             todoValido = false;
         }
         if (!cbTerminos.isChecked()) {
-            tvErrorTerminos.setVisibility(View.VISIBLE);
+            mostrarErrorTerminos(true);
             todoValido = false;
         }
 
@@ -286,6 +290,17 @@ public class RegistroActivity extends AppCompatActivity {
                 : R.string.registro_boton);
     }
 
+    /**
+     * TK52: muestra u oculta el error de los términos. Con error, el cuadradito de la
+     * casilla se pinta de rojo para que se vea a qué se refiere el mensaje.
+     */
+    private void mostrarErrorTerminos(boolean mostrar) {
+        tvErrorTerminos.setVisibility(mostrar ? View.VISIBLE : View.GONE);
+        CompoundButtonCompat.setButtonTintList(cbTerminos, mostrar
+                ? ColorStateList.valueOf(ContextCompat.getColor(this, R.color.color_errores))
+                : colorCasillaOriginal);
+    }
+
     private void limpiarErrores() {
         tilNombre.setError(null);
         tilEmail.setError(null);
@@ -293,7 +308,7 @@ public class RegistroActivity extends AppCompatActivity {
         tilFecha.setError(null);
         tilPassword.setError(null);
         tilConfirmar.setError(null);
-        tvErrorTerminos.setVisibility(View.GONE);
+        mostrarErrorTerminos(false);
         tvErrorGeneral.setVisibility(View.GONE);
     }
 }
