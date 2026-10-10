@@ -245,6 +245,31 @@ public class ValidadoresTest {
         assertFalse(validaNula);
     }
 
+    /** #221 - Valor límite: quien cumple 18 hoy se acepta; quien los cumple mañana, no. */
+    @Test
+    public void edad_valorLimite_aceptaQuienCumple18HoyYRechazaMenores() throws Exception {
+        // Arrange: se fija "hoy" para que el test dé siempre el mismo resultado
+        Date hoy = new SimpleDateFormat("dd/MM/yyyy", Locale.US).parse("07/10/2026");
+        String cumple18Hoy = "07/10/2008";
+        String cumple18Manana = "08/10/2008";
+        String adulto = "10/05/1995";
+        String fechaInvalida = "31/02/2000";
+
+        // Act
+        boolean aceptaCumple18Hoy = Validadores.esMayorDeEdad(cumple18Hoy, hoy);
+        boolean aceptaCumple18Manana = Validadores.esMayorDeEdad(cumple18Manana, hoy);
+        boolean aceptaAdulto = Validadores.esMayorDeEdad(adulto, hoy);
+        boolean aceptaFechaInvalida = Validadores.esMayorDeEdad(fechaInvalida, hoy);
+        boolean aceptaNula = Validadores.esMayorDeEdad(null, hoy);
+
+        // Assert
+        assertTrue(aceptaCumple18Hoy);
+        assertFalse(aceptaCumple18Manana);
+        assertTrue(aceptaAdulto);
+        assertFalse(aceptaFechaInvalida);
+        assertFalse(aceptaNula);
+    }
+
     /** La fecha se convierte al formato que espera el backend (campo fdn). */
     @Test
     public void fechaAFormatoApi_convierteAlFormatoDelBackend() {

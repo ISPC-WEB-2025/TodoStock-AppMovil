@@ -25,6 +25,7 @@
     <string name="registro_error_email">Ingresá un email válido.</string>
     <string name="registro_error_dni">El DNI debe tener 7 u 8 dígitos, sin puntos.</string>
     <string name="registro_error_fecha">Elegí tu fecha de nacimiento.</string>
+    <string name="registro_error_edad">Tenés que ser mayor de %1$d años para registrarte.</string>
     <string name="registro_error_password">La contraseña debe %1$s.</string>
     <string name="registro_error_password_espacios">La contraseña no debe tener espacios.</string>
     <string name="registro_password_y">e</string>
