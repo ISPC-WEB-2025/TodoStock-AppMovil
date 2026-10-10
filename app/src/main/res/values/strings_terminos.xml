@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK52: pantalla de términos y política de privacidad.
+     Los títulos de cada sección y los textos son de la TK105 (strings_legal.xml y res/raw). -->
+<resources>
+    <string name="terminos_titulo_pantalla">Términos y privacidad</string>
+    <string name="terminos_volver">Volver al registro</string>
+    <string name="terminos_error_lectura">No se pudo cargar el texto. Intentá de nuevo más tarde.</string>
+</resources>

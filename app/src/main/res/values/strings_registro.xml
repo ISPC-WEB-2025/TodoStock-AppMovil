@@ -14,10 +14,8 @@
     <string name="registro_hint_confirmar">Repetir contraseña</string>
     <string name="registro_ayuda_password">Mínimo 9 caracteres, con letras, números y un carácter especial, sin espacios.</string>
 
-    <string name="registro_acepto_terminos">Acepto los términos y condiciones</string>
-    <string name="registro_ver_terminos">Leer términos y condiciones</string>
-    <string name="registro_terminos_titulo">Términos y condiciones</string>
-    <string name="registro_terminos_texto_provisorio">Texto provisorio. Los términos y condiciones y la política de privacidad definitivos se incorporan en la tarea TK52.</string>
+    <string name="registro_acepto_terminos">Acepto los términos y condiciones y la política de privacidad</string>
+    <string name="registro_ver_terminos">Leer términos y política de privacidad</string>
 
     <string name="registro_boton">REGISTRARME</string>
     <string name="registro_boton_enviando">ENVIANDO…</string>
@@ -35,7 +33,7 @@
     <string name="registro_password_numero">incluir un número</string>
     <string name="registro_password_especial">incluir un carácter especial</string>
     <string name="registro_error_confirmacion">Las contraseñas no coinciden.</string>
-    <string name="registro_error_terminos">Tenés que aceptar los términos y condiciones para registrarte.</string>
+    <string name="registro_error_terminos">Tenés que aceptar los términos y condiciones y la política de privacidad para registrarte.</string>
     <string name="registro_error_generico">No se pudo completar el registro. Verificá que el DNI y el email no estén ya registrados.</string>
     <string name="registro_error_email_registrado">Este email ya está registrado.</string>
     <string name="registro_error_dni_registrado">Este DNI ya está registrado.</string>
