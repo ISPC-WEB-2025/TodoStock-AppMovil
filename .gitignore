@@ -22,3 +22,10 @@ baseline-prof.txt
 backlog.md
 *backlog*.md
 .issues/
+
+# Configuraciones de VS Code
+.vscode/
+
+# Contexto para agentes de IA (local, no va al repo)
+agents.md
+

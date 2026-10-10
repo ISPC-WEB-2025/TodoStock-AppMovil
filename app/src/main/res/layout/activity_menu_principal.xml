@@ -42,7 +42,22 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Acceso 0: Gestión de Usuarios — solo Administrador (TK48).
+                 Oculto en el código hasta que TK37 implemente la pantalla completa. -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnNavUsuarios"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/menu_btn_usuarios"
+                android:textAlignment="viewStart"
+                android:textColor="@color/color_texto"
+                android:visibility="gone"
+                app:strokeColor="@color/color_detalles" />
+
             <!-- Acceso 1: Seleccion de Sucursal -->
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavSucursal"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"

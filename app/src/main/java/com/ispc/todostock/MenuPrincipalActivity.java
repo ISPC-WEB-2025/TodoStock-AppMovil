@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.ispc.todostock.cuenta.BajaDeCuenta;
+import com.ispc.todostock.sesion.SesionManager;
 
 /**
  * Contrato de extras de Intent definidos para las pantallas hijas:
@@ -34,6 +35,10 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     private MaterialButton btnNavContacto;
     private MaterialButton btnCerrarSesion;
 
+    // TK48: botón de Gestión de Usuarios, solo visible para Administradores.
+    // TODO TK37: conectar a GestionUsuariosActivity cuando la pantalla esté implementada.
+    private MaterialButton btnNavUsuarios;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +62,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavMovimientos = findViewById(R.id.btnNavMovimientos);
         btnNavContacto = findViewById(R.id.btnNavContacto);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
+        btnNavUsuarios = findViewById(R.id.btnNavUsuarios);
 
         if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
             tvRolActivo.setText("Sesión activa: " + nombreUsuario + " (" + rolUsuario + ")");
@@ -64,11 +70,44 @@ public class MenuPrincipalActivity extends AppCompatActivity {
             tvRolActivo.setText("Sesión activa: " + rolUsuario);
         }
 
-        // 3. Configurar navegacion hacia cada pantalla hija cumpliendo el contrato de Intent
+        // 3. TK48: aplicar visibilidad según el perfil leído de la sesión guardada
+        aplicarVisibilidadPorRol();
+
+        // 4. Configurar navegacion hacia cada pantalla hija cumpliendo el contrato de Intent
         configurarNavegacion();
     }
 
+    /**
+     * TK48 — Muestra u oculta las opciones del menú según el perfil del usuario.
+     *
+     * Matriz de visibilidad:
+     *   Administrador: Usuarios (*), Productos, Sucursal, Stock, Movimientos + Contacto, Baja, Cerrar sesión
+     *   Empleado:                    Sucursal (-> Stock), Movimientos       + Contacto, Baja, Cerrar sesión
+     *
+     * (*) Botón provisional hasta que TK37 implemente GestionUsuariosActivity.
+     *
+     * Flujo de navegación: Para el Empleado, el acceso a Stock se da mediante "Seleccionar Sucursal"
+     * para consultar el stock contextualizado de una sede real, ocultando el botón huérfano de Stock del menú.
+     *
+     * Fuente de verdad: SesionManager.esAdmin(), que devuelve true para ADMINISTRADOR
+     * y para el superusuario de Django. VENTAS y DEPOSITO se tratan como Empleado.
+     */
+    private void aplicarVisibilidadPorRol() {
+        boolean esAdmin = SesionManager.getInstance(this).esAdmin();
+
+        // Opciones exclusivas del Administrador
+        btnNavUsuarios.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        btnNavCargaProducto.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+        btnNavStock.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+    }
+
+
     private void configurarNavegacion() {
+        // TK48: Gestión de Usuarios — solo visible para Administradores (botón ya oculto en aplicarVisibilidadPorRol).
+        // TODO TK37: reemplazar el Toast por startActivity(GestionUsuariosActivity) cuando esté implementada.
+        btnNavUsuarios.setOnClickListener(v ->
+                Toast.makeText(this, getString(R.string.menu_usuarios_pendiente), Toast.LENGTH_SHORT).show());
+
         // 1. Seleccion de Sucursal (Candelaria)
         btnNavSucursal.setOnClickListener(new View.OnClickListener() {
             @Override
