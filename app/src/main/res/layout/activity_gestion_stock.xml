@@ -7,8 +7,6 @@
     android:orientation="vertical"
     android:background="@color/color_fondo">
 
-
-    <!-- Indicador de la sucursal actual filtrada -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarStock"
         android:layout_width="match_parent"
@@ -18,6 +16,7 @@
         app:title="Gestión de Stock"
         app:titleTextColor="@color/color_fondo" />
 
+    <!-- Indicador de la sucursal actual -->
     <TextView
         android:id="@+id/tvSucursalFiltro"
         android:layout_width="match_parent"
@@ -28,14 +27,53 @@
         android:textSize="15sp"
         android:textStyle="italic" />
 
-    <!-- RecyclerView para soporte de listas largas con scroll fluido -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvStock"
+    <!-- TK16: la lista, el "cargando" y el mensaje de error comparten el mismo espacio -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="8dp"
-        android:clipToPadding="false"
-        tools:listitem="@layout/item_stock" />
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_stock" />
+
+        <ProgressBar
+            android:id="@+id/pbStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="Cargando stock"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/llMensajeStock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvMensajeStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:textColor="@color/color_texto"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReintentarStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Reintentar" />
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>
