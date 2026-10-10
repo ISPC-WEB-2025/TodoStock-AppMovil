@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK48: textos del menú principal según rol.
+     Van en un archivo aparte para no generar conflictos con strings.xml. -->
+<resources>
+    <string name="menu_btn_usuarios">0. Gestión de Usuarios</string>
+
+    <!-- Mensaje provisional mientras TK37 no está implementado (solo lo ve el Administrador). -->
+    <string name="menu_usuarios_pendiente">Gestión de usuarios en construcción (TK37).</string>
+
+    <string name="menu_error_acceso_denegado">Acceso no permitido para tu rol.</string>
+</resources>
