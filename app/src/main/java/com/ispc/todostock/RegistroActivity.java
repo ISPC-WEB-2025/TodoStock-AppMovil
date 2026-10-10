@@ -140,6 +140,10 @@ public class RegistroActivity extends AppCompatActivity {
         if (!Validadores.fechaNacimientoValida(fecha)) {
             tilFecha.setError(getString(R.string.registro_error_fecha));
             todoValido = false;
+        } else if (!Validadores.esMayorDeEdad(fecha)) {
+            // #221: edad mínima para registrarse.
+            tilFecha.setError(getString(R.string.registro_error_edad, Validadores.EDAD_MINIMA));
+            todoValido = false;
         }
         Set<RequisitoPassword> faltantes = Validadores.requisitosFaltantes(password);
         if (!faltantes.isEmpty()) {

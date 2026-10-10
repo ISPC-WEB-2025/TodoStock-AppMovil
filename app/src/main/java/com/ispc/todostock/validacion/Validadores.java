@@ -2,6 +2,7 @@ package com.ispc.todostock.validacion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
@@ -26,6 +27,9 @@ public final class Validadores {
 
     /** Mismo mínimo que usa el formulario de registro de la web. */
     public static final int NOMBRE_MIN = 6;
+
+    /** #221: edad mínima para registrarse. */
+    public static final int EDAD_MINIMA = 18;
 
     /** Formato en que la pantalla muestra la fecha. */
     public static final String FORMATO_FECHA_PANTALLA = "dd/MM/yyyy";
@@ -112,6 +116,21 @@ public final class Validadores {
     public static boolean fechaNacimientoValida(String fechaPantalla, Date hoy) {
         Date fecha = parsear(fechaPantalla);
         return fecha != null && !fecha.after(hoy);
+    }
+
+    /** #221: la persona tiene EDAD_MINIMA años o más (los cumple hoy o antes). */
+    public static boolean esMayorDeEdad(String fechaPantalla) {
+        return esMayorDeEdad(fechaPantalla, new Date());
+    }
+
+    /** Igual que la anterior, pero recibe "hoy" para poder testearla. */
+    public static boolean esMayorDeEdad(String fechaPantalla, Date hoy) {
+        Date fecha = parsear(fechaPantalla);
+        if (fecha == null) return false;
+        Calendar cumpleMinimo = Calendar.getInstance();
+        cumpleMinimo.setTime(fecha);
+        cumpleMinimo.add(Calendar.YEAR, EDAD_MINIMA);   // día en que cumple 18
+        return !cumpleMinimo.getTime().after(hoy);
     }
 
     /**
