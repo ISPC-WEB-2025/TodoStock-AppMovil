@@ -7,106 +7,127 @@
     android:orientation="vertical">
 
     <!-- Barra superior, igual que en el resto de las pantallas -->
-    <androidx.appcompat.widget.Toolbar
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarMenu"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/color_botones"
         app:navigationIcon="@drawable/flecha_atras"
         app:title="@string/contacto_titulo"
+        app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
-    <TextView
+    <!-- TK79: el contenido queda centrado en la pantalla, como en Movimientos.
+         ScrollView para que se pueda recorrer si el teclado tapa los campos. -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/contacto_descripcion"
-        android:textColor="@color/texto_secundario"
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <!-- TK42: los campos usan el mismo estilo que Registro (CampoRegistro) para que
-     los errores de validación se vean completos debajo de cada campo. -->
-
-    <!-- Campo Nombre -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilNombre"
-        style="@style/CampoRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        android:hint="@string/contacto_hint_nombre">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNombre"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName|textCapWords"
-            android:textColor="@color/color_texto" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-    <!-- Campo Email -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilEmail"
-        style="@style/CampoRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        android:hint="@string/contacto_hint_email">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/color_texto" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="16dp"
+                android:gravity="center"
+                android:text="@string/contacto_descripcion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="16sp" />
 
-    <!-- Campo Asunto (lo pide el backend) -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilAsunto"
-        style="@style/CampoRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"
-        android:hint="@string/contacto_hint_asunto">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etAsunto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences"
-            android:textColor="@color/color_texto" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <!-- TK42: los campos usan el mismo estilo que Registro (CampoRegistro) para que
+             los errores de validación se vean completos debajo de cada campo. -->
 
-    <!-- Campo Mensaje -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilMensaje"
-        style="@style/CampoRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="24dp"
-        android:hint="@string/contacto_hint_mensaje">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etMensaje"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine|textCapSentences"
-            android:minLines="4"
-            android:gravity="top|start"
-            android:textColor="@color/color_texto" />
-    </com.google.android.material.textfield.TextInputLayout>
+            <!-- Campo Nombre -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNombre"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/contacto_hint_nombre">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName|textCapWords"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Botón de envío -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEnviar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginHorizontal="16dp"
-        android:text="@string/contacto_boton_enviar"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:background="@drawable/boton_redondeado" />
+            <!-- Campo Email -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilEmail"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/contacto_hint_email">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo Asunto (lo pide el backend) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilAsunto"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/contacto_hint_asunto">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAsunto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Campo Mensaje -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilMensaje"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="24dp"
+                android:hint="@string/contacto_hint_mensaje">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMensaje"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="4"
+                    android:gravity="top|start"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Botón de envío -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEnviar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="32dp"
+                android:text="@string/contacto_boton_enviar"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/boton_redondeado" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -7,7 +7,8 @@
     android:background="@color/color_fondo"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarTerminos"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -15,6 +16,7 @@
         app:navigationContentDescription="@string/terminos_volver"
         app:navigationIcon="@drawable/flecha_atras"
         app:title="@string/terminos_titulo_pantalla"
+        app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
     <ScrollView
@@ -25,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp">
 
             <TextView
                 android:layout_width="match_parent"

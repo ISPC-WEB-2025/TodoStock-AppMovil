@@ -3,6 +3,8 @@
     TK02: Layout del Menu Principal (Hub central)
     Responsable: Miguel Flores
     Accesos a las 5 pantallas hijas con diseno limpio y organizado
+    TK79: barra superior unificada, botones sin borde (estilo BotonMenu), margen lateral
+    de 32dp y "Cerrar Sesión" con la forma de los demás botones, en verde oscuro.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,20 +15,23 @@
     android:background="@color/color_fondo">
 
     <!-- Barra superior / Header -->
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarMenu"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/color_fondo"
+        android:background="@color/color_botones"
         app:title="TodoStock - Menú"
-        app:titleTextColor="@color/color_texto" />
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
 
     <!-- Datos de sesion / Rol activo -->
     <TextView
         android:id="@+id/tvRolActivo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="16dp"
         android:text="Sesión activa: Administrador"
         android:textColor="@color/texto_secundario"
         android:textSize="14sp" />
@@ -40,102 +45,72 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp">
 
             <!-- Acceso 0: Gestión de Usuarios — solo Administrador (TK48).
                  Oculto en el código hasta que TK37 implemente la pantalla completa. -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavUsuarios"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
+                style="@style/BotonMenu"
                 android:text="@string/menu_btn_usuarios"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                android:visibility="gone"
-                app:strokeColor="@color/color_detalles" />
+                android:visibility="gone" />
 
             <!-- Acceso 1: Seleccion de Sucursal -->
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavSucursal"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:text="1. Seleccionar Sucursal"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_detalles" />
+                style="@style/BotonMenu"
+                android:text="1. Seleccionar Sucursal" />
 
             <!-- Acceso 2: Gestion de Stock -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavStock"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:text="2. Gestión de Stock"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_detalles" />
+                style="@style/BotonMenu"
+                android:text="2. Gestión de Stock" />
 
             <!-- Acceso 3: Carga de Producto -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavCargaProducto"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:text="3. Cargar Nuevo Producto"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_detalles" />
+                style="@style/BotonMenu"
+                android:text="3. Cargar Nuevo Producto" />
 
             <!-- Acceso 4: Movimientos entre Sucursales -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavMovimientos"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:text="4. Movimientos entre Sucursales"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_detalles" />
+                style="@style/BotonMenu"
+                android:text="4. Movimientos entre Sucursales" />
 
             <!-- Acceso 5: Contacto Soporte -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavContacto"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="24dp"
-                android:text="5. Contacto / Soporte"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_texto" />
+                style="@style/BotonMenu"
+                android:text="5. Contacto / Soporte" />
+
             <!-- Acceso 6: Mi Perfil -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnNavPerfil"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="12dp"
-                android:text="6. Mi Perfil"
-                android:textAlignment="viewStart"
-                android:textColor="@color/color_texto"
-                app:strokeColor="@color/color_detalles" />
+                style="@style/BotonMenu"
+                android:layout_marginBottom="24dp"
+                android:text="6. Mi Perfil" />
 
-            <!-- Boton Cerrar Sesion (Preparado para Sprint 2 / accesible) -->
+            <!-- Boton Cerrar Sesion.
+                 TK79: misma forma, alto y texto que los botones verdes de la app
+                 (boton_redondeado: radio 25dp, 50dp de alto), en el verde oscuro de la app.
+                 Texto claro: contraste 9.36. Antes: texto violeta sobre rojo (1.76).
+                 Sigue siendo MaterialButton porque así lo usa MenuPrincipalActivity. -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="50dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:text="Cerrar Sesión"
-                android:backgroundTint="@color/color_errores"
-                app:cornerRadius="8dp" />
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/boton_presionado"
+                app:cornerRadius="25dp" />
 
         </LinearLayout>
     </ScrollView>

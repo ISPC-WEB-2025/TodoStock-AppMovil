@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: fondo claro (gris_fondo_input) en lugar de color_detalles (marrón).
+     Sobre el marrón, el texto tenía contraste 3.74 y la alerta de stock bajo, 1.07. -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -6,7 +8,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="3dp"
-    app:cardBackgroundColor="@color/color_detalles">
+    app:cardBackgroundColor="@color/gris_fondo_input">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Código: PRD-001"
-                android:textColor="@color/color_texto"
+                android:textColor="@color/texto_tenue"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -63,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
                 android:text="Disponible"
-                android:textColor="@color/gris_borde_input"
+                android:textColor="@color/color_botones"
                 android:textSize="12sp" />
         </LinearLayout>
 
