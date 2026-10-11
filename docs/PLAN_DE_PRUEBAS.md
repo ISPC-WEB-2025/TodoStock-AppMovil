@@ -206,15 +206,15 @@ Para garantizar la trazabilidad longitudinal y la auditoría exigida por la cát
 El equipo aplica de forma rigurosa la segregación de funciones entre desarrollo y verificación para evitar sesgos:
 
 ```mermaid
-flowchart TD
-    A([Falla observada en Test]) --> B[Crear Issue 'bug'<br/>con ID de Test Case]
-    B --> C[Desarrollador corrige<br/>en rama fix]
-    C --> D[Abre PR y mueve Issue<br/>a columna 'Testing QA']
-    D --> E[Tester original<br/>re-ejecuta prueba]
-    E -->|Pasa| F[Actualizar a PASS<br/>Mover Issue a 'Done']
-    E -->|Falla| G[Mover a 'In Progress'<br/>con comentario y evidencia]
+flowchart LR
+    A([Falla detectada]) --> B[Crear Issue 'bug']
+    B --> C[Fix en branch]
+    C --> D[PR -> 'Testing QA']
+    D --> E[Reverificación QA]
+    E -->|Pasa| F[PASS -> 'Done']
+    E -->|Falla| G['In Progress']
     G --> C
-    F --> H([Prueba de Regresión<br/>en módulo relacionado])
+    F -.-> H([Regresión])
 ```
 
 ### Reglas Operativas Fundamentales:
