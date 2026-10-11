@@ -57,7 +57,10 @@ public class StockItem {
         return stockMinimo;
     }
 
+    /**
+     * TK17: regla de stock bajo (la misma que usa el backend en "articulos_alerta").
+     */
     public boolean esBajoStock() {
-        return cantidad <= stockMinimo;
+        return stockMinimo > 0 && cantidad <= stockMinimo;
     }
 }
