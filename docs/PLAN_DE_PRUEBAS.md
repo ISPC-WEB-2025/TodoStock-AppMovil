@@ -129,8 +129,8 @@ La estrategia se basa en la pirámide de automatización de pruebas de software,
 * **Técnicas de Caja Negra / Diseño aplicadas:**
   * **Partición en Clases de Equivalencia:** Clases válidas e inválidas para cada campo (sin letra, sin número, sin símbolo especial, etc.).
   * **Análisis de Valores Límite (BVA):** Contraseña (8 rechaza, 9 acepta), DNI (6 rechaza, 7/8 acepta, 9 rechaza), Nombre (5 rechaza, 6 acepta), Fecha de nacimiento (hoy acepta, mañana rechaza), Edad (cumple 18 hoy acepta, cumple 18 mañana rechaza), Cantidad de movimiento (0 rechaza, 1 acepta).
-* **Alcance de Clases:**
-  * `ValidadoresTest.java`: 15 tests unitarios cubriendo contraseñas, DNI, fecha, edad mínima y movimientos (Issue #113 / PR #198 cerrado).
+* **Alcance de Clases Planificado:**
+  * `ValidadoresTest.java`: Batería de pruebas unitarias sobre la clase `Validadores` cubriendo contraseñas, DNI, fecha, edad mínima (18 años) y cantidades/sucursales de movimientos (`AUT-UNIT-01`, `AUT-UNIT-03`, `AUT-UNIT-04`).
   * `LoginViewModelTest.java` (`AUT-UNIT-02` / #202): Caso feliz (credenciales correctas emiten estado `Exito`) y caso de error (credenciales inválidas emiten estado `Error`), aislando el repositorio con `@Mock` y verificando `LiveData` y llamadas de comportamiento (`verify`).
 
 ### 3.2 Nivel 2: Integración de Red y Contratos API (`AUT-NET-01` y `AUT-NET-02`)
@@ -193,6 +193,12 @@ Para dar por concluido el ciclo de pruebas del Sprint 2 se exige:
 * Al menos 2 hallazgos de accesibilidad documentados como Issue con captura (`ACC-02`).
 * Todos los defectos clasificados como Críticos o Altos corregidos o formalmente documentados con plan de contingencia aceptado.
 
+### 4.5 Versionado, Trazabilidad Histórica y Re-ejecuciones entre Sprints
+Para garantizar la trazabilidad longitudinal y la auditoría exigida por la cátedra e ISTQB, se define la siguiente norma prescriptiva para todo caso que requiera re-ejecución:
+1. **Preservación inmutable de la historia:** Bajo ninguna circunstancia se sobrescriben ni eliminan las filas de ejecuciones anteriores. Toda corrida previa (con su fecha, resultado obtenido, estado original y evidencias) permanece registrada en la planilla como testimonio del estado del software en ese momento.
+2. **Nomenclatura de re-ejecuciones e intentos:** Cuando un caso se vuelva a ejecutar en un sprint posterior (por pruebas de regresión) o tras la resolución de un defecto reportado, se debe incorporar una nueva fila en la planilla conservando el identificador base y especificando el número de intento o iteración (ej. agregando `(segundo intento)` o la referencia al sprint correspondiente).
+3. **Encadenamiento y trazabilidad:** Toda re-ejecución debe consignar en su campo de observaciones la referencia explícita al intento anterior y al Issue de defecto vinculado si corresponde, documentando si la corrección fue efectiva para auditar el ciclo de vida del software.
+
 ---
 
 ## 5. Protocolo de Gestión y Ciclo de Vida de Defectos (Bug Lifecycle)
@@ -201,14 +207,14 @@ El equipo aplica de forma rigurosa la segregación de funciones entre desarrollo
 
 ```mermaid
 flowchart TD
-    A["Ejecución de Test Case<br/>(Se detecta falla/desvío)"] --> B["Crear Issue con etiqueta 'bug'<br/>(Regla: Un bug, un Issue)<br/>Vincular al ID de Test Case (TC-XX-##)"]
-    B --> C["Desarrollador asignado<br/>corrige en rama fix/feature"]
-    C --> D["Abre Pull Request y mueve<br/>Issue a columna 'Testing (QA)'<br/>⚠️ El desarrollador NUNCA cierra el bug"]
-    D --> E["Tester original re-ejecuta caso<br/>siguiendo idénticos pasos (Reverificación)"]
-    E -->|¿Prueba Pasa?| F["Actualizar caso a PASS en planilla<br/>Adjuntar nueva evidencia<br/>Actualizar Matriz de Trazabilidad<br/>Mover Issue a 'Done' (Cerrar)"]
-    E -->|¿Prueba Falla?| G["Mover Issue de regreso a 'In Progress'<br/>Comentar causa técnica y nueva evidencia"]
+    A([Falla observada en Test]) --> B[Crear Issue 'bug'<br/>con ID de Test Case]
+    B --> C[Desarrollador corrige<br/>en rama fix]
+    C --> D[Abre PR y mueve Issue<br/>a columna 'Testing QA']
+    D --> E[Tester original<br/>re-ejecuta prueba]
+    E -->|Pasa| F[Actualizar a PASS<br/>Mover Issue a 'Done']
+    E -->|Falla| G[Mover a 'In Progress'<br/>con comentario y evidencia]
     G --> C
-    F --> H["Pruebas de Regresión obligatorias<br/>Re-ejecutar casos relacionados del mismo módulo"]
+    F --> H([Prueba de Regresión<br/>en módulo relacionado])
 ```
 
 ### Reglas Operativas Fundamentales:
@@ -256,7 +262,7 @@ Para dar cumplimiento a las buenas prácticas de QA y a la consigna académica, 
 * **Candelaria Barjollo (@candebar):** Autora de pruebas de selección de sucursales y perfil (`TK12`, `TK94`, `TK95`). Diseño de caso de seguridad `TC-SEG-02` (`TK56`). Ejecutora cruzada en `TK86`.
 * **Octavio Arnaudo (@OctavioArnaudo):** QA & Documentación. Gestión de actas, RTM y enlace de evidencias en Wiki.
 
-### 7.2 Matriz Oficial de Asignación y Ejecución Cruzada (Sprint 2 - Acordada el 11/10)
+### 7.2 Matriz Oficial de Asignación y Ejecución Cruzada (Sprint 2 - Modificada el 11/10)
 
 | Tarea de Ejecución | Responsable QA Asignado | Módulo / Casos de Prueba a Ejecutar | Desarrollador del Código (Aislado de la prueba) |
 |---|---|---|---|
@@ -272,7 +278,7 @@ Para dar cumplimiento a las buenas prácticas de QA y a la consigna académica, 
 
 | ID | Riesgo Identificado | Prob. | Impacto | Estrategia de Mitigación y Contingencia |
 | :---: | :--- | :---: | :---: | :--- |
-| **R01** | **Módulo Registro sin cobertura funcional en cliente** | Baja | Alta | **Mitigado:** Cobertura triple implementada en Sprint 2: 15 tests unitarios en `ValidadoresTest`, suite de integración en Postman (`TC-REG-API-01..05`) y casos manuales asignados a Candelaria y Pedro (`TC-REG-01..04`). |
+| **R01** | **Módulo Registro sin cobertura funcional en cliente** | Baja | Alta | **Estrategia de mitigación:** Establecer cobertura en tres niveles en el diseño: suite de pruebas unitarias sobre `Validadores`, especificación de pruebas de integración de API en Postman y planificación de casos de interfaz asignados a Candelaria y Pedro (`TC-REG-01..04`). |
 | **R02** | **Intermitencia o fallos de red en pruebas automatizadas (*flakiness*)** | Media | Alta | **Mitigado:** Prohibición absoluta de conectar tests automatizados locales a la red real. Aislamiento determinístico con `MockWebServer` para respuestas HTTP 200 y 500 (`AUT-NET-01/02`). |
 | **R03** | **Discrepancia en reglas de validación entre Django y la App Móvil** | Media | Media | **Mitigado:** Espejado de validaciones en clase `Validadores.java` (longitud de contraseña 9+, formato DNI 7/8 dígitos y edad mínima de 18 años calculada con fecha de referencia). Pruebas de API contra backend desplegado para validar coherencia en códigos de error HTTP 400. |
 | **R04** | **Indisponibilidad del servidor en la nube Alwaysdata durante pruebas** | Baja | Media | **Mitigado:** Configuración de fallback documentada en `README.md` y `local.properties`: levantar backend Django localmente y conectar el emulador mediante `http://10.0.2.2:8000/`. |
