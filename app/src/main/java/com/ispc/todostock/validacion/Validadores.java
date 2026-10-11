@@ -163,7 +163,18 @@ public final class Validadores {
     public static boolean origenYDestinoDistintos(int idOrigen, int idDestino) {
         return idOrigen != idDestino;
     }
-
+    /** yyyy-MM-dd (backend) -> dd/MM/yyyy (pantalla). Devuelve "" si no se puede. */
+    public static String fechaDesdeApi(String fechaApi) {
+        if (fechaApi == null) return "";
+        try {
+            SimpleDateFormat in = new SimpleDateFormat(FORMATO_FECHA_API, Locale.US);
+            in.setLenient(false);
+            Date d = in.parse(fechaApi.trim());
+            return new SimpleDateFormat(FORMATO_FECHA_PANTALLA, Locale.US).format(d);
+        } catch (ParseException e) {
+            return "";
+        }
+    }
     private static Date parsear(String fechaPantalla) {
         if (fechaPantalla == null || fechaPantalla.trim().length() != FORMATO_FECHA_PANTALLA.length()) {
             return null;

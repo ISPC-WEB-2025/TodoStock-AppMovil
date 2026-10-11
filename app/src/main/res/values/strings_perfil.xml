@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="perfil_titulo">Mi perfil</string>
+    <string name="perfil_editar_titulo">Editar perfil</string>
+    <string name="perfil_label_nombre">Nombre</string>
+    <string name="perfil_label_email">Email</string>
+    <string name="perfil_label_dni">DNI</string>
+    <string name="perfil_label_fecha">Fecha de nacimiento</string>
+    <string name="perfil_label_rol">Rol</string>
+    <string name="perfil_sin_rol">Sin rol asignado</string>
+    <string name="perfil_boton_editar">EDITAR PERFIL</string>
+    <string name="perfil_boton_guardar">GUARDAR CAMBIOS</string>
+    <string name="perfil_boton_guardando">GUARDANDO…</string>
+    <string name="perfil_email_no_editable">El email y el rol no se pueden modificar.</string>
+    <string name="perfil_guardado">Perfil actualizado</string>
+    <string name="perfil_error_sesion">Tu sesión expiró. Iniciá sesión de nuevo.</string>
+    <string name="perfil_error_cargar">No se pudo cargar tu perfil.</string>
+    <string name="perfil_error_guardar">No se pudo guardar. Intentá de nuevo.</string>
+    <string name="perfil_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión.</string>
+</resources>

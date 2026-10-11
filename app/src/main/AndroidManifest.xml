@@ -54,6 +54,8 @@
         <activity
             android:name=".TerminosActivity"
             android:exported="false" />
+        <activity android:name=".PerfilActivity" android:exported="false" />
+        <activity android:name=".EditarPerfilActivity" android:exported="false" />
 
 
     </application>

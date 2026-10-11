@@ -34,6 +34,8 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     private MaterialButton btnNavMovimientos;
     private MaterialButton btnNavContacto;
     private MaterialButton btnCerrarSesion;
+    private MaterialButton btnNavPerfil;
+
 
     // TK48: botón de Gestión de Usuarios, solo visible para Administradores.
     // TODO TK37: conectar a GestionUsuariosActivity cuando la pantalla esté implementada.
@@ -63,6 +65,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavContacto = findViewById(R.id.btnNavContacto);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         btnNavUsuarios = findViewById(R.id.btnNavUsuarios);
+        btnNavPerfil = findViewById(R.id.btnNavPerfil);
 
         if (nombreUsuario != null && !nombreUsuario.trim().isEmpty()) {
             tvRolActivo.setText("Sesión activa: " + nombreUsuario + " (" + rolUsuario + ")");
@@ -163,6 +166,10 @@ public class MenuPrincipalActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //6. Ver perfil
+        btnNavPerfil.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, PerfilActivity.class)));
+
 
         // TK52: Darme de baja (la lógica está en BajaDeCuenta)
         findViewById(R.id.btnDarmeDeBaja).setOnClickListener(v -> new BajaDeCuenta(this).iniciar());
