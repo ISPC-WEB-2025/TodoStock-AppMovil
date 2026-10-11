@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK07: textos del módulo Cerrar sesión.
+     Van en un archivo aparte para no generar conflictos con strings.xml. -->
+<resources>
+    <string name="cerrar_sesion_titulo">¿Cerrar sesión?</string>
+    <string name="cerrar_sesion_mensaje">¿Estás seguro de que querés salir de tu cuenta?</string>
+    <string name="cerrar_sesion_confirmar">Cerrar sesión</string>
+    <string name="cerrar_sesion_cancelar">Cancelar</string>
+</resources>

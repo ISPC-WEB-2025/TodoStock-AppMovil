@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.ispc.todostock.cuenta.BajaDeCuenta;
 import com.ispc.todostock.sesion.SesionManager;
 
@@ -174,15 +175,28 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         // TK52: Darme de baja (la lógica está en BajaDeCuenta)
         findViewById(R.id.btnDarmeDeBaja).setOnClickListener(v -> new BajaDeCuenta(this).iniciar());
 
-        // Cerrar sesion: Vuelve a LoginActivity (asumiendo que LoginActivity ya existe)
-        btnCerrarSesion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MenuPrincipalActivity.this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MenuPrincipalActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        // TK07: Cerrar sesión — pide confirmación, borra el token guardado y vuelve a LoginActivity
+        btnCerrarSesion.setOnClickListener(v -> mostrarDialogoConfirmacionCerrarSesion());
+    }
+
+    /**
+     * TK07 — Solicita confirmación al usuario antes de cerrar sesión.
+     * Al confirmar, elimina el token de EncryptedSharedPreferences (SesionManager)
+     * y redirige a LoginActivity limpiando el stack de navegación.
+     */
+    private void mostrarDialogoConfirmacionCerrarSesion() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.cerrar_sesion_titulo)
+                .setMessage(R.string.cerrar_sesion_mensaje)
+                .setNegativeButton(R.string.cerrar_sesion_cancelar, null)
+                .setPositiveButton(R.string.cerrar_sesion_confirmar, (dialog, which) -> {
+                    SesionManager.getInstance(this).cerrarSesion();
+
+                    Intent intent = new Intent(MenuPrincipalActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                })
+                .show();
     }
 }
