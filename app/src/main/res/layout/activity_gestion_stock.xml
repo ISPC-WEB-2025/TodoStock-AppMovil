@@ -7,13 +7,15 @@
     android:orientation="vertical"
     android:background="@color/color_fondo">
 
-    <androidx.appcompat.widget.Toolbar
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarStock"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/color_botones"
         app:navigationIcon="@drawable/flecha_atras"
         app:title="Gestión de Stock"
+        app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
     <!-- Indicador de la sucursal actual -->
@@ -21,7 +23,8 @@
         android:id="@+id/tvSucursalFiltro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="16dp"
         android:text="Mostrando inventario de: Sucursal 1"
         android:textColor="@color/color_texto"
         android:textSize="15sp"
@@ -33,11 +36,13 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
+        <!-- TK79: 24dp + 8dp de margen de cada tarjeta = 32dp a cada lado -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvStock"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
             android:clipToPadding="false"
             tools:listitem="@layout/item_stock" />
 

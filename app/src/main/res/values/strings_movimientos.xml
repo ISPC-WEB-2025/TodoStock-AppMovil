@@ -2,6 +2,10 @@
 <!-- TK27: textos de la pantalla de Movimientos.
      Van en un archivo aparte para no generar conflictos con strings.xml. -->
 <resources>
+    <!-- TK79: barra superior -->
+    <string name="mov_titulo">Movimientos entre sucursales</string>
+    <string name="mov_volver_descripcion">Volver a la pantalla anterior</string>
+
     <string name="mov_cargando">Cargando…</string>
     <string name="mov_seleccione_sucursal">Seleccione sucursal</string>
     <string name="mov_seleccione_producto">Seleccione producto</string>
@@ -12,6 +16,9 @@
 
     <string name="mov_error_producto">Por favor seleccione un producto</string>
     <string name="mov_error_sucursales">Debe seleccionar origen y destino</string>
+    <!-- TK79: errores debajo de cada campo -->
+    <string name="mov_error_origen">Por favor seleccione la sucursal de origen</string>
+    <string name="mov_error_destino">Por favor seleccione la sucursal de destino</string>
     <string name="mov_error_iguales">El origen y el destino no pueden ser iguales</string>
     <string name="mov_error_cantidad_vacia">Por favor ingrese una cantidad</string>
     <string name="mov_error_cantidad">La cantidad debe ser mayor a cero</string>

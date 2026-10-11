@@ -6,7 +6,8 @@
     android:background="@color/color_fondo"
     android:orientation="vertical">
 
-    <androidx.appcompat.widget.Toolbar
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarRegistro"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -14,6 +15,7 @@
         app:navigationContentDescription="@string/registro_volver"
         app:navigationIcon="@drawable/flecha_atras"
         app:title="@string/registro_titulo"
+        app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
     <!-- ScrollView: el formulario es largo y tiene que poder recorrerse en horizontal -->
@@ -22,11 +24,13 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+        <!-- TK79: margen lateral de 32dp, como Movimientos -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -149,10 +153,12 @@
                 android:textColor="@color/color_texto"
                 android:textSize="16sp" />
 
+            <!-- TK79: centrado -->
             <TextView
                 android:id="@+id/tvVerTerminos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"

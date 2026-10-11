@@ -3,7 +3,8 @@
     <style name="EtiquetaPerfil">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/color_detalles</item>
+        <!-- TK79: color_etiqueta (contraste 7.25). color_detalles daba 4.13. -->
+        <item name="android:textColor">@color/color_etiqueta</item>
         <item name="android:textSize">13sp</item>
         <item name="android:textStyle">bold</item>
     </style>

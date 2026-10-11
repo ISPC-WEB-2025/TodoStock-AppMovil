@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: mismo campo que input_fondo, con el borde en el rojo de la app.
+     Se usa en Movimientos cuando el campo tiene un error. -->
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    >
+    <solid android:color="@color/gris_fondo_input" />
+    <corners android:radius="12dp" />
+    <stroke android:width="2dp" android:color="@color/color_errores" />
+</shape>

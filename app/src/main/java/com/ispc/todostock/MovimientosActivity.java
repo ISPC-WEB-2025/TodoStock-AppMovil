@@ -1,21 +1,23 @@
 package com.ispc.todostock;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.ispc.todostock.network.ApiClient;
@@ -46,6 +48,10 @@ import retrofit2.Response;
  *
  * En cada spinner, la posición 0 es el texto guía ("Seleccione ..."): el elemento
  * real de la posición p está en la lista, en el índice p - 1.
+ *
+ * TK79: los errores de validación se muestran debajo de cada campo (texto rojo fijo y
+ * borde rojo), en lugar de un Toast que desaparecía y no indicaba qué campo estaba mal.
+ * Cada error se borra cuando se modifica su campo.
  */
 public class MovimientosActivity extends AppCompatActivity {
 
@@ -53,6 +59,9 @@ public class MovimientosActivity extends AppCompatActivity {
     private EditText etCantidad;
     private AppCompatButton btnConfirmar;
     private CharSequence textoBotonOriginal;
+
+    private FrameLayout campoOrigen, campoDestino, campoProducto;
+    private TextView tvErrorOrigen, tvErrorDestino, tvErrorProducto, tvErrorCantidad;
 
     private final List<SucursalDto> sucursales = new ArrayList<>();
     private final List<StockSucursalDto> productosDelOrigen = new ArrayList<>();
@@ -65,7 +74,8 @@ public class MovimientosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movimientos);
 
-        ImageButton btnAtras = findViewById(R.id.btnAtras);
+        // TK79: la barra superior ahora es una MaterialToolbar; la flecha de volver es su navegación.
+        Toolbar toolbar = findViewById(R.id.toolbarMovimientos);
         spinnerOrigen = findViewById(R.id.spinnerOrigen);
         spinnerDestino = findViewById(R.id.spinnerDestino);
         spinnerProducto = findViewById(R.id.spinnerProducto);
@@ -73,9 +83,17 @@ public class MovimientosActivity extends AppCompatActivity {
         btnConfirmar = findViewById(R.id.btnConfirmar);
         textoBotonOriginal = btnConfirmar.getText();
 
+        campoOrigen = findViewById(R.id.campoOrigen);
+        campoDestino = findViewById(R.id.campoDestino);
+        campoProducto = findViewById(R.id.campoProducto);
+        tvErrorOrigen = findViewById(R.id.tvErrorOrigen);
+        tvErrorDestino = findViewById(R.id.tvErrorDestino);
+        tvErrorProducto = findViewById(R.id.tvErrorProducto);
+        tvErrorCantidad = findViewById(R.id.tvErrorCantidad);
+
         api = ApiClient.create(InventarioApiService.class);
 
-        btnAtras.setOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> finish());
         btnConfirmar.setOnClickListener(v -> intentarTraslado());
 
         // Al elegir el origen, se cargan los productos con stock en esa sucursal.
@@ -83,6 +101,7 @@ public class MovimientosActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int posicion, long id) {
                 if (posicion > 0) {
+                    ocultarError(campoOrigen, tvErrorOrigen);
                     cargarProductos(sucursales.get(posicion - 1).getId());
                 } else {
                     mostrarProductos(new ArrayList<>(), getString(R.string.mov_elija_origen));
@@ -91,6 +110,53 @@ public class MovimientosActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // No hace falta hacer nada.
+            }
+        });
+
+        // TK79: al cambiar el destino o el producto, se borra su error.
+        spinnerDestino.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int posicion, long id) {
+                if (posicion > 0) {
+                    ocultarError(campoDestino, tvErrorDestino);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No hace falta hacer nada.
+            }
+        });
+
+        spinnerProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int posicion, long id) {
+                if (posicion > 0) {
+                    ocultarError(campoProducto, tvErrorProducto);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // No hace falta hacer nada.
+            }
+        });
+
+        // TK79: al escribir en la cantidad, se borra su error.
+        etCantidad.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No hace falta hacer nada.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ocultarError(etCantidad, tvErrorCantidad);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 // No hace falta hacer nada.
             }
         });
@@ -162,7 +228,8 @@ public class MovimientosActivity extends AppCompatActivity {
                     mostrarSesionVencida();
                 } else {
                     mostrarProductos(new ArrayList<>(), getString(R.string.mov_elija_origen));
-                    Toast.makeText(MovimientosActivity.this, R.string.mov_error_carga, Toast.LENGTH_LONG).show();
+                    // TK79: diálogo en lugar de Toast (el Toast desaparecía).
+                    mostrarError(getString(R.string.mov_error_carga));
                 }
             }
 
@@ -171,7 +238,8 @@ public class MovimientosActivity extends AppCompatActivity {
                 llamadasEnCurso.remove(call);
                 if (call.isCanceled() || isFinishing() || isDestroyed()) return;
                 mostrarProductos(new ArrayList<>(), getString(R.string.mov_elija_origen));
-                Toast.makeText(MovimientosActivity.this, R.string.mov_error_conexion, Toast.LENGTH_LONG).show();
+                // TK79: diálogo en lugar de Toast (el Toast desaparecía).
+                mostrarError(getString(R.string.mov_error_conexion));
             }
         });
     }
@@ -203,41 +271,67 @@ public class MovimientosActivity extends AppCompatActivity {
 
     // ---------- Envío del traslado ----------
 
-    /** Valida el formulario y, si está bien, envía el traslado. */
+    /**
+     * Valida el formulario y, si está bien, envía el traslado.
+     * TK79: revisa todos los campos y muestra cada error debajo de su campo.
+     */
     private void intentarTraslado() {
+        ocultarTodosLosErrores();
+
         int origenPos = spinnerOrigen.getSelectedItemPosition();
         int destinoPos = spinnerDestino.getSelectedItemPosition();
         int productoPos = spinnerProducto.getSelectedItemPosition();
         String cantidadTexto = etCantidad.getText().toString().trim();
 
-        if (origenPos <= 0 || destinoPos <= 0 || origenPos > sucursales.size() || destinoPos > sucursales.size()) {
-            mostrarAviso(getString(R.string.mov_error_sucursales));
-            return;
-        }
-        SucursalDto origen = sucursales.get(origenPos - 1);
-        SucursalDto destino = sucursales.get(destinoPos - 1);
+        boolean hayErrores = false;
 
-        if (!Validadores.origenYDestinoDistintos(origen.getId(), destino.getId())) {
-            mostrarAviso(getString(R.string.mov_error_iguales));
-            return;
+        SucursalDto origen = null;
+        if (origenPos <= 0 || origenPos > sucursales.size()) {
+            mostrarErrorDeCampo(campoOrigen, tvErrorOrigen, getString(R.string.mov_error_origen));
+            hayErrores = true;
+        } else {
+            origen = sucursales.get(origenPos - 1);
         }
+
+        SucursalDto destino = null;
+        if (destinoPos <= 0 || destinoPos > sucursales.size()) {
+            mostrarErrorDeCampo(campoDestino, tvErrorDestino, getString(R.string.mov_error_destino));
+            hayErrores = true;
+        } else {
+            destino = sucursales.get(destinoPos - 1);
+        }
+
+        if (origen != null && destino != null
+                && !Validadores.origenYDestinoDistintos(origen.getId(), destino.getId())) {
+            mostrarErrorDeCampo(campoDestino, tvErrorDestino, getString(R.string.mov_error_iguales));
+            hayErrores = true;
+        }
+
+        StockSucursalDto producto = null;
         if (productoPos <= 0 || productoPos > productosDelOrigen.size()) {
-            mostrarAviso(getString(R.string.mov_error_producto));
-            return;
+            mostrarErrorDeCampo(campoProducto, tvErrorProducto, getString(R.string.mov_error_producto));
+            hayErrores = true;
+        } else {
+            producto = productosDelOrigen.get(productoPos - 1);
         }
-        StockSucursalDto producto = productosDelOrigen.get(productoPos - 1);
 
+        int cantidad = 0;
         if (cantidadTexto.isEmpty()) {
-            mostrarAviso(getString(R.string.mov_error_cantidad_vacia));
-            return;
+            mostrarErrorDeCampo(etCantidad, tvErrorCantidad, getString(R.string.mov_error_cantidad_vacia));
+            hayErrores = true;
+        } else if (!Validadores.cantidadValida(cantidadTexto)) {
+            mostrarErrorDeCampo(etCantidad, tvErrorCantidad, getString(R.string.mov_error_cantidad));
+            hayErrores = true;
+        } else {
+            cantidad = Integer.parseInt(cantidadTexto); // seguro: cantidadValida ya lo comprobó
+            if (producto != null && cantidad > producto.getCantidad()) {
+                mostrarErrorDeCampo(etCantidad, tvErrorCantidad,
+                        getString(R.string.mov_error_supera_stock, producto.getCantidad()));
+                hayErrores = true;
+            }
         }
-        if (!Validadores.cantidadValida(cantidadTexto)) {
-            mostrarAviso(getString(R.string.mov_error_cantidad));
-            return;
-        }
-        int cantidad = Integer.parseInt(cantidadTexto); // seguro: cantidadValida ya lo comprobó
-        if (cantidad > producto.getCantidad()) {
-            mostrarAviso(getString(R.string.mov_error_supera_stock, producto.getCantidad()));
+
+        if (hayErrores) {
             return;
         }
 
@@ -311,13 +405,32 @@ public class MovimientosActivity extends AppCompatActivity {
 
         // Se deja listo para otro traslado desde el mismo origen, con el stock actualizado.
         etCantidad.setText("");
+        ocultarError(etCantidad, tvErrorCantidad);
         cargarProductos(origen.getId());
     }
 
     // ---------- Mensajes ----------
 
-    private void mostrarAviso(String mensaje) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    /** TK79: muestra el error debajo del campo y le pone el borde rojo. */
+    private void mostrarErrorDeCampo(View campo, TextView tvError, String mensaje) {
+        tvError.setText(mensaje);
+        tvError.setVisibility(View.VISIBLE);
+        campo.setBackgroundResource(R.drawable.input_fondo_error);
+    }
+
+    /** TK79: oculta el error del campo y le devuelve el borde normal. */
+    private void ocultarError(View campo, TextView tvError) {
+        if (tvError.getVisibility() == View.VISIBLE) {
+            tvError.setVisibility(View.GONE);
+            campo.setBackgroundResource(R.drawable.input_fondo);
+        }
+    }
+
+    private void ocultarTodosLosErrores() {
+        ocultarError(campoOrigen, tvErrorOrigen);
+        ocultarError(campoDestino, tvErrorDestino);
+        ocultarError(campoProducto, tvErrorProducto);
+        ocultarError(etCantidad, tvErrorCantidad);
     }
 
     private void mostrarError(String mensaje) {
@@ -360,8 +473,14 @@ public class MovimientosActivity extends AppCompatActivity {
 
     // ---------- Spinners ----------
 
-    /** Adapter con la posición 0 en gris y deshabilitada (texto guía), como en el Sprint 1. */
+    /**
+     * Adapter con la posición 0 deshabilitada (texto guía), como en el Sprint 1.
+     * TK79: el texto guía usa texto_tenue (antes Color.GRAY, contraste 3.3) y las opciones,
+     * color_texto.
+     */
     private ArrayAdapter<String> crearAdapter(List<String> textos) {
+        int colorGuia = ContextCompat.getColor(this, R.color.texto_tenue);
+        int colorTexto = ContextCompat.getColor(this, R.color.color_texto);
         return new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, textos) {
             @Override
             public boolean isEnabled(int position) {
@@ -372,18 +491,14 @@ public class MovimientosActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 TextView vista = (TextView) super.getView(position, convertView, parent);
-                vista.setTextColor(position == 0 ? Color.GRAY : Color.BLACK);
+                vista.setTextColor(position == 0 ? colorGuia : colorTexto);
                 return vista;
             }
 
             @Override
             public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
                 TextView vista = (TextView) super.getDropDownView(position, convertView, parent);
-                // Solo el texto guía va en gris. Las demás opciones usan el color del tema,
-                // así se leen bien tanto en modo claro como en modo oscuro.
-                if (position == 0) {
-                    vista.setTextColor(Color.GRAY);
-                }
+                vista.setTextColor(position == 0 ? colorGuia : colorTexto);
                 return vista;
             }
         };
