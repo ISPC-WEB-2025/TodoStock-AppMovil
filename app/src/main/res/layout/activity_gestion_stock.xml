@@ -14,7 +14,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/color_botones"
         app:navigationIcon="@drawable/flecha_atras"
-        app:title="Gestión de Stock"
+        app:title="Gestión de stock"
         app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
