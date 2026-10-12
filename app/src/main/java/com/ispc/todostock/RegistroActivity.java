@@ -1,6 +1,5 @@
 package com.ispc.todostock;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -27,9 +26,7 @@ import com.ispc.todostock.validacion.Validadores.RequisitoPassword;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import okhttp3.ResponseBody;
@@ -82,7 +79,17 @@ public class RegistroActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarRegistro);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        etFecha.setOnClickListener(v -> mostrarSelectorDeFecha());
+        etFecha.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilFecha.setError(null);
+            }
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
         // TK52: abre la pantalla con los términos y la política de privacidad.
         findViewById(R.id.tvVerTerminos).setOnClickListener(v ->
                 startActivity(new Intent(this, TerminosActivity.class)));
@@ -101,20 +108,6 @@ public class RegistroActivity extends AppCompatActivity {
             llamadaEnCurso.cancel();
         }
         super.onDestroy();
-    }
-
-    private void mostrarSelectorDeFecha() {
-        Calendar hoy = Calendar.getInstance();
-        DatePickerDialog dialogo = new DatePickerDialog(
-                this,
-                (view, anio, mes, dia) -> etFecha.setText(
-                        String.format(Locale.US, "%02d/%02d/%04d", dia, mes + 1, anio)),
-                hoy.get(Calendar.YEAR),
-                hoy.get(Calendar.MONTH),
-                hoy.get(Calendar.DAY_OF_MONTH));
-        // No se pueden elegir fechas futuras.
-        dialogo.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dialogo.show();
     }
 
     private void intentarRegistro() {
