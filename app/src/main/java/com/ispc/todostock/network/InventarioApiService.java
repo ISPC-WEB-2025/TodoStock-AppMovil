@@ -35,4 +35,18 @@ public interface InventarioApiService {
      */
     @POST("api/inventario/movimientos/")
     Call<ResponseBody> registrarMovimiento(@Body MovimientoRequest datos);
+
+    /** TK23: categorías para el desplegable del alta de producto. */
+    @GET("api/inventario/categorias/")
+    Call<List<CategoriaDto>> getCategorias();
+
+    /**
+     * TK23: alta de un producto (solo Administrador).
+     *   201 -> producto creado
+     *   400 -> datos inválidos, por ejemplo código duplicado
+     *   401 -> sesión vencida o sin token
+     *   403 -> el usuario no es Administrador
+     */
+    @POST("api/inventario/productos/")
+    Call<ProductoDto> crearProducto(@Body ProductoRequest datos);
 }

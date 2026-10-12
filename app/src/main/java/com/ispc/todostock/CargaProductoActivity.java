@@ -1,18 +1,54 @@
 package com.ispc.todostock;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.ispc.todostock.network.ApiClient;
+import com.ispc.todostock.network.CategoriaDto;
+import com.ispc.todostock.network.InventarioApiService;
+import com.ispc.todostock.network.ProductoDto;
+import com.ispc.todostock.network.ProductoRequest;
 import com.ispc.todostock.sesion.SesionManager;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+/**
+ * Alta de un producto contra la API (TK23). Solo Administrador.
+ * Responsable: Virginia Garcia
+ */
 public class CargaProductoActivity extends AppCompatActivity {
 
     private EditText etNombreProducto, etDescripcion, etPrecio, etCodigo;
-    private TextInputLayout tilNombreProducto, tilDescripcion, tilPrecio, tilCodigo;
+    private TextInputLayout tilNombreProducto, tilDescripcion, tilPrecio, tilCodigo, tilCategoria;
+    private AutoCompleteTextView actvCategoria;
+    private Button btnGuardar;
+
+    private ArrayAdapter<CategoriaDto> adaptadorCategorias;
+    private CategoriaDto categoriaElegida;
+    private boolean categoriasCargadas = false;
+    private boolean cargandoCategorias = false;
+
+    private Call<List<CategoriaDto>> llamadaCategorias;
+    private Call<ProductoDto> llamadaAlta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +80,70 @@ public class CargaProductoActivity extends AppCompatActivity {
         tilDescripcion = findViewById(R.id.tilDescripcion);
         tilPrecio = findViewById(R.id.tilPrecio);
         tilCodigo = findViewById(R.id.tilCodigo);
+        tilCategoria = findViewById(R.id.tilCategoria);
+        actvCategoria = findViewById(R.id.actvCategoria);
 
-        findViewById(R.id.btnGuardar).setOnClickListener(v -> validarYGuardar());
+        btnGuardar = findViewById(R.id.btnGuardar);
+        btnGuardar.setOnClickListener(v -> validarYGuardar());
+
+        configurarDesplegableCategorias();
+        cargarCategorias();
     }
+
+    // ---------- Categorías ----------
+
+    private void configurarDesplegableCategorias() {
+        adaptadorCategorias = new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, new ArrayList<CategoriaDto>());
+        actvCategoria.setAdapter(adaptadorCategorias);
+
+        actvCategoria.setOnItemClickListener((parent, view, position, id) -> {
+            categoriaElegida = (CategoriaDto) parent.getItemAtPosition(position);
+            tilCategoria.setError(null);
+        });
+
+        // Si las categorías no se pudieron cargar, tocar el campo vuelve a pedirlas.
+        actvCategoria.setOnClickListener(v -> {
+            if (!categoriasCargadas) {
+                cargarCategorias();
+            }
+        });
+    }
+
+    private void cargarCategorias() {
+        if (cargandoCategorias) {
+            return;
+        }
+        cargandoCategorias = true;
+
+        InventarioApiService api = ApiClient.create(InventarioApiService.class);
+        llamadaCategorias = api.getCategorias();
+        llamadaCategorias.enqueue(new Callback<List<CategoriaDto>>() {
+            @Override
+            public void onResponse(Call<List<CategoriaDto>> call, Response<List<CategoriaDto>> response) {
+                cargandoCategorias = false;
+                if (response.isSuccessful() && response.body() != null) {
+                    adaptadorCategorias.clear();
+                    adaptadorCategorias.addAll(response.body());
+                    categoriasCargadas = true;
+                    tilCategoria.setError(null);
+                } else {
+                    tilCategoria.setError(getString(R.string.carga_producto_error_categorias));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoriaDto>> call, Throwable t) {
+                cargandoCategorias = false;
+                if (call.isCanceled()) {
+                    return; // la pantalla se cerró
+                }
+                tilCategoria.setError(getString(R.string.carga_producto_error_categorias));
+            }
+        });
+    }
+
+    // ---------- Validación y envío ----------
 
     private void validarYGuardar() {
         limpiarErrores();
@@ -55,7 +152,6 @@ public class CargaProductoActivity extends AppCompatActivity {
         String descripcion = etDescripcion.getText().toString().trim();
         String precio = etPrecio.getText().toString().trim();
         String codigo = etCodigo.getText().toString().trim();
-
 
         boolean todoValido = true;
 
@@ -70,9 +166,16 @@ public class CargaProductoActivity extends AppCompatActivity {
         if (precio.isEmpty()) {
             tilPrecio.setError(getString(R.string.carga_producto_error_precio));
             todoValido = false;
+        } else if (!esPrecioValido(precio)) {
+            tilPrecio.setError(getString(R.string.carga_producto_error_precio_invalido));
+            todoValido = false;
         }
         if (codigo.isEmpty()) {
             tilCodigo.setError(getString(R.string.carga_producto_error_codigo));
+            todoValido = false;
+        }
+        if (categoriaElegida == null) {
+            tilCategoria.setError(getString(R.string.carga_producto_error_categoria));
             todoValido = false;
         }
 
@@ -80,8 +183,135 @@ public class CargaProductoActivity extends AppCompatActivity {
             return;
         }
 
-        // Todo OK — todavía no persiste, el alta real contra la API es TK23
-        Toast.makeText(this, R.string.carga_producto_ok, Toast.LENGTH_SHORT).show();
+        enviarAlta(nombre, descripcion, precio, codigo);
+    }
+
+    private boolean esPrecioValido(String precio) {
+        try {
+            return new BigDecimal(precio).signum() >= 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private void enviarAlta(String nombre, String descripcion, String precio, String codigo) {
+        btnGuardar.setEnabled(false); // evita enviar dos veces el mismo alta
+
+        ProductoRequest datos = ProductoRequest.nuevo(
+                nombre, descripcion, codigo, precio, categoriaElegida.getIdCategoria());
+
+        InventarioApiService api = ApiClient.create(InventarioApiService.class);
+        llamadaAlta = api.crearProducto(datos);
+        llamadaAlta.enqueue(new Callback<ProductoDto>() {
+            @Override
+            public void onResponse(Call<ProductoDto> call, Response<ProductoDto> response) {
+                btnGuardar.setEnabled(true);
+                if (response.isSuccessful()) {
+                    Toast.makeText(CargaProductoActivity.this,
+                            R.string.carga_producto_guardado, Toast.LENGTH_SHORT).show();
+                    limpiarFormulario();
+                } else {
+                    manejarError(response.code(), response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductoDto> call, Throwable t) {
+                if (call.isCanceled()) {
+                    return; // la pantalla se cerró
+                }
+                btnGuardar.setEnabled(true);
+                Toast.makeText(CargaProductoActivity.this,
+                        R.string.carga_producto_error_red, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    // ---------- Errores del servidor ----------
+
+    private void manejarError(int codigoHttp, ResponseBody cuerpo) {
+        if (codigoHttp == 400) {
+            // Datos inválidos (por ejemplo, código duplicado): se muestra debajo de cada campo.
+            if (!mostrarErroresDeCampos(cuerpo)) {
+                mostrarErrorGenerico(codigoHttp);
+            }
+        } else if (codigoHttp == 401) {
+            Toast.makeText(this, R.string.carga_producto_error_sesion, Toast.LENGTH_LONG).show();
+        } else if (codigoHttp == 403) {
+            Toast.makeText(this, R.string.carga_producto_error_permiso, Toast.LENGTH_LONG).show();
+        } else {
+            mostrarErrorGenerico(codigoHttp);
+        }
+    }
+
+    private void mostrarErrorGenerico(int codigoHttp) {
+        Toast.makeText(this,
+                getString(R.string.carga_producto_error_generico, codigoHttp),
+                Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * El backend responde algo como:
+     *   {"error": "Datos inválidos", "detalle": {"codigo": ["Ya existe un producto con el código ..."]}}
+     * Devuelve true si pudo mostrar al menos un mensaje debajo de un campo.
+     */
+    private boolean mostrarErroresDeCampos(ResponseBody cuerpo) {
+        if (cuerpo == null) {
+            return false;
+        }
+        try {
+            JsonObject raiz = new Gson().fromJson(cuerpo.string(), JsonObject.class);
+            if (raiz == null) {
+                return false;
+            }
+            JsonObject campos = (raiz.has("detalle") && raiz.get("detalle").isJsonObject())
+                    ? raiz.getAsJsonObject("detalle")
+                    : raiz;
+
+            boolean alguno = false;
+            alguno |= mostrarErrorDeCampo(tilNombreProducto, campos, "nombre");
+            alguno |= mostrarErrorDeCampo(tilDescripcion, campos, "descripcion");
+            alguno |= mostrarErrorDeCampo(tilPrecio, campos, "precio_venta");
+            alguno |= mostrarErrorDeCampo(tilCodigo, campos, "codigo");
+            alguno |= mostrarErrorDeCampo(tilCategoria, campos, "id_cat");
+            return alguno;
+        } catch (IOException | RuntimeException e) {
+            return false;
+        }
+    }
+
+    private boolean mostrarErrorDeCampo(TextInputLayout campoVisual, JsonObject campos, String clave) {
+        JsonElement valor = campos.get(clave);
+        if (valor == null) {
+            return false;
+        }
+        String mensaje = null;
+        if (valor.isJsonArray() && valor.getAsJsonArray().size() > 0) {
+            JsonElement primero = valor.getAsJsonArray().get(0);
+            if (primero.isJsonPrimitive()) {
+                mensaje = primero.getAsString();
+            }
+        } else if (valor.isJsonPrimitive()) {
+            mensaje = valor.getAsString();
+        }
+        if (mensaje == null) {
+            return false;
+        }
+        campoVisual.setError(mensaje);
+        return true;
+    }
+
+    // ---------- Limpieza ----------
+
+    private void limpiarFormulario() {
+        etNombreProducto.setText("");
+        etDescripcion.setText("");
+        etPrecio.setText("");
+        etCodigo.setText("");
+        actvCategoria.setText("", false);
+        categoriaElegida = null;
+        limpiarErrores();
+        etNombreProducto.requestFocus();
     }
 
     private void limpiarErrores() {
@@ -89,5 +319,17 @@ public class CargaProductoActivity extends AppCompatActivity {
         tilDescripcion.setError(null);
         tilPrecio.setError(null);
         tilCodigo.setError(null);
+        tilCategoria.setError(null);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (llamadaCategorias != null) {
+            llamadaCategorias.cancel();
+        }
+        if (llamadaAlta != null) {
+            llamadaAlta.cancel();
+            
     }
 }
