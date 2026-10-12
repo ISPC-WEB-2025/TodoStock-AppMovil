@@ -9,11 +9,11 @@ Muchas pymes controlan su inventario con planillas o procesos manuales, lo que g
 
 ### Funcionalidades principales (según rol)
 
-| Rol | Alcance Operativo y Funcionalidades |
+| Rol | Alcance Operativo y Jerarquía de Permisos |
 |---|---|
-| **Administrador** | Carga y gestión de productos con categorías, consulta de stock consolidado y por sucursal, registro de movimientos atómicos de stock entre sucursales, selección de sucursal activa, aprobación/asignación de rol a usuarios registrados, gestión de perfiles y soporte |
-| **Empleado** | Consulta de stock por sucursal, registro y consulta de movimientos de stock (entradas, salidas y traslados entre sucursales), selección de sucursal activa, edición de perfil y contacto a soporte |
-| **Ambos** | Iniciar sesión (autenticación JWT), ver y seleccionar sucursal activa, navegar hubs operativos intermediarios, ver y editar perfil, solicitar baja de cuenta (derecho de arrepentimiento - Ley 25.326), cerrar sesión y enviar mensajes a soporte |
+| **SuperAdministrador** (`is_superuser=True`) | **Control Total:** Crear cuentas de administradores, aprobar solicitudes pendientes de usuarios con rol Administrador, editar perfiles y restablecer claves de administradores y empleados, gestión global de sucursales e inventario. |
+| **Administrador Estándar** (`rol=ADMINISTRADOR`) | **Permiso Acotado:** Aprobar solicitudes pendientes y editar perfiles **únicamente de usuarios con rol Empleado (`es_empleado`)**. Carga y alta de productos con categorías, consulta de stock consolidado y por sucursal, registro de movimientos atómicos de stock entre sucursales, selección de sucursal activa y soporte. La API le restringe el control sobre otros administradores (`HTTP 403 Forbidden`). |
+| **Empleado / Vendedor** (`es_empleado=True`) | **Operativa Diaria:** Consulta de stock por sucursal, registro y consulta de movimientos de stock (entradas, salidas y traslados entre sucursales), selección de sucursal activa, edición de su propio perfil y contacto a soporte. |
 
 #### 📝 Registro de Usuarios
 Cualquier usuario puede solicitar el alta desde el formulario de registro ingresando **nombre, email, DNI, fecha de nacimiento (ingreso directo por teclado con máscara) y contraseña**. Tras registrarse, la cuenta queda en estado **pendiente** hasta que un **Administrador** le habilite el acceso y le asigne su rol correspondiente (Administrador o Empleado).

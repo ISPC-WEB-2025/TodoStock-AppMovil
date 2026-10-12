@@ -1,15 +1,15 @@
-# 📋 Product Backlog & Release Summary - Sprint 2 (v2.0)
+# 📋 Product Backlog & Release Summary - Sprint 2
 
 **Proyecto:** TodoStock Mobile — Android Nativo (Java / Material Design 3)  
 **Periodo del Sprint 2:** 17 de septiembre de 2026 al 14 de octubre de 2026  
-**Responsable de Gestión:** Octavio Arnaudo / Equipo CodeLab (#TK108)  
+**Responsable de Gestión:** Octavio Arnaudo / Equipo CodeLab (#TK108)
 **Story Points Entregados:** 106 SP (Acumulado Total del Proyecto: 142 SP)  
 
 ---
 
 ## 🎯 Objetivos y Alcance del Sprint 2
 
-El Sprint 2 consolida el incremento funcional **v2.0** de la aplicación móvil TodoStock, conectando las 12 `Activities` nativas con la API REST centralizada en Django (desplegada en Alwaysdata `https://todostock.alwaysdata.net/api/`), implementando seguridad por tokens JWT, gestión de perfiles, legislación de protección de datos (Ley 25.326), arrepentimiento/baja de cuenta y la suite de pruebas unitarias automatizadas.
+El Sprint 2 consolida el incremento funcional de la aplicación móvil TodoStock, conectando las 12 `Activities` nativas con la API REST centralizada en Django (desplegada en Alwaysdata `https://todostock.alwaysdata.net/api/`), implementando seguridad por tokens JWT, gestión de perfiles, legislación de protección de datos (Ley 25.326), arrepentimiento/baja de cuenta y la suite de pruebas unitarias automatizadas.
 
 ---
 
@@ -48,11 +48,11 @@ El Sprint 2 consolida el incremento funcional **v2.0** de la aplicación móvil 
 - **#TK47:** Política de contraseñas robustas y validación en `Validadores.java` (1 SP - PR #171, PR #223).
 - **Fix #281:** Entrada de fecha por teclado con máscara directa en `RegistroActivity` (PR #283).
 
-### 👑 Módulo 08: Administración y RBAC (#US08)
-- **#TK36:** API de usuarios (listar, editar, baja) restringido a Administrador (2 SP - Backend).
-- **#TK37:** Gestión de usuarios: lista, edición y baja con diálogo modal (2 SP - App/Web).
-- **#TK48:** Autorización por perfiles (Administrador / Empleado) y menú condicional (2 SP - PR #160, ADR-0008).
-- **#TK109:** Cargar usuario y aprobar registros pendientes desde la administración (1 SP - Backend).
+### 👑 Módulo 08: Administración y Jerarquía de Roles (#US08)
+- **#TK36:** API de usuarios (listar, editar, baja) restringido por jerarquía (SuperAdmin edita todos; Admin solo Empleados) (2 SP - Backend / ADR-0008).
+- **#TK37:** Gestión de usuarios: lista, edición y baja con diálogo modal condicional según rol (2 SP - App/Web).
+- **#TK48:** Autorización por perfiles (SuperAdmin / Administrador / Empleado) y menú condicional (2 SP - PR #160, ADR-0008).
+- **#TK109:** Cargar usuario y aprobar registros pendientes (SuperAdmin aprueba Admins; Admin aprueba Empleados) (1 SP - Backend).
 
 ### ✏️ Módulo 09: Edición y Eliminación (#US09)
 - **#TK38:** API de productos: baja lógica (`activo = False`, ADR-0010) (2 SP - PR #323).
