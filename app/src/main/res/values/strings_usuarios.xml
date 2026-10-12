@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- TK109 / TK37: Gestión de usuarios y aprobaciones -->
+    <string name="usuarios_titulo">Gestión de usuarios</string>
+    <string name="usuarios_tab_activos">Usuarios</string>
+    <string name="usuarios_tab_cargar">Cargar usuario</string>
+    <string name="usuarios_tab_pendientes">Pendientes</string>
+
+    <!-- Pestaña 1: Placeholder para TK37 de Pedro -->
+    <string name="usuarios_activos_placeholder_titulo">Catálogo de usuarios</string>
+    <string name="usuarios_activos_placeholder_desc">Módulo en desarrollo por Pedro Gonzalez (TK37).\nAquí se listarán, editarán y darán de baja los usuarios activos del sistema.</string>
+
+    <!-- Pestaña 2: Cargar usuario (TK109) -->
+    <string name="usuarios_cargar_desc">Complete los datos para dar de alta un usuario directamente en el sistema.</string>
+    <string name="usuarios_hint_nombre">Nombre y apellido</string>
+    <string name="usuarios_hint_email">Correo electrónico</string>
+    <string name="usuarios_hint_dni">DNI</string>
+    <string name="usuarios_hint_fdn">Fecha de nacimiento (dd/mm/aaaa)</string>
+    <string name="usuarios_hint_rol">Rol asignado</string>
+    <string name="usuarios_hint_password">Contraseña provisoria</string>
+    <string name="usuarios_btn_crear">Crear y habilitar usuario</string>
+
+    <!-- Pestaña 3: Solicitudes pendientes (TK109) -->
+    <string name="usuarios_pendientes_desc">Solicitudes de registro que aguardan aprobación de un Administrador.</string>
+    <string name="usuarios_pendientes_vacio">No hay solicitudes pendientes en este momento.</string>
+    <string name="usuarios_btn_aprobar">Aprobar...</string>
+    <string name="usuarios_btn_rechazar">Rechazar</string>
+
+    <!-- Diálogos -->
+    <string name="usuarios_aprobar_titulo">Aprobar solicitud</string>
+    <string name="usuarios_aprobar_mensaje">Seleccione el rol con el que ingresará %1$s:</string>
+    <string name="usuarios_rechazar_titulo">Rechazar solicitud</string>
+    <string name="usuarios_rechazar_mensaje">¿Está seguro de que desea rechazar el registro de %1$s? El usuario no podrá iniciar sesión.</string>
+    <string name="usuarios_btn_confirmar">Confirmar</string>
+    <string name="usuarios_btn_cancelar">Cancelar</string>
+
+    <!-- Feedback -->
+    <string name="usuarios_creado_ok">Usuario creado y habilitado exitosamente.</string>
+    <string name="usuarios_aprobado_ok">Usuario aprobado exitosamente.</string>
+    <string name="usuarios_rechazado_ok">Solicitud rechazada.</string>
+    <string name="usuarios_error_red">Error de comunicación con el servidor.</string>
+</resources>

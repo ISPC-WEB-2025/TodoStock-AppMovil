@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK109: Formulario para crear un usuario directamente con rol -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:text="@string/usuarios_cargar_desc"
+            android:textColor="@color/texto_secundario"
+            android:textSize="14sp" />
+
+        <!-- Nombre y apellido -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilNombre"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_nombre">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Correo electrónico -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- DNI -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDni"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_dni">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Fecha de nacimiento -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilFdn"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_fdn">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFdn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Selector de Rol -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRol"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_rol"
+            app:boxBackgroundColor="@color/gris_fondo_input"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/color_botones"
+            app:boxStrokeWidth="1dp">
+            <AutoCompleteTextView
+                android:id="@+id/actvRol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Contraseña provisoria -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/usuarios_hint_password"
+            app:endIconMode="password_toggle"
+            app:errorIconDrawable="@null">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Barra de progreso durante envío -->
+        <ProgressBar
+            android:id="@+id/progressBarCargar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"
+            android:indeterminateTint="@color/color_botones"
+            android:visibility="gone" />
+
+        <!-- Botón Guardar y Crear -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCrearUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="@string/usuarios_btn_crear"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/boton_presionado"
+            app:cornerRadius="25dp" />
+
+    </LinearLayout>
+</ScrollView>

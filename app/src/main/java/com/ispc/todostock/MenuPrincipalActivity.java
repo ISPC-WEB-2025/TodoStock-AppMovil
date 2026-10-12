@@ -107,10 +107,11 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
 
     private void configurarNavegacion() {
-        // TK48: Gestión de Usuarios — solo visible para Administradores (botón ya oculto en aplicarVisibilidadPorRol).
-        // TODO TK37: reemplazar el Toast por startActivity(GestionUsuariosActivity) cuando esté implementada.
-        btnNavUsuarios.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_usuarios_pendiente), Toast.LENGTH_SHORT).show());
+        // TK48 / TK109 / TK37: Gestión de Usuarios — solo visible para Administradores
+        btnNavUsuarios.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuPrincipalActivity.this, GestionUsuariosActivity.class);
+            startActivity(intent);
+        });
 
         // 1. Seleccion de Sucursal (Candelaria)
         btnNavSucursal.setOnClickListener(new View.OnClickListener() {
