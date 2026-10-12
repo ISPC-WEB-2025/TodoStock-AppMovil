@@ -22,6 +22,7 @@ import com.ispc.todostock.network.ApiClient;
 import com.ispc.todostock.network.CrearUsuarioRequest;
 import com.ispc.todostock.network.RolDto;
 import com.ispc.todostock.network.UsuarioApiService;
+import com.ispc.todostock.sesion.SesionManager;
 import com.ispc.todostock.validacion.Validadores;
 
 import org.json.JSONObject;
@@ -105,15 +106,16 @@ public class CargarUsuarioFragment extends Fragment {
     }
 
     private void cargarRoles() {
+        boolean esSuperadmin = SesionManager.getInstance(requireContext()).esSuperadmin();
         usuarioApi.obtenerRoles().enqueue(new Callback<List<RolDto>>() {
             @Override
             public void onResponse(@NonNull Call<List<RolDto>> call, @NonNull Response<List<RolDto>> response) {
                 if (!isAdded()) return;
                 rolesDisponibles.clear();
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    rolesDisponibles.addAll(response.body());
+                    procesarRolesApi(response.body(), esSuperadmin);
                 } else {
-                    cargarRolesPorDefecto();
+                    cargarRolesPorDefecto(esSuperadmin);
                 }
                 configurarAdapterRoles();
             }
@@ -121,16 +123,46 @@ public class CargarUsuarioFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<RolDto>> call, @NonNull Throwable t) {
                 if (!isAdded()) return;
-                cargarRolesPorDefecto();
+                cargarRolesPorDefecto(esSuperadmin);
                 configurarAdapterRoles();
             }
         });
     }
 
-    private void cargarRolesPorDefecto() {
+    private void procesarRolesApi(List<RolDto> rolesApi, boolean esSuperadmin) {
         rolesDisponibles.clear();
-        rolesDisponibles.add(new RolDto(2, "EMPLEADO", "Rol operativo (Ventas / Depósito)"));
-        rolesDisponibles.add(new RolDto(1, "ADMINISTRADOR", "Control total del sistema"));
+
+        // 1. Rol Empleado (Vendedor) - obligatorio para todos los admins
+        int idVendedor = 2;
+        for (RolDto r : rolesApi) {
+            String nom = r.nombre != null ? r.nombre.toUpperCase() : "";
+            if (nom.contains("VENT") || nom.contains("EMP")) {
+                idVendedor = r.id;
+                break;
+            }
+        }
+        rolesDisponibles.add(new RolDto(idVendedor, "Empleado (Vendedor)", "Rol operativo"));
+
+        // 2. Rol Administrador - solo si quien opera es Superadmin
+        if (esSuperadmin) {
+            int idAdmin = 1;
+            for (RolDto r : rolesApi) {
+                String nom = r.nombre != null ? r.nombre.toUpperCase() : "";
+                if (nom.contains("ADMIN")) {
+                    idAdmin = r.id;
+                    break;
+                }
+            }
+            rolesDisponibles.add(new RolDto(idAdmin, "Administrador", "Control total del sistema"));
+        }
+    }
+
+    private void cargarRolesPorDefecto(boolean esSuperadmin) {
+        rolesDisponibles.clear();
+        rolesDisponibles.add(new RolDto(2, "Empleado (Vendedor)", "Rol operativo"));
+        if (esSuperadmin) {
+            rolesDisponibles.add(new RolDto(1, "Administrador", "Control total del sistema"));
+        }
     }
 
     private void configurarAdapterRoles() {
@@ -230,8 +262,38 @@ public class CargarUsuarioFragment extends Fragment {
         try {
             String errorJson = response.errorBody() != null ? response.errorBody().string() : "";
             JSONObject json = new JSONObject(errorJson);
-            String mensaje = json.optString("error", "Error al crear usuario (" + response.code() + ")");
-            Toast.makeText(requireContext(), mensaje, Toast.LENGTH_LONG).show();
+
+            boolean campoAfectado = false;
+            if (json.has("email")) {
+                tilEmail.setError(json.getJSONArray("email").getString(0));
+                campoAfectado = true;
+            }
+            if (json.has("dni")) {
+                tilDni.setError(json.getJSONArray("dni").getString(0));
+                campoAfectado = true;
+            }
+            if (json.has("nombre")) {
+                tilNombre.setError(json.getJSONArray("nombre").getString(0));
+                campoAfectado = true;
+            }
+            if (json.has("fecha_nacimiento")) {
+                tilFdn.setError(json.getJSONArray("fecha_nacimiento").getString(0));
+                campoAfectado = true;
+            }
+            if (json.has("rol_id")) {
+                tilRol.setError(json.getJSONArray("rol_id").getString(0));
+                campoAfectado = true;
+            }
+            if (json.has("password")) {
+                tilPassword.setError(json.getJSONArray("password").getString(0));
+                campoAfectado = true;
+            }
+
+            if (json.has("error")) {
+                Toast.makeText(requireContext(), json.getString("error"), Toast.LENGTH_LONG).show();
+            } else if (!campoAfectado) {
+                Toast.makeText(requireContext(), "Error al crear usuario (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             Toast.makeText(requireContext(), "Error al procesar la solicitud (" + response.code() + ")", Toast.LENGTH_SHORT).show();
         }

@@ -7,8 +7,8 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
@@ -33,8 +33,8 @@ public interface UsuarioApiService {
     @POST("api/usuarios/")
     Call<ResponseBody> crearUsuario(@Body CrearUsuarioRequest datos);
 
-    /** Aprueba o edita los datos/rol de un usuario. */
-    @PUT("api/usuarios/{id}/")
+    /** Aprueba o edita los datos/rol de un usuario (actualización parcial). */
+    @PATCH("api/usuarios/{id}/")
     Call<ResponseBody> actualizarUsuario(@Path("id") int id, @Body AprobarUsuarioRequest datos);
 
     /** Desactiva o rechaza una cuenta (baja lógica: is_active = false). */

@@ -19,6 +19,9 @@ import com.ispc.todostock.network.ApiClient;
 import com.ispc.todostock.network.AprobarUsuarioRequest;
 import com.ispc.todostock.network.UsuarioApiService;
 import com.ispc.todostock.network.UsuarioDto;
+import com.ispc.todostock.sesion.SesionManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +60,12 @@ public class PendientesFragment extends Fragment implements UsuarioPendienteAdap
         cargarPendientes();
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarPendientes();
     }
 
     public void cargarPendientes() {
@@ -102,19 +111,36 @@ public class PendientesFragment extends Fragment implements UsuarioPendienteAdap
 
     @Override
     public void onAprobar(UsuarioDto usuario) {
-        String[] opcionesRoles = new String[]{"Empleado (Ventas / Depósito)", "Administrador"};
-        final int[] rolSeleccionadoId = {2}; // default: Empleado
+        SesionManager sesion = SesionManager.getInstance(requireContext());
+        boolean esSuperadmin = sesion.esSuperadmin();
 
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.usuarios_aprobar_titulo))
-                .setSingleChoiceItems(opcionesRoles, 0, (dialog, which) -> {
-                    rolSeleccionadoId[0] = (which == 0) ? 2 : 1;
-                })
-                .setPositiveButton(R.string.usuarios_btn_confirmar, (dialog, which) -> {
-                    ejecutarAprobacion(usuario, rolSeleccionadoId[0]);
-                })
-                .setNegativeButton(R.string.usuarios_btn_cancelar, null)
-                .show();
+        if (esSuperadmin) {
+            // Super Administrador: puede elegir asignar Empleado (Vendedor) o Administrador
+            String[] opcionesRoles = new String[]{"Empleado (Vendedor)", "Administrador"};
+            final int[] rolSeleccionadoId = {2}; // default: Empleado
+
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.usuarios_aprobar_titulo))
+                    .setSingleChoiceItems(opcionesRoles, 0, (dialog, which) -> {
+                        rolSeleccionadoId[0] = (which == 0) ? 2 : 1;
+                    })
+                    .setPositiveButton(R.string.usuarios_btn_confirmar, (dialog, which) -> {
+                        ejecutarAprobacion(usuario, rolSeleccionadoId[0]);
+                    })
+                    .setNegativeButton(R.string.usuarios_btn_cancelar, null)
+                    .show();
+        } else {
+            // Administrador estándar: solo puede asignar Empleado (Vendedor, id 2)
+            String nombre = usuario.nombre != null && !usuario.nombre.trim().isEmpty() ? usuario.nombre : "este usuario";
+            new MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.usuarios_aprobar_titulo))
+                    .setMessage("¿Desea aprobar a " + nombre + " con el rol Empleado (Vendedor)?")
+                    .setPositiveButton(R.string.usuarios_btn_confirmar, (dialog, which) -> {
+                        ejecutarAprobacion(usuario, 2);
+                    })
+                    .setNegativeButton(R.string.usuarios_btn_cancelar, null)
+                    .show();
+        }
     }
 
     private void ejecutarAprobacion(UsuarioDto usuario, int rolId) {
@@ -132,7 +158,19 @@ public class PendientesFragment extends Fragment implements UsuarioPendienteAdap
                     actualizarEstadoVacio();
                     Toast.makeText(requireContext(), R.string.usuarios_aprobado_ok, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(requireContext(), "No se pudo aprobar la solicitud (" + response.code() + ")", Toast.LENGTH_SHORT).show();
+                    String mensajeError = "No se pudo aprobar la solicitud (" + response.code() + ")";
+                    try {
+                        if (response.errorBody() != null) {
+                            String errJson = response.errorBody().string();
+                            JSONObject json = new JSONObject(errJson);
+                            if (json.has("error")) {
+                                mensajeError = json.getString("error");
+                            } else if (json.has("rol_id")) {
+                                mensajeError = json.getJSONArray("rol_id").getString(0);
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                    Toast.makeText(requireContext(), mensajeError, Toast.LENGTH_LONG).show();
                 }
             }
 

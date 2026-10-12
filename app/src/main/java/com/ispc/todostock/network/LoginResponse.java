@@ -22,6 +22,9 @@ public class LoginResponse {
     @SerializedName("es_empleado")
     private boolean esEmpleado;
 
+    @SerializedName("is_superuser")
+    private boolean isSuperuser;
+
     public int getId() {
         return id;
     }
@@ -50,5 +53,9 @@ public class LoginResponse {
 
     public boolean isEsEmpleado() {
         return esEmpleado;
+    }
+
+    public boolean isSuperuser() {
+        return isSuperuser;
     }
 }
