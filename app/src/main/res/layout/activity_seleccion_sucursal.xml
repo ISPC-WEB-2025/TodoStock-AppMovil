@@ -32,7 +32,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingVertical="16dp"
             android:gravity="center"
             android:text="@string/seleccione_una_sucursal_para_ver_su_informaci_n"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingBottom="16dp"
             tools:listitem="@layout/item_sucursal" />
     </LinearLayout>

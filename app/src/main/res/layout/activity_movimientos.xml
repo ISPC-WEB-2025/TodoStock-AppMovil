@@ -23,14 +23,20 @@
     <!-- Sub-contenedor para el formulario.
          TK79: cada campo tiene debajo su mensaje de error (oculto hasta que hay un error),
          en lugar de los Toast que desaparecían y no indicaban el campo. -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp">
+        android:paddingStart="@dimen/margen_horizontal_pantalla"
+        android:paddingEnd="@dimen/margen_horizontal_pantalla"
+        android:paddingBottom="16dp">
 
         <!-- Origen -->
         <TextView
@@ -198,4 +204,5 @@
             android:background="@drawable/boton_redondeado" />
 
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>
