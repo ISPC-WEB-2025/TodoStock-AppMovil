@@ -29,4 +29,13 @@
     <string name="carga_producto_error_precio">El precio es obligatorio</string>
     <string name="carga_producto_error_codigo">El código es obligatorio</string>
     <string name="carga_producto_ok">Producto válido, listo para guardar</string>
+    <string name="carga_producto_hint_categoria">Categoría</string>
+    <string name="carga_producto_error_categoria">Elegí una categoría</string>
+    <string name="carga_producto_error_categorias">No se pudieron cargar las categorías. Tocá el campo para reintentar.</string>
+    <string name="carga_producto_error_precio_invalido">El precio no es válido</string>
+    <string name="carga_producto_guardado">Producto guardado</string>
+    <string name="carga_producto_error_sesion">Tu sesión venció. Volvé a iniciar sesión.</string>
+    <string name="carga_producto_error_permiso">No tenés permiso para cargar productos.</string>
+    <string name="carga_producto_error_red">No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.</string>
+    <string name="carga_producto_error_generico">No se pudo guardar el producto (código %1$d).</string>
 </resources>

@@ -101,13 +101,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="32dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="12dp"
                 android:hint="@string/carga_producto_hint_codigo">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCodigo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- TK23: Categoría (desplegable con las categorías reales de la API) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCategoria"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="24dp"
+                android:hint="@string/carga_producto_hint_categoria"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/actvCategoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
                     android:textColor="@color/color_texto" />
             </com.google.android.material.textfield.TextInputLayout>
 
