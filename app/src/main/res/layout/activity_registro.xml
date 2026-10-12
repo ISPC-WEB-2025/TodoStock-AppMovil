@@ -89,7 +89,7 @@
                     android:textColor="@color/color_texto" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Fecha de nacimiento: no se escribe, se elige con el selector -->
+            <!-- Fecha de nacimiento: entrada directa con teclado numérico -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilFecha"
                 style="@style/CampoRegistro"
@@ -101,10 +101,7 @@
                     android:id="@+id/etFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:inputType="none"
+                    android:inputType="date"
                     android:textColor="@color/color_texto" />
             </com.google.android.material.textfield.TextInputLayout>
 
