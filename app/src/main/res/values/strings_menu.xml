@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TK48 / TK114: Textos del menú principal limpios y sin números. -->
+<!-- Textos del menú principal -->
 <resources>
     <string name="menu_btn_usuarios">Gestión de usuarios</string>
     <string name="menu_btn_sucursal">Seleccionar sucursal</string>

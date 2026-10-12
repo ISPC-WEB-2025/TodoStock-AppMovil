@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Textos de la pantalla intermedia (Hub) de Gestión de Stock -->
+<resources>
+    <string name="menu_stock_titulo">Gestión de Stock</string>
+    <string name="menu_stock_btn_listado">Listado de productos</string>
+    <string name="menu_stock_btn_cargar">Cargar nuevo producto</string>
+</resources>
