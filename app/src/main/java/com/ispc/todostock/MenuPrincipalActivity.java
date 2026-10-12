@@ -46,15 +46,15 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
-        // 1. Obtener datos pasados por el Intent de Login (o mantener default)
-        if (getIntent() != null) {
-            if (getIntent().hasExtra(EXTRA_USUARIO)) {
-                nombreUsuario = getIntent().getStringExtra(EXTRA_USUARIO);
-            }
-            if (getIntent().hasExtra(EXTRA_ROL_USUARIO)) {
-                rolUsuario = getIntent().getStringExtra(EXTRA_ROL_USUARIO);
-            }
+        // 1. Obtener datos de la sesión guardada
+        SesionManager sesion = SesionManager.getInstance(this);
+        String nombreSesion = sesion.getNombre();
+        if (nombreSesion != null && !nombreSesion.trim().isEmpty()) {
+            nombreUsuario = nombreSesion;
+        } else if (getIntent() != null && getIntent().hasExtra(EXTRA_USUARIO)) {
+            nombreUsuario = getIntent().getStringExtra(EXTRA_USUARIO);
         }
+        rolUsuario = sesion.esAdmin() ? "Administrador" : "Empleado";
 
         // 2. Inicializar vistas
         tvRolActivo = findViewById(R.id.tvRolActivo);
@@ -109,33 +109,20 @@ public class MenuPrincipalActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.menu_usuarios_pendiente), Toast.LENGTH_SHORT).show());
 
         // Seleccion de Sucursal
-        btnNavSucursal.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
-        });
+        btnNavSucursal.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class)));
 
         // Gestión de Stock
-        btnNavStock.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuPrincipalActivity.this, GestionStockActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            intent.putExtra(EXTRA_SUCURSAL_ID, sucursalSeleccionadaId);
-            startActivity(intent);
-        });
+        btnNavStock.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, GestionStockActivity.class)));
 
-        // Movimientos
-        btnNavMovimientos.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuPrincipalActivity.this, MovimientosActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
-        });
+        // Movimientos (pantalla intermedia / Hub de movimientos)
+        btnNavMovimientos.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, MenuMovimientosActivity.class)));
 
         // Contacto y Soporte
-        btnNavContacto.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuPrincipalActivity.this, ContactoActivity.class);
-            intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-            startActivity(intent);
-        });
+        btnNavContacto.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, ContactoActivity.class)));
         // Ver perfil
         btnNavPerfil.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, PerfilActivity.class)));

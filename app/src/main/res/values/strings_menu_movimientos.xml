@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Textos de la pantalla intermedia (Hub) de Movimientos de Stock -->
+<resources>
+    <string name="menu_mov_titulo">Movimientos</string>
+    <string name="menu_mov_btn_ingresos">Ingreso de mercadería</string>
+    <string name="menu_mov_btn_sucursales">Movimientos entre sucursales</string>
+    <string name="menu_mov_btn_ventas">Salida por venta</string>
+    <string name="menu_mov_btn_bajas">Baja de productos</string>
+    <string name="menu_mov_pendiente">Módulo en construcción (Sprint 3)</string>
+</resources>

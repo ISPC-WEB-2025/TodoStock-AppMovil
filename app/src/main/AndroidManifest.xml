@@ -25,6 +25,9 @@
             android:name=".MovimientosActivity"
             android:exported="false" />
         <activity
+            android:name=".MenuMovimientosActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
