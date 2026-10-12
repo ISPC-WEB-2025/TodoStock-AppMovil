@@ -252,7 +252,7 @@ public class CargaProductoActivity extends AppCompatActivity {
 
     /**
      * El backend responde algo como:
-     *   {"error": "Datos inválidos", "detalle": {"codigo": ["Ya existe un producto con el código ..."]}}
+     * {"error": "Datos inválidos", "detalle": {"codigo": ["Ya existe un producto con el código ..."]}}
      * Devuelve true si pudo mostrar al menos un mensaje debajo de un campo.
      */
     private boolean mostrarErroresDeCampos(ResponseBody cuerpo) {
@@ -330,6 +330,7 @@ public class CargaProductoActivity extends AppCompatActivity {
         }
         if (llamadaAlta != null) {
             llamadaAlta.cancel();
-            
+
+        }
     }
 }

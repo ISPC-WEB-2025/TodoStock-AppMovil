@@ -32,6 +32,7 @@ public final class SesionManager implements ProveedorToken {
     private static final String CLAVE_EMAIL = "usuario_email";
     private static final String CLAVE_ES_ADMIN = "es_admin";
     private static final String CLAVE_ES_EMPLEADO = "es_empleado";
+    private static final String CLAVE_IS_SUPERUSER = "is_superuser";
 
     private static SesionManager instancia;
 
@@ -74,6 +75,7 @@ public final class SesionManager implements ProveedorToken {
                 .putString(CLAVE_EMAIL, datos.getEmail())
                 .putBoolean(CLAVE_ES_ADMIN, datos.isEsAdmin())
                 .putBoolean(CLAVE_ES_EMPLEADO, datos.isEsEmpleado())
+                .putBoolean(CLAVE_IS_SUPERUSER, datos.isSuperuser())
                 .apply();
     }
 
@@ -110,6 +112,10 @@ public final class SesionManager implements ProveedorToken {
 
     public boolean esEmpleado() {
         return preferencias.getBoolean(CLAVE_ES_EMPLEADO, false);
+    }
+
+    public boolean esSuperadmin() {
+        return preferencias.getBoolean(CLAVE_IS_SUPERUSER, false);
     }
 
     /** Borra todos los datos de la sesión. Lo usa Cerrar sesión (TK07). */

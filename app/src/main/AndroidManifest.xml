@@ -62,6 +62,7 @@
             android:exported="false" />
         <activity android:name=".PerfilActivity" android:exported="false" />
         <activity android:name=".EditarPerfilActivity" android:exported="false" />
+        <activity android:name=".GestionUsuariosActivity" android:exported="false" />
 
 
     </application>

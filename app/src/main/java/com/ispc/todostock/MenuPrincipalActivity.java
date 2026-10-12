@@ -104,9 +104,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
 
     private void configurarNavegacion() {
-        // Gestión de usuarios: aviso provisional hasta la integración de la pantalla de gestión
+        // Gestión de usuarios
         btnNavUsuarios.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_usuarios_pendiente), Toast.LENGTH_SHORT).show());
+                startActivity(new Intent(MenuPrincipalActivity.this, GestionUsuariosActivity.class)));
 
         // Seleccion de Sucursal
         btnNavSucursal.setOnClickListener(v ->
