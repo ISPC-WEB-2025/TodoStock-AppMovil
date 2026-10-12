@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    TK02: Layout del Menu Principal (Hub central)
-    Responsable: Miguel Flores
-    Accesos a las 5 pantallas hijas con diseno limpio y organizado
-    TK79: barra superior unificada, botones sin borde (estilo BotonMenu), margen lateral
-    de 32dp y "Cerrar Sesión" con la forma de los demás botones, en verde oscuro.
--->
+<!-- Menú Principal (Hub central de navegación) -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -39,69 +33,75 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="32dp"
-            android:paddingVertical="8dp">
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
 
-            <!-- Acceso 0: Gestión de Usuarios — solo Administrador (TK48).
-                 Oculto en el código hasta que TK37 implemente la pantalla completa. -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavUsuarios"
-                style="@style/BotonMenu"
-                android:text="@string/menu_btn_usuarios"
-                android:visibility="gone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
 
-            <!-- Acceso 1: Seleccion de Sucursal -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavSucursal"
-                style="@style/BotonMenu"
-                android:text="1. Seleccionar Sucursal" />
+                <!-- Gestión de usuarios (solo Administrador) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavUsuarios"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_usuarios"
+                    android:visibility="gone" />
 
-            <!-- Acceso 2: Gestion de Stock -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavStock"
-                style="@style/BotonMenu"
-                android:text="2. Gestión de Stock" />
+                <!-- Seleccionar sucursal -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavSucursal"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_sucursal" />
 
-            <!-- Acceso 3: Carga de Producto -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavCargaProducto"
-                style="@style/BotonMenu"
-                android:text="3. Cargar Nuevo Producto" />
+                <!-- Gestión de stock -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavStock"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_stock" />
 
-            <!-- Acceso 4: Movimientos entre Sucursales -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavMovimientos"
-                style="@style/BotonMenu"
-                android:text="4. Movimientos entre Sucursales" />
+                <!-- Movimientos -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavMovimientos"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_movimientos" />
 
-            <!-- Acceso 5: Contacto Soporte -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavContacto"
-                style="@style/BotonMenu"
-                android:text="5. Contacto / Soporte" />
+                <!-- Mi perfil -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavPerfil"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_perfil" />
 
-            <!-- Acceso 6: Mi Perfil -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavPerfil"
-                style="@style/BotonMenu"
-                android:layout_marginBottom="24dp"
-                android:text="6. Mi Perfil" />
+                <!-- Contacto y soporte -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavContacto"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_contacto" />
 
-            <!-- Boton Cerrar Sesion.
-                 TK79: misma forma, alto y texto que los botones verdes de la app
-                 (boton_redondeado: radio 25dp, 50dp de alto), en el verde oscuro de la app.
-                 Texto claro: contraste 9.36. Antes: texto violeta sobre rojo (1.76).
-                 Sigue siendo MaterialButton porque así lo usa MenuPrincipalActivity. -->
+            </LinearLayout>
+
+            <!-- Cerrar sesión -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginTop="8dp"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:text="Cerrar Sesión"
@@ -115,8 +115,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- TK52: Darme de baja (derecho de arrepentimiento). Lo ven los dos roles.
-         Fuera del ScrollView: queda siempre abajo de todo, más chico que las opciones. -->
+    <!-- Darme de baja -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDarmeDeBaja"
         style="@style/Widget.MaterialComponents.Button.TextButton"

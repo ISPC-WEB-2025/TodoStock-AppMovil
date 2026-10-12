@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pantalla intermedia (Hub) de Gestión de Stock -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <!-- Barra superior unificada -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarStock"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/menu_stock_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- Datos de sesion / Rol activo -->
+    <TextView
+        android:id="@+id/tvRolActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="16dp"
+        android:text="Sesión activa: Administrador"
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp" />
+
+    <!-- Opciones de catálogo y stock -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="16dp">
+
+            <!-- Listado de productos -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStockConsultar"
+                style="@style/BotonMenu"
+                android:layout_marginBottom="16dp"
+                android:text="@string/menu_stock_btn_listado" />
+
+            <!-- Cargar nuevo producto (solo Administrador) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStockCargar"
+                style="@style/BotonMenu"
+                android:layout_marginBottom="16dp"
+                android:text="@string/menu_stock_btn_cargar"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

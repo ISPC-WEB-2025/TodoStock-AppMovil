@@ -31,7 +31,6 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     private TextView tvRolActivo;
     private MaterialButton btnNavSucursal;
     private MaterialButton btnNavStock;
-    private MaterialButton btnNavCargaProducto;
     private MaterialButton btnNavMovimientos;
     private MaterialButton btnNavContacto;
     private MaterialButton btnCerrarSesion;
@@ -47,21 +46,20 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
 
-        // 1. Obtener datos pasados por el Intent de Login (o mantener default)
-        if (getIntent() != null) {
-            if (getIntent().hasExtra(EXTRA_USUARIO)) {
-                nombreUsuario = getIntent().getStringExtra(EXTRA_USUARIO);
-            }
-            if (getIntent().hasExtra(EXTRA_ROL_USUARIO)) {
-                rolUsuario = getIntent().getStringExtra(EXTRA_ROL_USUARIO);
-            }
+        // 1. Obtener datos de la sesión guardada
+        SesionManager sesion = SesionManager.getInstance(this);
+        String nombreSesion = sesion.getNombre();
+        if (nombreSesion != null && !nombreSesion.trim().isEmpty()) {
+            nombreUsuario = nombreSesion;
+        } else if (getIntent() != null && getIntent().hasExtra(EXTRA_USUARIO)) {
+            nombreUsuario = getIntent().getStringExtra(EXTRA_USUARIO);
         }
+        rolUsuario = sesion.esAdmin() ? "Administrador" : "Empleado";
 
         // 2. Inicializar vistas
         tvRolActivo = findViewById(R.id.tvRolActivo);
         btnNavSucursal = findViewById(R.id.btnNavSucursal);
         btnNavStock = findViewById(R.id.btnNavStock);
-        btnNavCargaProducto = findViewById(R.id.btnNavCargaProducto);
         btnNavMovimientos = findViewById(R.id.btnNavMovimientos);
         btnNavContacto = findViewById(R.id.btnNavContacto);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
@@ -101,87 +99,44 @@ public class MenuPrincipalActivity extends AppCompatActivity {
 
         // Opciones exclusivas del Administrador
         btnNavUsuarios.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
-        btnNavCargaProducto.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
         btnNavStock.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
     }
 
 
     private void configurarNavegacion() {
-        // TK48 / TK109 / TK37: Gestión de Usuarios — solo visible para Administradores
-        btnNavUsuarios.setOnClickListener(v -> {
-            Intent intent = new Intent(MenuPrincipalActivity.this, GestionUsuariosActivity.class);
-            startActivity(intent);
-        });
+        // Gestión de usuarios
+        btnNavUsuarios.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, GestionUsuariosActivity.class)));
 
-        // 1. Seleccion de Sucursal (Candelaria)
-        btnNavSucursal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class);
-                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-                startActivity(intent);
+        // Seleccion de Sucursal
+        btnNavSucursal.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class)));
 
+        // Gestión de Stock (pantalla intermedia / Hub de stock)
+        btnNavStock.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, MenuStockActivity.class)));
 
-            }
-        });
+        // Movimientos (pantalla intermedia / Hub de movimientos)
+        btnNavMovimientos.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, MenuMovimientosActivity.class)));
 
-        // 2. Gestion de Stock (Virginia)
-        btnNavStock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MenuPrincipalActivity.this, GestionStockActivity.class);
-                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-                intent.putExtra(EXTRA_SUCURSAL_ID, sucursalSeleccionadaId);
-                startActivity(intent);
-
-            }
-        });
-
-        // 3. Carga de Producto (Pedro)
-        btnNavCargaProducto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuPrincipalActivity.this, CargaProductoActivity.class);
-                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-                startActivity(intent);
-            }
-        });
-
-        // 4. Movimientos entre sucursales (Aylen)
-        btnNavMovimientos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MenuPrincipalActivity.this, MovimientosActivity.class);
-                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-                startActivity(intent);
-            }
-        });
-
-        // 5. Contacto / Soporte (Pedro)
-        btnNavContacto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MenuPrincipalActivity.this, ContactoActivity.class);
-                intent.putExtra(EXTRA_ROL_USUARIO, rolUsuario);
-                startActivity(intent);
-            }
-        });
-        //6. Ver perfil
+        // Contacto y Soporte
+        btnNavContacto.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, ContactoActivity.class)));
+        // Ver perfil
         btnNavPerfil.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, PerfilActivity.class)));
 
 
-        // TK52: Darme de baja (la lógica está en BajaDeCuenta)
+        // Darme de baja (delegado en BajaDeCuenta)
         findViewById(R.id.btnDarmeDeBaja).setOnClickListener(v -> new BajaDeCuenta(this).iniciar());
 
-        // TK07: Cerrar sesión — pide confirmación, borra el token guardado y vuelve a LoginActivity
+        // Cerrar sesión con confirmación y borrado de sesión
         btnCerrarSesion.setOnClickListener(v -> mostrarDialogoConfirmacionCerrarSesion());
     }
 
     /**
-     * TK07 — Solicita confirmación al usuario antes de cerrar sesión.
+     * Solicita confirmación al usuario antes de cerrar sesión.
      * Al confirmar, elimina el token de EncryptedSharedPreferences (SesionManager)
      * y redirige a LoginActivity limpiando el stack de navegación.
      */
