@@ -1,6 +1,7 @@
 package com.ispc.todostock;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,16 @@ public class GestionUsuariosActivity extends AppCompatActivity {
 
         MaterialToolbar toolbar = findViewById(R.id.toolbarUsuarios);
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        TextView tvRolActivo = findViewById(R.id.tvRolActivo);
+        com.ispc.todostock.sesion.SesionManager sesion = com.ispc.todostock.sesion.SesionManager.getInstance(this);
+        String rol = sesion.esSuperadmin() ? "Super Administrador" : (sesion.esAdmin() ? "Administrador" : "Empleado");
+        String nombre = sesion.getNombre();
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            tvRolActivo.setText("Sesión activa: " + nombre + " (" + rol + ")");
+        } else {
+            tvRolActivo.setText("Sesión activa: " + rol);
+        }
 
         TabLayout tabLayout = findViewById(R.id.tabLayoutUsuarios);
         ViewPager2 viewPager = findViewById(R.id.viewPagerUsuarios);

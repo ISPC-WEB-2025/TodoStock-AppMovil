@@ -191,7 +191,7 @@ public class CargarUsuarioFragment extends Fragment {
         String email = etEmail.getText() != null ? etEmail.getText().toString().trim() : "";
         String dni = etDni.getText() != null ? etDni.getText().toString().trim() : "";
         String fdn = etFdn.getText() != null ? etFdn.getText().toString().trim() : "";
-        String password = etPassword.getText() != null ? etPassword.getText().toString() : "";
+        String password = etPassword.getText() != null ? etPassword.getText().toString().trim() : "";
 
         boolean valido = true;
 
@@ -223,8 +223,13 @@ public class CargarUsuarioFragment extends Fragment {
             valido = false;
         }
 
-        if (!Validadores.passwordValida(password)) {
-            tilPassword.setError("Mínimo " + Validadores.PASSWORD_MIN + " caracteres, letra, número y símbolo");
+        java.util.Set<Validadores.RequisitoPassword> faltantes = Validadores.requisitosFaltantes(password);
+        if (!faltantes.isEmpty()) {
+            if (faltantes.contains(Validadores.RequisitoPassword.SIN_ESPACIOS)) {
+                tilPassword.setError(getString(R.string.registro_error_password_espacios));
+            } else {
+                tilPassword.setError("Mínimo " + Validadores.PASSWORD_MIN + " caracteres, letra, número y símbolo");
+            }
             valido = false;
         }
 
@@ -242,7 +247,11 @@ public class CargarUsuarioFragment extends Fragment {
                 setEnProgreso(false);
 
                 if (response.isSuccessful()) {
-                    Toast.makeText(requireContext(), R.string.usuarios_creado_ok, Toast.LENGTH_LONG).show();
+                    new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(R.string.usuarios_titulo)
+                            .setMessage(R.string.usuarios_creado_ok)
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
                     limpiarCampos();
                 } else {
                     manejarErrorServidor(response);

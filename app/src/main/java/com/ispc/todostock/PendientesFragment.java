@@ -79,9 +79,15 @@ public class PendientesFragment extends Fragment implements UsuarioPendienteAdap
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
+                    boolean operadorEsSuperadmin = SesionManager.getInstance(requireContext()).esSuperadmin();
                     List<UsuarioDto> pendientes = new ArrayList<>();
                     for (UsuarioDto u : response.body()) {
                         if (u.esPendiente()) {
+                            // Un administrador estándar no puede modificar ni gestionar cuentas de otros administradores
+                            boolean esCuentaAdmin = u.isSuperuser || u.esAdmin || (u.rol != null && u.rol.nombre != null && u.rol.nombre.toUpperCase().contains("ADMIN"));
+                            if (!operadorEsSuperadmin && esCuentaAdmin) {
+                                continue;
+                            }
                             pendientes.add(u);
                         }
                     }

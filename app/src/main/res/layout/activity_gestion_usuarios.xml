@@ -24,6 +24,17 @@
         app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
+    <!-- Datos de sesion / Rol activo -->
+    <TextView
+        android:id="@+id/tvRolActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="12dp"
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp" />
+
     <!-- Barra de pestañas -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutUsuarios"
