@@ -68,6 +68,7 @@ public class StockItemTest {
         assertFalse(bajo);
     }
 
+
     // ---------- Mapper de la API a la pantalla (TK16) ----------
 
     /** Del JSON que devuelve la API al StockItem: se copian los seis campos. */
