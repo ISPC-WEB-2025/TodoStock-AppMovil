@@ -112,9 +112,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavSucursal.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, SeleccionSucursalActivity.class)));
 
-        // Gestión de Stock
+        // Gestión de Stock (pantalla intermedia / Hub de stock)
         btnNavStock.setOnClickListener(v ->
-                startActivity(new Intent(MenuPrincipalActivity.this, GestionStockActivity.class)));
+                startActivity(new Intent(MenuPrincipalActivity.this, MenuStockActivity.class)));
 
         // Movimientos (pantalla intermedia / Hub de movimientos)
         btnNavMovimientos.setOnClickListener(v ->
