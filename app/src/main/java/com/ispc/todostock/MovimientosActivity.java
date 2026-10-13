@@ -69,6 +69,13 @@ public class MovimientosActivity extends AppCompatActivity {
     private InventarioApiService api;
     private final List<Call<?>> llamadasEnCurso = new ArrayList<>();
 
+    private static final String STATE_ORIGEN_POS = "origen_pos";
+    private static final String STATE_DESTINO_POS = "destino_pos";
+    private static final String STATE_PRODUCTO_POS = "producto_pos";
+    private int origenPosPendiente = 0;
+    private int destinoPosPendiente = 0;
+    private int productoPosPendiente = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,7 +168,24 @@ public class MovimientosActivity extends AppCompatActivity {
             }
         });
 
+        if (savedInstanceState != null) {
+            origenPosPendiente = savedInstanceState.getInt(STATE_ORIGEN_POS, 0);
+            destinoPosPendiente = savedInstanceState.getInt(STATE_DESTINO_POS, 0);
+            productoPosPendiente = savedInstanceState.getInt(STATE_PRODUCTO_POS, 0);
+        }
+
         cargarSucursales();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int origenPos = spinnerOrigen.getSelectedItemPosition();
+        int destinoPos = spinnerDestino.getSelectedItemPosition();
+        int productoPos = spinnerProducto.getSelectedItemPosition();
+        outState.putInt(STATE_ORIGEN_POS, origenPos > 0 ? origenPos : origenPosPendiente);
+        outState.putInt(STATE_DESTINO_POS, destinoPos > 0 ? destinoPos : destinoPosPendiente);
+        outState.putInt(STATE_PRODUCTO_POS, productoPos > 0 ? productoPos : productoPosPendiente);
     }
 
     @Override
@@ -255,6 +279,16 @@ public class MovimientosActivity extends AppCompatActivity {
         }
         spinnerOrigen.setAdapter(crearAdapter(textos));
         spinnerDestino.setAdapter(crearAdapter(textos));
+        if (!lista.isEmpty()) {
+            if (origenPosPendiente > 0 && origenPosPendiente <= lista.size()) {
+                spinnerOrigen.setSelection(origenPosPendiente);
+            }
+            if (destinoPosPendiente > 0 && destinoPosPendiente <= lista.size()) {
+                spinnerDestino.setSelection(destinoPosPendiente);
+            }
+            origenPosPendiente = 0;
+            destinoPosPendiente = 0;
+        }
     }
 
     private void mostrarProductos(List<StockSucursalDto> lista, String guia) {
@@ -267,6 +301,12 @@ public class MovimientosActivity extends AppCompatActivity {
             textos.add(getString(R.string.mov_producto_item, producto.getNombreProducto(), producto.getCantidad()));
         }
         spinnerProducto.setAdapter(crearAdapter(textos));
+        if (!lista.isEmpty()) {
+            if (productoPosPendiente > 0 && productoPosPendiente <= lista.size()) {
+                spinnerProducto.setSelection(productoPosPendiente);
+            }
+            productoPosPendiente = 0;
+        }
     }
 
     // ---------- Envío del traslado ----------

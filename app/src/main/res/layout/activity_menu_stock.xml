@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingHorizontal="32dp"
+        android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
         android:paddingVertical="16dp"
         android:text="Sesión activa: Administrador"
         android:textColor="@color/texto_secundario"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_vertical"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingVertical="16dp">
 
             <!-- Listado de productos -->

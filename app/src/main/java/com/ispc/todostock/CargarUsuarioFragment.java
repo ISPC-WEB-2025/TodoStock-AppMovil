@@ -46,6 +46,9 @@ public class CargarUsuarioFragment extends Fragment {
     private ProgressBar progressBar;
     private MaterialButton btnCrear;
 
+    private static final String STATE_ROL_ID = "rol_id";
+    private int rolIdPendiente = -1;
+
     private final List<RolDto> rolesDisponibles = new ArrayList<>();
     private RolDto rolSeleccionado;
     private UsuarioApiService usuarioApi;
@@ -54,6 +57,10 @@ public class CargarUsuarioFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cargar_usuario, container, false);
+
+        if (savedInstanceState != null) {
+            rolIdPendiente = savedInstanceState.getInt(STATE_ROL_ID, -1);
+        }
 
         tilNombre = view.findViewById(R.id.tilNombre);
         tilEmail = view.findViewById(R.id.tilEmail);
@@ -177,6 +184,15 @@ public class CargarUsuarioFragment extends Fragment {
 
         if (!rolesDisponibles.isEmpty()) {
             rolSeleccionado = rolesDisponibles.get(0);
+            if (rolIdPendiente != -1) {
+                for (RolDto r : rolesDisponibles) {
+                    if (r.id == rolIdPendiente) {
+                        rolSeleccionado = r;
+                        break;
+                    }
+                }
+                rolIdPendiente = -1;
+            }
             actvRol.setText(rolSeleccionado.nombre, false);
         }
 
@@ -184,6 +200,13 @@ public class CargarUsuarioFragment extends Fragment {
             rolSeleccionado = rolesDisponibles.get(position);
             tilRol.setError(null);
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int idGuardar = rolSeleccionado != null ? rolSeleccionado.id : rolIdPendiente;
+        outState.putInt(STATE_ROL_ID, idGuardar);
     }
 
     private void validarYCrear() {
