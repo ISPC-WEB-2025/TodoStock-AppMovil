@@ -37,6 +37,10 @@ public interface UsuarioApiService {
     @PATCH("api/usuarios/{id}/")
     Call<ResponseBody> actualizarUsuario(@Path("id") int id, @Body AprobarUsuarioRequest datos);
 
+    /** TK37: Edita nombre, email, DNI y, opcionalmente, el rol de un usuario (actualización parcial). */
+    @PATCH("api/usuarios/{id}/")
+    Call<ResponseBody> editarUsuario(@Path("id") int id, @Body EditarUsuarioRequest datos);
+
     /** Desactiva o rechaza una cuenta (baja lógica: is_active = false). */
     @DELETE("api/usuarios/{id}/")
     Call<ResponseBody> desactivarUsuario(@Path("id") int id);
