@@ -31,17 +31,19 @@
             android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingBottom="32dp">
 
-            <!-- Caja del video: fondo negro, los controles se muestran dentro -->
+            <!-- Caja del video: tiene el ancho justo del video y va centrada, sin barras negras.
+                 Los controles se muestran dentro y miden lo mismo que el video. -->
             <FrameLayout
                 android:id="@+id/contenedorVideo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="380dp"
-                android:background="@android:color/black">
+                android:layout_gravity="center_horizontal">
 
                 <VideoView
                     android:id="@+id/videoComoUsar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:contentDescription="@string/como_usar_video_descripcion" />
             </FrameLayout>
 
