@@ -18,53 +18,31 @@
         app:titleCentered="true"
         app:titleTextColor="@color/color_fondo" />
 
-    <ScrollView
+    <!-- El video ocupa todo el espacio libre. El VideoView se achica solo para
+         mantener la proporción del video y queda centrado, sin barras negras. -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+        android:paddingTop="16dp">
 
-        <LinearLayout
+        <VideoView
+            android:id="@+id/videoComoUsar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
-            android:paddingBottom="32dp">
+            android:layout_gravity="center"
+            android:contentDescription="@string/como_usar_video_descripcion" />
+    </FrameLayout>
 
-            <!-- Caja del video: tiene el ancho justo del video y va centrada, sin barras negras.
-                 Los controles se muestran dentro y miden lo mismo que el video. -->
-            <FrameLayout
-                android:id="@+id/contenedorVideo"
-                android:layout_width="wrap_content"
-                android:layout_height="380dp"
-                android:layout_gravity="center_horizontal">
-
-                <VideoView
-                    android:id="@+id/videoComoUsar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/como_usar_video_descripcion" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="@string/como_usar_subtitulo"
-                android:textColor="@color/color_texto"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="@string/como_usar_texto"
-                android:textColor="@color/color_texto"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-    </ScrollView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+        android:paddingTop="12dp"
+        android:paddingBottom="24dp"
+        android:text="@string/como_usar_texto"
+        android:textColor="@color/color_texto"
+        android:textSize="14sp" />
 
 </LinearLayout>

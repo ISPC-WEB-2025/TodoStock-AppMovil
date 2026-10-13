@@ -2,7 +2,6 @@ package com.ispc.todostock;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -45,18 +44,17 @@ public class ComoUsarActivity extends AppCompatActivity {
             reproduciendo = savedInstanceState.getBoolean(ESTADO_REPRODUCIENDO, false);
         }
 
-        FrameLayout contenedor = findViewById(R.id.contenedorVideo);
         videoView = findViewById(R.id.videoComoUsar);
-
-        // Los controles se muestran sobre la caja del video.
         controles = new MediaController(this);
-        controles.setAnchorView(contenedor);
         videoView.setMediaController(controles);
 
         videoView.setVideoURI(Uri.parse(
                 "android.resource://" + getPackageName() + "/" + R.raw.como_usar_todostock));
 
         videoView.setOnPreparedListener(mp -> {
+            // VideoView ancla los controles a su contenedor (más ancho que el video) cada vez
+            // que abre el archivo. Acá ya está abierto: se anclan al video para que midan igual.
+            controles.setAnchorView(videoView);
             // seekTo(1) como mínimo para que se vea el primer cuadro antes de reproducir.
             videoView.seekTo(Math.max(posicion, 1));
             if (reproduciendo) {

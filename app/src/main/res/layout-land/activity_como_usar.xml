@@ -26,11 +26,11 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <!-- Caja del video: ancho justo del video, sin barras negras -->
+        <!-- Mitad izquierda: el VideoView se ajusta a la proporción del video y queda centrado -->
         <FrameLayout
-            android:id="@+id/contenedorVideo"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <VideoView
                 android:id="@+id/videoComoUsar"
@@ -46,27 +46,12 @@
             android:layout_marginStart="20dp"
             android:layout_weight="1">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/como_usar_subtitulo"
-                    android:textColor="@color/color_texto"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/como_usar_texto"
-                    android:textColor="@color/color_texto"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                android:text="@string/como_usar_texto"
+                android:textColor="@color/color_texto"
+                android:textSize="14sp" />
         </ScrollView>
     </LinearLayout>
 
