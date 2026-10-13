@@ -150,9 +150,21 @@ El proyecto se rige por los Registros de Decisiones de Arquitectura documentados
 
 ## 🧪 Testing y Accesibilidad
 
-- **Suites Unitarias Android:** `ValidadoresTest.java` (patrón AAA para formularios) y `StockItemTest.java` (para cálculo de stock bajo umbral y DTO mappers).
+- **Suites Unitarias Locales (`app/src/test/`):** `ValidadoresTest.java` (patrón AAA, valores límite y clases de equivalencia), `StockItemTest.java` (stock bajo umbral y mappers) y `LoginViewModelTest.java` (ViewModel aislado con Mockito).
+- **Suites de Integración de Red (`app/src/test/`):** `AuthRepositoryLoginTest.java`, `AuthRepositoryTest.java` y `ParseoRespuestasTest.java` (contratos HTTP 200 y 500 con `MockWebServer`, sin tocar red real).
+- **Suite Instrumentada de UI (`app/src/androidTest/`):** `LoginFlujoTest.java` con **Espresso**, patrón **Screen Object** (`LoginScreen`, `MenuPrincipalScreen`) y auditoría automática `AccessibilityChecks.enable()`.
+- **Configuración de credenciales para tests instrumentados y Postman (`secrets.properties`):**
+  Para ejecutar pruebas que interactúan con el backend sin exponer credenciales en el repositorio:
+  1. Copiar la plantilla `secrets.properties.example` como `secrets.properties` en la raíz del proyecto (archivo ignorado por Git).
+  2. Completar las variables locales:
+     ```properties
+     POSTMAN_API_KEY=tu_api_key_aqui
+     TEST_USER_EMAIL=tu_usuario_de_prueba@test.com
+     TEST_USER_PASSWORD=tu_clave_de_prueba
+     ```
+  3. Sincronizar Gradle (`Sync Now`) y ejecutar `LoginFlujoTest` desde Android Studio en el emulador.
 - **Accesibilidad:** Cumplimiento de WCAG 2.0 (Disposición ONTI 6/2019) y WCAG 2.2, objetivos táctiles de 48×48 dp, compatibilidad TalkBack y contraste > 4.5:1.
-- **Documentación de Pruebas:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Testing-y-Calidad
+- **Documentación de Pruebas:** [`docs/PLAN_DE_PRUEBAS.md`](docs/PLAN_DE_PRUEBAS.md) y [Wiki Testing y Calidad](https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Testing-y-Calidad)
 
 ---
 
