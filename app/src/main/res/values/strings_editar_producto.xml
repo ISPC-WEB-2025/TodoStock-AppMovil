@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editar_producto_titulo">Editar producto</string>
+    <string name="editar_producto_descripcion">Modificá los datos del producto.</string>
+    <string name="editar_producto_boton_guardar">GUARDAR CAMBIOS</string>
+    <string name="editar_producto_guardado">Producto actualizado</string>
+    <string name="editar_producto_error_carga">No se pudo cargar el producto. Intentá de nuevo.</string>
+</resources>

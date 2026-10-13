@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="avatar_producto_1">#4F6429</color>
+    <color name="avatar_producto_2">#6B4A2B</color>
+    <color name="avatar_producto_3">#2F4F6F</color>
+    <color name="avatar_producto_4">#7A2E3A</color>
+    <color name="avatar_producto_5">#2E5E5A</color>
+
+    <!-- Producto dado de baja: tarjeta gris y texto gris oscuro (contraste 5.2 sobre el fondo) -->
+    <color name="fondo_producto_inactivo">#DAD6D2</color>
+    <color name="texto_producto_inactivo">#59534E</color>
+</resources>

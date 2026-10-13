@@ -52,6 +52,9 @@
         <activity
             android:name=".CargaProductoActivity"
             android:exported="false" />
+        <activity
+            android:name=".ProductosActivity"
+            android:exported="false" />
 
         <activity
             android:name=".RegistroActivity"

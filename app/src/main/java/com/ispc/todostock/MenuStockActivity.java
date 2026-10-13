@@ -12,10 +12,12 @@ import com.google.android.material.button.MaterialButton;
 import com.ispc.todostock.sesion.SesionManager;
 
 /**
- * Pantalla intermedia (Hub) de Gestión de Stock.
+ * Pantalla intermedia (Hub) de Gestión de Productos.
  * Centraliza la navegación hacia:
- * 1. Listado de productos (GestionStockActivity)
+ * 1. Listado de productos, con edición y baja (ProductosActivity, TK39)
  * 2. Cargar nuevo producto (CargaProductoActivity, exclusivo para Administrador)
+ *
+ * El stock por sucursal se consulta desde "Seleccionar sucursal".
  */
 public class MenuStockActivity extends AppCompatActivity {
 
@@ -64,11 +66,9 @@ public class MenuStockActivity extends AppCompatActivity {
     }
 
     private void configurarNavegacion() {
-        // Listado de productos
         btnStockConsultar.setOnClickListener(v ->
-                startActivity(new Intent(MenuStockActivity.this, GestionStockActivity.class)));
+                startActivity(new Intent(MenuStockActivity.this, ProductosActivity.class)));
 
-        // Cargar nuevo producto (solo Administrador)
         btnStockCargar.setOnClickListener(v ->
                 startActivity(new Intent(MenuStockActivity.this, CargaProductoActivity.class)));
     }
