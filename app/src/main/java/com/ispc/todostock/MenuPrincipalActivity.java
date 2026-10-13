@@ -33,6 +33,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
     private MaterialButton btnNavStock;
     private MaterialButton btnNavMovimientos;
     private MaterialButton btnNavContacto;
+    private MaterialButton btnNavAyuda;
     private MaterialButton btnCerrarSesion;
     private MaterialButton btnNavPerfil;
 
@@ -62,6 +63,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         btnNavStock = findViewById(R.id.btnNavStock);
         btnNavMovimientos = findViewById(R.id.btnNavMovimientos);
         btnNavContacto = findViewById(R.id.btnNavContacto);
+        btnNavAyuda = findViewById(R.id.btnNavAyuda);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         btnNavUsuarios = findViewById(R.id.btnNavUsuarios);
         btnNavPerfil = findViewById(R.id.btnNavPerfil);
@@ -123,6 +125,9 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         // Contacto y Soporte
         btnNavContacto.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, ContactoActivity.class)));
+        // Ayuda (visible para todos los roles)
+        btnNavAyuda.setOnClickListener(v ->
+                startActivity(new Intent(MenuPrincipalActivity.this, AyudaActivity.class)));
         // Ver perfil
         btnNavPerfil.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, PerfilActivity.class)));
