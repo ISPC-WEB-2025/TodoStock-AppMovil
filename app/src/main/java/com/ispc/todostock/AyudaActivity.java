@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 /**
- * TK40 - Pantalla Ayuda.
+ * Pantalla Ayuda.
  *
  * Lista de opciones, parecida a la ayuda de WhatsApp:
  * - Cómo usar TodoStock (video): se conecta en la parte 3.

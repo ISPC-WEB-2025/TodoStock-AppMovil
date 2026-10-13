@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 /**
- * TK40 - Información de la app.
+ * Información de la app.
  *
  * Muestra el logo, el nombre, la versión, un slogan y el pie "ToDo Stock 2026".
  * La versión no está escrita a mano: se lee de la app instalada (versionName del

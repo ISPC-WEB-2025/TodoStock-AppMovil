@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TK40: textos de la sección Ayuda (lista, cómo usar e información de la app) -->
+<!-- textos de la sección Ayuda (lista, cómo usar e información de la app) -->
 <resources>
     <string name="menu_btn_ayuda">Ayuda</string>
     <string name="ayuda_titulo">Ayuda</string>

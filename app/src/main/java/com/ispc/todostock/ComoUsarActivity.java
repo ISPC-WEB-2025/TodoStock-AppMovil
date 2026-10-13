@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 /**
- * TK40 - Cómo usar TodoStock.
+ * Cómo usar TodoStock.
  *
  * Reproduce el video de res/raw/como_usar_todostock.mp4 con los controles estándar
  * (reproducir, pausa y barra de avance). Al rotar el celular la pantalla se recrea

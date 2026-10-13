@@ -94,7 +94,7 @@
                     android:layout_marginBottom="16dp"
                     android:text="@string/menu_btn_contacto" />
 
-                <!-- TK40: Ayuda (cómo usar la app, términos e información) -->
+                <!-- Ayuda (cómo usar la app, términos e información) -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNavAyuda"
                     style="@style/BotonMenu"

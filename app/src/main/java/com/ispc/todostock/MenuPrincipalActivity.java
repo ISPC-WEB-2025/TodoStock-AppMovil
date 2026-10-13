@@ -125,7 +125,7 @@ public class MenuPrincipalActivity extends AppCompatActivity {
         // Contacto y Soporte
         btnNavContacto.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, ContactoActivity.class)));
-        // TK40: Ayuda (visible para todos los roles)
+        // Ayuda (visible para todos los roles)
         btnNavAyuda.setOnClickListener(v ->
                 startActivity(new Intent(MenuPrincipalActivity.this, AyudaActivity.class)));
         // Ver perfil
