@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- filas de la pantalla Ayuda (ícono, título, subtítulo y flecha). -->
+<resources>
+    <style name="FilaAyuda">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">64dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
+    <style name="FilaAyudaIcono">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:background">@drawable/bg_icono_ayuda</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="FilaAyudaTextos">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">14dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="FilaAyudaTitulo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_texto</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="FilaAyudaSubtitulo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/texto_tenue</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="FilaAyudaFlecha">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:src">@drawable/ic_ayuda_flecha</item>
+    </style>
+
+    <style name="FilaAyudaSeparador">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/gris_borde_input</item>
+    </style>
+</resources>

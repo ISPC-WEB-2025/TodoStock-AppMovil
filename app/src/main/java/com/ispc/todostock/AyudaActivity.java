@@ -10,8 +10,9 @@ import androidx.appcompat.widget.Toolbar;
  * Pantalla Ayuda.
  *
  * Lista de opciones, parecida a la ayuda de WhatsApp:
- * - Cómo usar TodoStock (video): se conecta en la parte 3.
- * - Términos y política de privacidad: abre TerminosActivity (ya existe).
+ * - Cómo usar TodoStock: abre ComoUsarActivity (video).
+ * - Términos y política de privacidad: abre TerminosActivity.
+ * - Información de la app: abre InfoAppActivity.
  */
 public class AyudaActivity extends AppCompatActivity {
 
@@ -23,14 +24,13 @@ public class AyudaActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarAyuda);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        findViewById(R.id.filaTerminos).setOnClickListener(v ->
-                startActivity(new Intent(this, TerminosActivity.class)));
+        abrirAlTocar(R.id.filaVideo, ComoUsarActivity.class);
+        abrirAlTocar(R.id.filaTerminos, TerminosActivity.class);
+        abrirAlTocar(R.id.filaInfo, InfoAppActivity.class);
+    }
 
-        // Cómo usar TodoStock (video).
-        findViewById(R.id.filaVideo).setOnClickListener(v ->
-                startActivity(new Intent(this, ComoUsarActivity.class)));
-        // Información de la app.
-        findViewById(R.id.filaInfo).setOnClickListener(v ->
-                startActivity(new Intent(this, InfoAppActivity.class)));
+    private void abrirAlTocar(int idFila, Class<?> pantalla) {
+        findViewById(idFila).setOnClickListener(v ->
+                startActivity(new Intent(this, pantalla)));
     }
 }

@@ -48,173 +48,83 @@
                     <!-- Cómo usar TodoStock (video) -->
                     <LinearLayout
                         android:id="@+id/filaVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="64dp"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp">
+                        style="@style/FilaAyuda">
 
                         <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icono_ayuda"
+                            style="@style/FilaAyudaIcono"
                             android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:padding="8dp"
                             android:src="@drawable/ic_ayuda_video" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                        <LinearLayout style="@style/FilaAyudaTextos">
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_video"
-                                android:textColor="@color/color_texto"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_video" />
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_video_sub"
-                                android:textColor="@color/texto_tenue"
-                                android:textSize="13sp" />
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_video_sub" />
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_ayuda_flecha" />
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/gris_borde_input" />
+                    <View style="@style/FilaAyudaSeparador" />
 
                     <!-- Términos y política de privacidad -->
                     <LinearLayout
                         android:id="@+id/filaTerminos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="64dp"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp">
+                        style="@style/FilaAyuda">
 
                         <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icono_ayuda"
+                            style="@style/FilaAyudaIcono"
                             android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:padding="8dp"
                             android:src="@drawable/ic_ayuda_documento" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                        <LinearLayout style="@style/FilaAyudaTextos">
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_terminos"
-                                android:textColor="@color/color_texto"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_terminos" />
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_terminos_sub"
-                                android:textColor="@color/texto_tenue"
-                                android:textSize="13sp" />
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_terminos_sub" />
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_ayuda_flecha" />
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/gris_borde_input" />
+                    <View style="@style/FilaAyudaSeparador" />
 
                     <!-- Información de la app -->
                     <LinearLayout
                         android:id="@+id/filaInfo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:gravity="center_vertical"
-                        android:minHeight="64dp"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="14dp"
-                        android:paddingVertical="8dp">
+                        style="@style/FilaAyuda">
 
                         <ImageView
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:background="@drawable/bg_icono_ayuda"
+                            style="@style/FilaAyudaIcono"
                             android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:padding="8dp"
                             android:src="@drawable/ic_ayuda_info" />
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                        <LinearLayout style="@style/FilaAyudaTextos">
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_info"
-                                android:textColor="@color/color_texto"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_info" />
 
                             <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/ayuda_fila_info_sub"
-                                android:textColor="@color/texto_tenue"
-                                android:textSize="13sp" />
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_info_sub" />
                         </LinearLayout>
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:contentDescription="@null"
-                            android:importantForAccessibility="no"
-                            android:src="@drawable/ic_ayuda_flecha" />
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
                     </LinearLayout>
 
                 </LinearLayout>
