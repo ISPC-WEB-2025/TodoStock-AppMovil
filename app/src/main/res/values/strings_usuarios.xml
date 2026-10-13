@@ -6,9 +6,20 @@
     <string name="usuarios_tab_cargar">Cargar usuario</string>
     <string name="usuarios_tab_pendientes">Pendientes</string>
 
-    <!-- Pestaña 1: Placeholder para TK37 de Pedro -->
-    <string name="usuarios_activos_placeholder_titulo">Catálogo de usuarios</string>
-    <string name="usuarios_activos_placeholder_desc">Módulo en desarrollo por Pedro Gonzalez (TK37).\nAquí se listarán, editarán y darán de baja los usuarios activos del sistema.</string>
+    <!-- Pestaña 1: Usuarios activos (TK37) -->
+    <string name="usuarios_activos_desc">Usuarios habilitados en el sistema. Puede editar sus datos o darlos de baja.</string>
+    <string name="usuarios_activos_vacio">No hay usuarios para mostrar.</string>
+    <string name="usuarios_sin_nombre">Sin nombre</string>
+    <string name="usuarios_item_dni">DNI: %1$s</string>
+    <string name="usuarios_btn_editar">Editar</string>
+    <string name="usuarios_btn_baja">Dar de baja</string>
+    <string name="usuarios_desc_editar">Editar a %1$s</string>
+    <string name="usuarios_desc_baja">Dar de baja a %1$s</string>
+    <string name="usuarios_rol_empleado">Empleado (Vendedor)</string>
+    <string name="usuarios_rol_administrador">Administrador</string>
+    <string name="usuarios_error_nombre">Mínimo %1$d caracteres</string>
+    <string name="usuarios_error_email">Formato de correo inválido</string>
+    <string name="usuarios_error_dni">Debe tener 7 u 8 números</string>
 
     <!-- Pestaña 2: Cargar usuario (TK109) -->
     <string name="usuarios_cargar_desc">Complete los datos para dar de alta un usuario directamente en el sistema.</string>
@@ -33,10 +44,19 @@
     <string name="usuarios_rechazar_mensaje">¿Está seguro de que desea rechazar el registro de %1$s? El usuario no podrá iniciar sesión.</string>
     <string name="usuarios_btn_confirmar">Confirmar</string>
     <string name="usuarios_btn_cancelar">Cancelar</string>
+    <string name="usuarios_editar_titulo">Editar usuario</string>
+    <string name="usuarios_btn_guardar">Guardar</string>
+    <string name="usuarios_baja_titulo">Dar de baja usuario</string>
+    <string name="usuarios_baja_mensaje">¿Está seguro de que desea dar de baja a %1$s? El usuario no podrá iniciar sesión.</string>
 
     <!-- Feedback -->
     <string name="usuarios_creado_ok">Usuario creado y habilitado exitosamente.</string>
     <string name="usuarios_aprobado_ok">Usuario aprobado exitosamente.</string>
     <string name="usuarios_rechazado_ok">Solicitud rechazada.</string>
     <string name="usuarios_error_red">Error de comunicación con el servidor.</string>
+    <string name="usuarios_editado_ok">Usuario actualizado.</string>
+    <string name="usuarios_baja_ok">Usuario dado de baja.</string>
+    <string name="usuarios_error_cargar">No se pudo cargar la lista de usuarios (%1$d).</string>
+    <string name="usuarios_error_editar">No se pudieron guardar los cambios (%1$d).</string>
+    <string name="usuarios_error_baja">No se pudo dar de baja al usuario (%1$d).</string>
 </resources>
