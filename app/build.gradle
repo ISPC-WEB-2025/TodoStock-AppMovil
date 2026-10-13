@@ -16,6 +16,16 @@ if (localPropsFile.exists()) {
 }
 def apiBaseUrlDebug = localProps.getProperty('api.baseUrl', apiBaseUrlDesplegado)
 
+def secretsProps = new Properties()
+def secretsPropsFile = rootProject.file('secrets.properties')
+if (!secretsPropsFile.exists()) {
+    secretsPropsFile = rootProject.file('secret.properties')
+}
+if (secretsPropsFile.exists()) {
+    secretsPropsFile.withInputStream { secretsProps.load(it) }
+}
+def postmanApiKey = secretsProps.getProperty('POSTMAN_API_KEY', '')
+
 android {
     namespace 'com.ispc.todostock'
     compileSdk 33
@@ -26,6 +36,8 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "POSTMAN_API_KEY", "\"${postmanApiKey}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

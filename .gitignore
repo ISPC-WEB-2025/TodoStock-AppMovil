@@ -4,6 +4,9 @@ Captures/
 *.jks
 *.keystore
 
+# SECRETS
+secrets.properties
+
 # Salidas de compilación y caches de Gradle
 .gradle/
 build/
