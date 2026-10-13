@@ -25,6 +25,8 @@ if (secretsPropsFile.exists()) {
     secretsPropsFile.withInputStream { secretsProps.load(it) }
 }
 def postmanApiKey = secretsProps.getProperty('POSTMAN_API_KEY', '')
+def testUserEmail = secretsProps.getProperty('TEST_USER_EMAIL', '')
+def testUserPassword = secretsProps.getProperty('TEST_USER_PASSWORD', '')
 
 android {
     namespace 'com.ispc.todostock'
@@ -38,6 +40,8 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "POSTMAN_API_KEY", "\"${postmanApiKey}\""
+        buildConfigField "String", "TEST_USER_EMAIL", "\"${testUserEmail}\""
+        buildConfigField "String", "TEST_USER_PASSWORD", "\"${testUserPassword}\""
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
