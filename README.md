@@ -164,7 +164,11 @@ El proyecto se rige por los Registros de Decisiones de Arquitectura documentados
      ```
   3. Sincronizar Gradle (`Sync Now`) y ejecutar `LoginFlujoTest` desde Android Studio en el emulador.
 - **Accesibilidad:** Cumplimiento de WCAG 2.0 (Disposición ONTI 6/2019) y WCAG 2.2, objetivos táctiles de 48×48 dp, compatibilidad TalkBack y contraste > 4.5:1.
-- **Documentación de Pruebas:** [`docs/PLAN_DE_PRUEBAS.md`](docs/PLAN_DE_PRUEBAS.md) y [Wiki Testing y Calidad](https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Testing-y-Calidad)
+- **Documentación y Reportes de Evidencia:**
+  - Plan Integral de Pruebas: [`docs/PLAN_DE_PRUEBAS.md`](docs/PLAN_DE_PRUEBAS.md)
+  - Evidencia Espresso UI y Accesibilidad (`TK70` / `TK76`): [`docs/testing/EVIDENCIA_TK70_ESPRESSO_LOGIN.md`](docs/testing/EVIDENCIA_TK70_ESPRESSO_LOGIN.md)
+  - Evidencia API Postman (`TK68`): [`docs/testing/EVIDENCIA_TK68_POSTMAN_PRODUCTOS.md`](docs/testing/EVIDENCIA_TK68_POSTMAN_PRODUCTOS.md)
+  - Wiki del Proyecto: [Testing y Calidad](https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/Testing-y-Calidad)
 
 ---
 
