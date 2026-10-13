@@ -3,7 +3,7 @@
 <resources>
     <string name="menu_btn_usuarios">Gestión de usuarios</string>
     <string name="menu_btn_sucursal">Seleccionar sucursal</string>
-    <string name="menu_btn_stock">Gestión de stock</string>
+    <string name="menu_btn_stock">Gestión de productos</string>
     <string name="menu_btn_movimientos">Movimientos</string>
     <string name="menu_btn_perfil">Mi perfil</string>
     <string name="menu_btn_contacto">Contacto y soporte</string>

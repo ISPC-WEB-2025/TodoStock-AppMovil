@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,10 +33,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Alta de un producto contra la API (TK23). Solo Administrador.
+ * Alta (TK23) y edición (TK39) de un producto contra la API. Solo Administrador.
+ * Si el Intent trae EXTRA_ID_PRODUCTO, la pantalla funciona en modo edición.
  * Responsable: Virginia Garcia
  */
 public class CargaProductoActivity extends AppCompatActivity {
+
+    public static final String EXTRA_ID_PRODUCTO = "id_producto";
 
     private EditText etNombreProducto, etDescripcion, etPrecio, etCodigo;
     private TextInputLayout tilNombreProducto, tilDescripcion, tilPrecio, tilCodigo, tilCategoria;
@@ -47,8 +51,19 @@ public class CargaProductoActivity extends AppCompatActivity {
     private boolean categoriasCargadas = false;
     private boolean cargandoCategorias = false;
 
+    private static final String STATE_CATEGORIA_ID = "categoria_id";
+    private static final String STATE_CAMPOS_RELLENADOS = "campos_rellenados";
+    private int categoriaIdPendiente = -1;
+
+    // Modo edición (TK39)
+    private int idProductoEdicion = -1;
+    private boolean modoEdicion = false;
+    private boolean camposRellenados = false;
+
     private Call<List<CategoriaDto>> llamadaCategorias;
     private Call<ProductoDto> llamadaAlta;
+    private Call<ProductoDto> llamadaProducto;
+    private Call<ProductoDto> llamadaEdicion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +81,20 @@ public class CargaProductoActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_carga_producto);
 
+        if (savedInstanceState != null) {
+            categoriaIdPendiente = savedInstanceState.getInt(STATE_CATEGORIA_ID, -1);
+            camposRellenados = savedInstanceState.getBoolean(STATE_CAMPOS_RELLENADOS, false);
+        }
+
+        idProductoEdicion = getIntent().getIntExtra(EXTRA_ID_PRODUCTO, -1);
+        modoEdicion = idProductoEdicion != -1;
+
         Toolbar toolbar = findViewById(R.id.toolbarMenu);
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(v -> finish());
+            if (modoEdicion) {
+                toolbar.setTitle(R.string.editar_producto_titulo);
+            }
         }
 
         etNombreProducto = findViewById(R.id.etNombreProducto);
@@ -86,8 +112,27 @@ public class CargaProductoActivity extends AppCompatActivity {
         btnGuardar = findViewById(R.id.btnGuardar);
         btnGuardar.setOnClickListener(v -> validarYGuardar());
 
+        if (modoEdicion) {
+            TextView tvDescripcionPantalla = findViewById(R.id.tvDescripcionPantalla);
+            tvDescripcionPantalla.setText(R.string.editar_producto_descripcion);
+            btnGuardar.setText(R.string.editar_producto_boton_guardar);
+            btnGuardar.setEnabled(false); // se habilita cuando llegan los datos del producto
+        }
+
         configurarDesplegableCategorias();
         cargarCategorias();
+
+        if (modoEdicion) {
+            cargarProductoAEditar();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int idGuardar = categoriaElegida != null ? categoriaElegida.getIdCategoria() : categoriaIdPendiente;
+        outState.putInt(STATE_CATEGORIA_ID, idGuardar);
+        outState.putBoolean(STATE_CAMPOS_RELLENADOS, camposRellenados);
     }
 
     // ---------- Categorías ----------
@@ -127,6 +172,7 @@ public class CargaProductoActivity extends AppCompatActivity {
                     adaptadorCategorias.addAll(response.body());
                     categoriasCargadas = true;
                     tilCategoria.setError(null);
+                    aplicarCategoriaPendiente();
                 } else {
                     tilCategoria.setError(getString(R.string.carga_producto_error_categorias));
                 }
@@ -141,6 +187,64 @@ public class CargaProductoActivity extends AppCompatActivity {
                 tilCategoria.setError(getString(R.string.carga_producto_error_categorias));
             }
         });
+    }
+
+    private void aplicarCategoriaPendiente() {
+        if (!categoriasCargadas || categoriaIdPendiente == -1) {
+            return;
+        }
+        for (int i = 0; i < adaptadorCategorias.getCount(); i++) {
+            CategoriaDto cat = adaptadorCategorias.getItem(i);
+            if (cat != null && cat.getIdCategoria() == categoriaIdPendiente) {
+                categoriaElegida = cat;
+                actvCategoria.setText(cat.toString(), false);
+                break;
+            }
+        }
+        categoriaIdPendiente = -1;
+    }
+
+    // ---------- Modo edición: traer el producto ----------
+
+    private void cargarProductoAEditar() {
+        InventarioApiService api = ApiClient.create(InventarioApiService.class);
+        llamadaProducto = api.getProducto(idProductoEdicion);
+        llamadaProducto.enqueue(new Callback<ProductoDto>() {
+            @Override
+            public void onResponse(Call<ProductoDto> call, Response<ProductoDto> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    rellenarFormulario(response.body());
+                } else {
+                    cerrarPorErrorDeCarga();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductoDto> call, Throwable t) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                cerrarPorErrorDeCarga();
+            }
+        });
+    }
+
+    private void rellenarFormulario(ProductoDto producto) {
+        if (!camposRellenados) {
+            etNombreProducto.setText(producto.getNombre());
+            etDescripcion.setText(producto.getDescripcion());
+            etPrecio.setText(producto.getPrecioVenta());
+            etCodigo.setText(producto.getCodigo());
+            categoriaIdPendiente = producto.getIdCategoria();
+            camposRellenados = true;
+        }
+        aplicarCategoriaPendiente();
+        btnGuardar.setEnabled(true);
+    }
+
+    private void cerrarPorErrorDeCarga() {
+        Toast.makeText(this, R.string.editar_producto_error_carga, Toast.LENGTH_LONG).show();
+        finish();
     }
 
     // ---------- Validación y envío ----------
@@ -183,7 +287,11 @@ public class CargaProductoActivity extends AppCompatActivity {
             return;
         }
 
-        enviarAlta(nombre, descripcion, precio, codigo);
+        if (modoEdicion) {
+            enviarEdicion(nombre, descripcion, precio, codigo);
+        } else {
+            enviarAlta(nombre, descripcion, precio, codigo);
+        }
     }
 
     private boolean esPrecioValido(String precio) {
@@ -195,7 +303,7 @@ public class CargaProductoActivity extends AppCompatActivity {
     }
 
     private void enviarAlta(String nombre, String descripcion, String precio, String codigo) {
-        btnGuardar.setEnabled(false); // evita enviar dos veces el mismo alta
+        btnGuardar.setEnabled(false);
 
         ProductoRequest datos = ProductoRequest.nuevo(
                 nombre, descripcion, codigo, precio, categoriaElegida.getIdCategoria());
@@ -211,6 +319,40 @@ public class CargaProductoActivity extends AppCompatActivity {
                             R.string.carga_producto_guardado, Toast.LENGTH_SHORT).show();
                     limpiarFormulario();
                 } else {
+                    manejarError(response.code(), response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductoDto> call, Throwable t) {
+                if (call.isCanceled()) {
+                    return;
+                }
+                btnGuardar.setEnabled(true);
+                Toast.makeText(CargaProductoActivity.this,
+                        R.string.carga_producto_error_red, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /** TK39: guarda los cambios del producto con PATCH y vuelve al listado. */
+    private void enviarEdicion(String nombre, String descripcion, String precio, String codigo) {
+        btnGuardar.setEnabled(false);
+
+        ProductoRequest datos = ProductoRequest.edicion(
+                nombre, descripcion, codigo, precio, categoriaElegida.getIdCategoria());
+
+        InventarioApiService api = ApiClient.create(InventarioApiService.class);
+        llamadaEdicion = api.actualizarProducto(idProductoEdicion, datos);
+        llamadaEdicion.enqueue(new Callback<ProductoDto>() {
+            @Override
+            public void onResponse(Call<ProductoDto> call, Response<ProductoDto> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(CargaProductoActivity.this,
+                            R.string.editar_producto_guardado, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    btnGuardar.setEnabled(true);
                     manejarError(response.code(), response.errorBody());
                 }
             }
@@ -250,11 +392,6 @@ public class CargaProductoActivity extends AppCompatActivity {
                 Toast.LENGTH_LONG).show();
     }
 
-    /**
-     * El backend responde algo como:
-     * {"error": "Datos inválidos", "detalle": {"codigo": ["Ya existe un producto con el código ..."]}}
-     * Devuelve true si pudo mostrar al menos un mensaje debajo de un campo.
-     */
     private boolean mostrarErroresDeCampos(ResponseBody cuerpo) {
         if (cuerpo == null) {
             return false;
@@ -330,7 +467,12 @@ public class CargaProductoActivity extends AppCompatActivity {
         }
         if (llamadaAlta != null) {
             llamadaAlta.cancel();
-
+        }
+        if (llamadaProducto != null) {
+            llamadaProducto.cancel();
+        }
+        if (llamadaEdicion != null) {
+            llamadaEdicion.cancel();
         }
     }
 }
