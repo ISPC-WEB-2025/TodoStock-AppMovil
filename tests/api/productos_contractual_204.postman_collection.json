@@ -1,0 +1,362 @@
+{
+  "info": {
+    "_postman_id": "d82b4e03-tk68-contractual-todostockprod",
+    "name": "TK68 - Productos API (Contrato Estricto 204 - Detección Bug #282)",
+    "description": "Suite de verificación contractual estricta según US09. Exige que DELETE /api/inventario/productos/{id}/ retorne HTTP 204 No Content. Sirve como prueba automatizada de detección y reverificación del Bug #282 del backend.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "producto_id",
+      "value": ""
+    },
+    {
+      "key": "codigo_nuevo",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. GET - Listar Catálogo de Productos",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Content-Type es application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Retorna lista no vacía de productos\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an(\"array\");",
+              "    pm.expect(jsonData.length).to.be.above(0);",
+              "});",
+              "",
+              "pm.test(\"Cada producto contiene id_art, nombre, codigo y precio_venta\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    var primerProd = jsonData[0];",
+              "    pm.expect(primerProd).to.have.property(\"id_art\");",
+              "    pm.expect(primerProd).to.have.property(\"nombre\");",
+              "    pm.expect(primerProd).to.have.property(\"codigo\");",
+              "    pm.expect(primerProd).to.have.property(\"precio_venta\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", ""]
+        }
+      }
+    },
+    {
+      "name": "2. POST - Crear Producto Nuevo (Flujo Encadenado)",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var randomCode = 'TK68-' + Math.floor(Math.random() * 90000 + 10000);",
+              "pm.collectionVariables.set('codigo_nuevo', randomCode);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 201 Created\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Content-Type es application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Guarda producto_id para requests siguientes\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.id_art).to.be.a(\"number\");",
+              "    pm.collectionVariables.set(\"producto_id\", jsonData.id_art);",
+              "});",
+              "",
+              "pm.test(\"Nombre y código coinciden con lo enviado\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.nombre).to.eql(\"Producto Test Automatizado TK68\");",
+              "    pm.expect(jsonData.codigo).to.eql(pm.collectionVariables.get(\"codigo_nuevo\"));",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Producto Test Automatizado TK68\",\n    \"descripcion\": \"Creado por colección automatizada de Postman TK68\",\n    \"codigo\": \"{{codigo_nuevo}}\",\n    \"precio_venta\": \"4500.00\",\n    \"stock_min_global\": 10,\n    \"id_cat\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", ""]
+        }
+      }
+    },
+    {
+      "name": "3. GET - Consultar Producto por ID Creado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"ID consultado coincide con el id_art creado\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.id_art).to.eql(pm.collectionVariables.get(\"producto_id\"));",
+              "});",
+              "",
+              "pm.test(\"Verifica integridad de datos del producto\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.codigo).to.eql(pm.collectionVariables.get(\"codigo_nuevo\"));",
+              "    pm.expect(jsonData.precio_venta).to.eql(\"4500.00\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/{{producto_id}}/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", "{{producto_id}}", ""]
+        }
+      }
+    },
+    {
+      "name": "4. PUT - Modificar Producto Creado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 200 OK\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Precio y nombre actualizados persisten\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.nombre).to.eql(\"Producto Test Modificado TK68\");",
+              "    pm.expect(jsonData.precio_venta).to.eql(\"6200.00\");",
+              "    pm.expect(jsonData.stock_min_global).to.eql(15);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Producto Test Modificado TK68\",\n    \"descripcion\": \"Descripción actualizada con PUT vía Postman\",\n    \"codigo\": \"{{codigo_nuevo}}\",\n    \"precio_venta\": \"6200.00\",\n    \"stock_min_global\": 15,\n    \"id_cat\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/{{producto_id}}/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", "{{producto_id}}", ""]
+        }
+      }
+    },
+    {
+      "name": "5. DELETE - Eliminar Producto Creado (Contrato Estricto)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 204 No Content (Contrato US09)\", function () {",
+              "    pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/{{producto_id}}/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", "{{producto_id}}", ""]
+        }
+      }
+    },
+    {
+      "name": "6. NEGATIVO: POST con Código Duplicado",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 400 Bad Request\", function () {",
+              "    pm.response.to.have.status(400);",
+              "});",
+              "",
+              "pm.test(\"El servidor rechaza el código repetido\", function () {",
+              "    var responseText = pm.response.text();",
+              "    pm.expect(responseText).to.be.a(\"string\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"nombre\": \"Producto Código Duplicado\",\n    \"descripcion\": \"Debe fallar porque ALU-45 ya existe\",\n    \"codigo\": \"ALU-45\",\n    \"precio_venta\": \"1000.00\",\n    \"stock_min_global\": 1,\n    \"id_cat\": 1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", ""]
+        }
+      }
+    },
+    {
+      "name": "7. NEGATIVO: GET sin Token (401)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 401 Unauthorized\", function () {",
+              "    pm.response.to.have.status(401);",
+              "});",
+              "",
+              "pm.test(\"Detalle indica credenciales no provistas\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.detail).to.be.a(\"string\");",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", ""]
+        }
+      }
+    },
+    {
+      "name": "8. NEGATIVO: GET Producto Inexistente (404)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code es 404 Not Found\", function () {",
+              "    pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/inventario/productos/99999999/",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "inventario", "productos", "99999999", ""]
+        }
+      }
+    }
+  ]
+}
