@@ -6,6 +6,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -49,4 +50,24 @@ public interface InventarioApiService {
      */
     @POST("api/inventario/productos/")
     Call<ProductoDto> crearProducto(@Body ProductoRequest datos);
+
+    /** TK39: catálogo completo de productos (lista simple, sin paginación). */
+    @GET("api/inventario/productos/")
+    Call<List<ProductoDto>> getProductos();
+
+    /** TK39: un producto, para precargar el formulario de edición. */
+    @GET("api/inventario/productos/{id}/")
+    Call<ProductoDto> getProducto(@Path("id") int idProducto);
+
+    /**
+     * TK39: edición parcial de un producto (solo Administrador). Solo cambia los campos enviados.
+     *   200 -> producto actualizado
+     *   400 -> datos inválidos, por ejemplo código que ya pertenece a otro producto
+     *   401 -> sesión vencida o sin token
+     *   403 -> el usuario no es Administrador
+     *   404 -> el producto ya no existe
+     */
+    @PATCH("api/inventario/productos/{id}/")
+    Call<ProductoDto> actualizarProducto(@Path("id") int idProducto,
+                                         @Body ProductoRequest datos);
 }
