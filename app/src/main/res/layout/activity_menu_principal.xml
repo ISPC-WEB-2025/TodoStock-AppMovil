@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingHorizontal="32dp"
+        android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
         android:paddingVertical="16dp"
         android:text="Sesión activa: Administrador"
         android:textColor="@color/texto_secundario"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingTop="8dp"
             android:paddingBottom="16dp">
 
@@ -112,21 +112,21 @@
                 app:backgroundTint="@color/boton_presionado"
                 app:cornerRadius="25dp" />
 
+            <!-- Darme de baja -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDarmeDeBaja"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:text="@string/baja_boton"
+                android:textAllCaps="false"
+                android:textColor="@color/color_errores"
+                android:textSize="14sp" />
+
         </LinearLayout>
     </ScrollView>
-
-    <!-- Darme de baja -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnDarmeDeBaja"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:minHeight="48dp"
-        android:text="@string/baja_boton"
-        android:textAllCaps="false"
-        android:textColor="@color/color_errores"
-        android:textSize="14sp" />
 
 </LinearLayout>

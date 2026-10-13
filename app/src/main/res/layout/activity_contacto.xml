@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="32dp"
+                android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
                 android:paddingVertical="16dp"
                 android:gravity="center"
                 android:text="@string/contacto_descripcion"
@@ -51,7 +51,7 @@
                 style="@style/CampoRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
                 android:layout_marginBottom="12dp"
                 android:hint="@string/contacto_hint_nombre">
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +68,7 @@
                 style="@style/CampoRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
                 android:layout_marginBottom="12dp"
                 android:hint="@string/contacto_hint_email">
                 <com.google.android.material.textfield.TextInputEditText
@@ -85,7 +85,7 @@
                 style="@style/CampoRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
                 android:layout_marginBottom="12dp"
                 android:hint="@string/contacto_hint_asunto">
                 <com.google.android.material.textfield.TextInputEditText
@@ -102,7 +102,7 @@
                 style="@style/CampoRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
                 android:layout_marginBottom="24dp"
                 android:hint="@string/contacto_hint_mensaje">
                 <com.google.android.material.textfield.TextInputEditText
@@ -120,7 +120,7 @@
                 android:id="@+id/btnEnviar"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginHorizontal="32dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
                 android:text="@string/contacto_boton_enviar"
                 android:textColor="@color/white"
                 android:textSize="16sp"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BotonMenu" parent="Widget.Material3.Button.ElevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/color_texto</item>
+        <item name="android:textSize">14sp</item>
+        <item name="backgroundTint">@color/gris_fondo_input</item>
+        <item name="cornerRadius">12dp</item>
+    </style>
+</resources>

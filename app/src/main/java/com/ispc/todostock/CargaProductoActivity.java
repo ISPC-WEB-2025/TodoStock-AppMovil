@@ -47,6 +47,9 @@ public class CargaProductoActivity extends AppCompatActivity {
     private boolean categoriasCargadas = false;
     private boolean cargandoCategorias = false;
 
+    private static final String STATE_CATEGORIA_ID = "categoria_id";
+    private int categoriaIdPendiente = -1;
+
     private Call<List<CategoriaDto>> llamadaCategorias;
     private Call<ProductoDto> llamadaAlta;
 
@@ -65,6 +68,10 @@ public class CargaProductoActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_carga_producto);
+
+        if (savedInstanceState != null) {
+            categoriaIdPendiente = savedInstanceState.getInt(STATE_CATEGORIA_ID, -1);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbarMenu);
         if (toolbar != null) {
@@ -88,6 +95,13 @@ public class CargaProductoActivity extends AppCompatActivity {
 
         configurarDesplegableCategorias();
         cargarCategorias();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int idGuardar = categoriaElegida != null ? categoriaElegida.getIdCategoria() : categoriaIdPendiente;
+        outState.putInt(STATE_CATEGORIA_ID, idGuardar);
     }
 
     // ---------- Categorías ----------
@@ -127,6 +141,16 @@ public class CargaProductoActivity extends AppCompatActivity {
                     adaptadorCategorias.addAll(response.body());
                     categoriasCargadas = true;
                     tilCategoria.setError(null);
+                    if (categoriaIdPendiente != -1) {
+                        for (CategoriaDto cat : response.body()) {
+                            if (cat.getIdCategoria() == categoriaIdPendiente) {
+                                categoriaElegida = cat;
+                                actvCategoria.setText(cat.toString(), false);
+                                break;
+                            }
+                        }
+                        categoriaIdPendiente = -1;
+                    }
                 } else {
                     tilCategoria.setError(getString(R.string.carga_producto_error_categorias));
                 }

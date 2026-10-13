@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="32dp"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
             android:paddingVertical="16dp">
 
             <TextView
