@@ -68,6 +68,7 @@
         <activity android:name=".GestionUsuariosActivity" android:exported="false" />
         <activity android:name=".AyudaActivity" android:exported="false" />
         <activity android:name=".ComoUsarActivity" android:exported="false" />
+        <activity android:name=".InfoAppActivity" android:exported="false" />
 
 
     </application>
