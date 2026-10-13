@@ -32,3 +32,6 @@ backlog.md
 # Contexto para agentes de IA (local, no va al repo)
 agents.md
 
+
+# Configuracion local de Claude Code
+.claude/
