@@ -26,7 +26,9 @@ public class AyudaActivity extends AppCompatActivity {
         findViewById(R.id.filaTerminos).setOnClickListener(v ->
                 startActivity(new Intent(this, TerminosActivity.class)));
 
-        // TODO TK40 parte 3: filaVideo abre ComoUsarActivity.
+        // Cómo usar TodoStock (video).
+        findViewById(R.id.filaVideo).setOnClickListener(v ->
+                startActivity(new Intent(this, ComoUsarActivity.class)));
         // TODO TK40 parte 4: filaInfo abre InfoAppActivity.
     }
 }

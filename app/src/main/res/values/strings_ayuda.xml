@@ -14,6 +14,7 @@
     <string name="como_usar_subtitulo">Cómo usar TodoStock</string>
     <string name="como_usar_texto">Un recorrido rápido por lo principal de la app: sucursales, stock y movimientos.</string>
     <string name="como_usar_video_descripcion">Video demostrativo de cómo usar TodoStock</string>
+    <string name="como_usar_video_error">No se pudo reproducir el video.</string>
     <string name="info_app_titulo">Información de la app</string>
     <string name="info_app_nombre">TodoStock</string>
     <string name="info_app_version">Versión %1$s</string>
