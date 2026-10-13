@@ -3,6 +3,7 @@
 <resources>
     <string name="menu_btn_ayuda">Ayuda</string>
     <string name="ayuda_titulo">Ayuda</string>
+    <string name="ayuda_volver">Volver a la pantalla anterior</string>
     <string name="ayuda_fila_video">Cómo usar TodoStock</string>
     <string name="ayuda_fila_video_sub">Video demostrativo</string>
     <string name="ayuda_fila_terminos">Términos y política de privacidad</string>
