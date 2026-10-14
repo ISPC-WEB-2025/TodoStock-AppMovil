@@ -118,6 +118,7 @@ Si querés conectar la app a una instancia local de backend en lugar del servido
 - **Tablero Kanban:** https://github.com/orgs/ISPC-WEB-2025/projects/18
 - **Milestones / Sprints:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/milestones
 - **Wiki del proyecto:** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki
+- **Guía de Aclaraciones Docente (Wiki):** https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/wiki/GUÍA-DOCENTE
 - **Diseño (Figma):** https://www.figma.com/design/Aa1IGF6PBIY5ID9SQHCCG4/StockSip---Mobile-Application--Community-
 
 ---
@@ -165,6 +166,7 @@ El proyecto se rige por los Registros de Decisiones de Arquitectura documentados
   3. Sincronizar Gradle (`Sync Now`) y ejecutar `LoginFlujoTest` desde Android Studio en el emulador.
 - **Accesibilidad:** Cumplimiento de WCAG 2.0 (Disposición ONTI 6/2019) y WCAG 2.2, objetivos táctiles de 48×48 dp, compatibilidad TalkBack y contraste > 4.5:1.
 - **Documentación y Reportes de Evidencia:**
+  - Guía de Ejecución de Pruebas y Calidad (`TK84`): [`docs/testing/Testing.md`](docs/testing/Testing.md)
   - Plan Integral de Pruebas: [`docs/PLAN_DE_PRUEBAS.md`](docs/PLAN_DE_PRUEBAS.md)
   - Evidencia Espresso UI y Accesibilidad (`TK70` / `TK76`): [`docs/testing/EVIDENCIA_TK70_ESPRESSO_LOGIN.md`](docs/testing/EVIDENCIA_TK70_ESPRESSO_LOGIN.md)
   - Evidencia API Postman (`TK68`): [`docs/testing/EVIDENCIA_TK68_POSTMAN_PRODUCTOS.md`](docs/testing/EVIDENCIA_TK68_POSTMAN_PRODUCTOS.md)
