@@ -119,10 +119,19 @@ public class UsuariosActivosFragment extends Fragment implements UsuarioActivoAd
 
     /** Deja solo los usuarios activos que quien opera puede gestionar. */
     private List<UsuarioDto> filtrarUsuarios(List<UsuarioDto> todos) {
-        boolean operadorEsSuperadmin = SesionManager.getInstance(requireContext()).esSuperadmin();
+        SesionManager sesion = SesionManager.getInstance(requireContext());
+        boolean operadorEsSuperadmin = sesion.esSuperadmin();
+        int operadorId = sesion.getUsuarioId();
+        String operadorEmail = sesion.getEmail();
+
         List<UsuarioDto> activos = new ArrayList<>();
         for (UsuarioDto u : todos) {
-            if (u.esPendiente()) {
+            // El usuario conectado no se muestra a sí mismo (gestiona sus datos en Perfil y evita auto-baja accidental)
+            if ((operadorId != -1 && u.id == operadorId)
+                    || (operadorEmail != null && operadorEmail.equalsIgnoreCase(u.email))) {
+                continue;
+            }
+            if (!u.isActive || u.esPendiente()) {
                 continue;
             }
             // Un administrador estándar no puede gestionar cuentas de otros administradores (ADR-0008).

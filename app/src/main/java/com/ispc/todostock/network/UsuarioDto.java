@@ -41,7 +41,15 @@ public class UsuarioDto {
     public UsuarioDto() {
     }
 
+    public boolean esActivo() {
+        return isActive && rol != null;
+    }
+
     public boolean esPendiente() {
-        return !isActive || rol == null;
+        return !isActive && rol == null;
+    }
+
+    public boolean esDeshabilitado() {
+        return !isActive && rol != null;
     }
 }
