@@ -73,9 +73,12 @@ El alcance se estructura de forma evolutiva e incremental cubriendo el ciclo de 
 * **Gestión y Catálogo de Productos (US05 & US09 / #59, #63):**
   * Alta de productos contra la API (restringida a Administradores).
   * Validación de unicidad de código de producto y campos obligatorios.
-* **Movimientos de Stock Atómicos (US06 / #60):**
-  * Registro transaccional entre sucursales (`POST /api/movimientos/`).
-  * Validaciones de negocio: sucursal origen distinta a destino, producto seleccionado y cantidad estrictamente entera mayor a cero (`> 0`).
+* **Movimientos de Stock Atómicos y Nuevas Operaciones (US06 / #60 / TK115, TK116, TK117, TK118):**
+  * Registro transaccional entre sucursales (`POST /api/inventario/movimientos/`).
+  * Ampliación funcional: Ingreso de mercadería (Entrada a Casa Central, ADR-0005), Salida por venta mostrador y Registro de merma o rotura de stock.
+  * Selector de producto con buscador integrado en vivo (`AutoCompleteTextView` con filtrado dinámico por nombre y código).
+  * Validaciones de negocio: sucursal origen distinta a destino (traslados), producto seleccionado, control de stock disponible en origen para salidas/mermas/traslados, y cantidad estrictamente entera mayor a cero (`> 0`).
+  * Cobertura de pruebas formal: casos `TC-MOV-001` a `TC-MOV-011` y suite unitaria `MovimientoRequestTest` (`AUT-UNIT-05`).
 * **Registro de Usuarios y Reglas de Negocio (US07 / #61):**
   * Alta de cuenta en estado `Pendiente de aprobación` (`POST /api/usuarios/registro/`).
   * Validaciones de cliente y servidor: nombre válido (mínimo 6 caracteres), email corporativo no duplicado, DNI numérico válido (7 u 8 dígitos).
@@ -132,6 +135,7 @@ La estrategia se basa en la pirámide de automatización de pruebas de software,
 * **Alcance de Clases Planificado:**
   * `ValidadoresTest.java`: Batería de pruebas unitarias sobre la clase `Validadores` cubriendo contraseñas, DNI, fecha, edad mínima (18 años) y cantidades/sucursales de movimientos (`AUT-UNIT-01`, `AUT-UNIT-03`, `AUT-UNIT-04`).
   * `LoginViewModelTest.java` (`AUT-UNIT-02` / #202): Caso feliz (credenciales correctas emiten estado `Exito`) y caso de error (credenciales inválidas emiten estado `Error`), aislando el repositorio con `@Mock` y verificando `LiveData` y llamadas de comportamiento (`verify`).
+  * `MovimientoRequestTest.java` (`AUT-UNIT-05` / #302): Suite de pruebas unitarias locales en JVM con JUnit 4 y patrón AAA que valida la correcta construcción y serialización JSON de los payloads de `MovimientoRequest` (Traslado, Entrada/Ingreso, Salida/Venta, Salida/Merma) y partición de equivalencia/valores límite en cantidad.
 
 ### 3.2 Nivel 2: Integración de Red y Contratos API (`AUT-NET-01` y `AUT-NET-02`)
 * **Herramienta:** `MockWebServer` (Square).
@@ -315,10 +319,19 @@ Para dar cumplimiento a las buenas prácticas de QA y a la consigna académica, 
 | **US03: Stock** | Stock en tiempo real; alerta visual si está bajo el umbral. | TK16, TK17 | `TC-STK-01`, `TC-STK-02` |
 | **US04: Contacto** | Formulario valida y envía mensaje exitosamente a soporte. | TK42 | `TC-C-01` |
 | **US05 & US09: Productos** | Solo Admin da de alta/edita/elimina; código único; campos obligatorios. | TK23, TK38, TK39, TK93 | `TC-CP-01`, `TC-CP-02` |
-| **US06: Movimientos** | Movimiento atómico; origen != destino; cantidad > 0. | TK27 | `TC-MOV-001` a `TC-MOV-007`<br>`ValidadoresTest#cantidadValida`<br>`ValidadoresTest#origenYDestinoDistintos` |
+| **US06: Movimientos** | Traslado atómico (origen != destino); Ingreso restringido a Casa Central; Salida por venta; Mermas/Roturas; cantidad > 0 y stock suficiente; buscador integrado de producto. | TK27, TK115, TK116, TK117, TK118 | `TC-MOV-001` a `TC-MOV-011`<br>`MovimientoRequestTest` (`AUT-UNIT-05`)<br>`ValidadoresTest#cantidadValida`<br>`ValidadoresTest#origenYDestinoDistintos` |
 | **US07: Registro** | Alta con cuenta pendiente; DNI 7/8 dígitos; password robusta; mayor de 18 años. | TK34, TK35, TK47, TK60 | `TC-REG-API-01..05`<br>`ValidadoresTest` (15 tests de contraseñas, DNI, fecha y edad)<br>`TC-REG-EDAD-01..02`<br>`TC-REG-01..04` |
 | **US11: Legislación** | Términos obligatorios antes de registro; opción 'Darme de baja' borra sesión y audita. | TK52 | `TC-SEG-05` (Parte 1 y 2) |
 | **RNF-SEG: Seguridad** | Expiración de token; protección fuerza bruta; tabla LogAuditoria. | TK46, TK49, TK51 | `TC-SEG-01`, `TC-SEG-02`, `TC-SEG-03`, `TC-SEG-04`, `TC-SEG-05` |
+
+### 9.3 Especificación de Casos de Prueba: Módulo Movimientos Ampliado (Sprint 2 / TK118)
+
+| Identificador | Nombre / Objetivo | Tipo Movimiento | Precondición y Datos de Prueba | Resultado Esperado | Capa y Automatización Asociada |
+|---|---|---|---|---|---|
+| **`TC-MOV-008`** | **Ingreso de mercadería válido (Entrada)** | Ingreso (`Entrada`) | Sesión activa de Administrador. Sucursal Casa Central preseleccionada por ADR-0005. Seleccionar producto del catálogo y cantidad entera > 0 (ej. 20). | Petición `POST /api/inventario/movimientos/` con payload `tipo="Entrada"`, `id_suc_destino=null`, `motivo="Ingreso de mercadería"`. Respuesta HTTP 201/200, modal de confirmación exitoso y actualización de stock. | Unitaria (`MovimientoRequestTest#ingreso_generaPayloadEntradaSinDestino`) + Manual UI. Programado Espresso para Sprint 3. |
+| **`TC-MOV-009`** | **Salida de mercadería por venta de mostrador** | Venta (`Salida`) | Sesión activa (Admin o Empleado). Sucursal con stock disponible. Seleccionar producto con stock suficiente (ej. disp. 10) y cantidad 3. | Petición `POST /api/inventario/movimientos/` con payload `tipo="Salida"`, `motivo="Venta en mostrador"`. Descuento atómico de 3 unidades en el stock de la sucursal y diálogo de venta registrada. | Unitaria (`MovimientoRequestTest#venta_generaPayloadSalidaSinDestinoYMotivoVenta`) + Manual UI. Programado Espresso para Sprint 3. |
+| **`TC-MOV-010`** | **Registro de merma o rotura de stock** | Merma (`Salida`) | Sesión activa. Sucursal origen seleccionada. Seleccionar producto y cantidad averiada/rota (ej. 1). | Petición `POST /api/inventario/movimientos/` con payload `tipo="Salida"`, `motivo="Merma o rotura de stock"`. Descuento de stock en la sucursal y feedback visual de merma registrada. | Unitaria (`MovimientoRequestTest#merma_generaPayloadSalidaSinDestinoYMotivoMerma`) + Manual UI. Programado Espresso para Sprint 3. |
+| **`TC-MOV-011`** | **Rechazo de salidas o mermas que superan stock disponible** | Venta / Merma / Traslado | Sucursal con producto seleccionado que posee existencia N (ej. 5). Ingresar cantidad N+1 (ej. 6). | Validación preventiva en cliente antes de enviar: bloqueo de solicitud con error visual en `TextInputLayout` ("La cantidad supera el stock disponible en el origen (5)"). Si el backend responde 400 (`stock_disponible`), extracción de mensaje de error y actualización automática de la lista. | Unitaria (`MovimientoRequestTest#cantidadValida_valoresLimite_comportamientoEsperado`) + Manual UI. Programado MockWebServer para Sprint 3. |
 
 ---
 
@@ -342,6 +355,7 @@ timeline
 * **Automatización de API con Newman:** Integrar las colecciones de Postman para su ejecución headless mediante **Newman**.
 * **Integración Continua (CI):** Implementar el primer workflow de GitHub Actions que ejecute automáticamente `./gradlew testDebugUnitTest` ante cada Push o Pull Request hacia `develop`.
 * **Idling Resources:** Migrar las esperas asíncronas de Espresso hacia `CountingIdlingResource` para evitar falsos positivos por latencia de red.
+* **Automatización de UI y Contratos para Movimientos (TK118 / Roadmap):** Automatización de pruebas de interfaz con Espresso (Screen Object) para ventas e ingresos; integración de red con `MockWebServer` para respuestas 201 y 400 (`stock_disponible` / Casa Central); y pruebas de contrato Postman/Newman para nuevos tipos de movimientos.
 
 ### 10.2 Sprint 4: Sistema, E2E y Accesibilidad Completa
 * **Pruebas de Sistema con UI Automator (`AUT-SYS-01/02`):** Automatizar la interacción con diálogos del sistema operativo (permisos de notificaciones o almacenamiento).
