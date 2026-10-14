@@ -29,7 +29,13 @@
 
     <string name="mov_etiqueta_origen">ORIGEN</string>
     <string name="mov_etiqueta_sucursal">SUCURSAL</string>
+    <string name="mov_etiqueta_sucursal_receptora">SUCURSAL RECEPTORA (CASA CENTRAL)</string>
     <string name="mov_etiqueta_destino">DESTINO</string>
+
+    <string name="mov_titulo_ingreso">Ingreso de mercadería</string>
+    <string name="mov_btn_confirmar_ingreso">REGISTRAR INGRESO</string>
+    <string name="mov_exito_ingreso_titulo">Ingreso registrado</string>
+    <string name="mov_exito_ingreso_mensaje">Se ingresaron %1$d unidades de %2$s en %3$s.</string>
 
     <string name="mov_titulo_venta">Salida por venta</string>
     <string name="mov_btn_confirmar_venta">REGISTRAR VENTA</string>
