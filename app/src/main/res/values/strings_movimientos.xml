@@ -12,6 +12,7 @@
     <string name="mov_elija_origen">Elija primero la sucursal de origen</string>
     <string name="mov_sin_stock">El origen no tiene productos con stock</string>
     <string name="mov_producto_item">%1$s (%2$d disp.)</string>
+    <string name="mov_btn_confirmar">Confirmar</string>
     <string name="mov_boton_enviando">ENVIANDO…</string>
 
     <string name="mov_error_producto">Por favor seleccione un producto</string>
