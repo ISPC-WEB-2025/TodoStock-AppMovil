@@ -36,6 +36,11 @@
     <string name="mov_exito_venta_titulo">Venta registrada</string>
     <string name="mov_exito_venta_mensaje">Se registró la salida por venta de %1$d unidades de %2$s en %3$s.</string>
 
+    <string name="mov_titulo_merma">Mermas y roturas</string>
+    <string name="mov_btn_confirmar_merma">REGISTRAR MERMA</string>
+    <string name="mov_exito_merma_titulo">Merma registrada</string>
+    <string name="mov_exito_merma_mensaje">Se registró la merma de %1$d unidades de %2$s en %3$s.</string>
+
     <string name="mov_error_titulo">No se pudo registrar el movimiento</string>
     <string name="mov_error_stock_servidor">No hay stock suficiente en el origen. Disponible: %1$d.</string>
     <string name="mov_error_generico">Ocurrió un error al registrar el movimiento. Intentá de nuevo.</string>

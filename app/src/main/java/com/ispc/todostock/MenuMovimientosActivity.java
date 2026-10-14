@@ -82,8 +82,11 @@ public class MenuMovimientosActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Baja de productos por rotura o merma (Sprint 3)
-        btnMovBajas.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
+        // Mermas y roturas de stock
+        btnMovBajas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_MERMA);
+            startActivity(intent);
+        });
     }
 }

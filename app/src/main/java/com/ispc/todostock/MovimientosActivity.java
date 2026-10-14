@@ -58,6 +58,7 @@ public class MovimientosActivity extends AppCompatActivity {
     public static final String EXTRA_TIPO_OPERACION = "extra_tipo_operacion";
     public static final String OPERACION_TRASLADO = "TRASLADO";
     public static final String OPERACION_VENTA = "VENTA";
+    public static final String OPERACION_MERMA = "MERMA";
 
     private Spinner spinnerOrigen, spinnerDestino, spinnerProducto;
     private EditText etCantidad;
@@ -339,6 +340,16 @@ public class MovimientosActivity extends AppCompatActivity {
             tvEtiquetaDestino.setVisibility(View.GONE);
             campoDestino.setVisibility(View.GONE);
             tvErrorDestino.setVisibility(View.GONE);
+        } else if (OPERACION_MERMA.equals(tipoOperacion)) {
+            if (toolbar != null) {
+                toolbar.setTitle(R.string.mov_titulo_merma);
+            }
+            btnConfirmar.setText(R.string.mov_btn_confirmar_merma);
+            textoBotonOriginal = btnConfirmar.getText();
+            tvEtiquetaOrigen.setText(R.string.mov_etiqueta_sucursal);
+            tvEtiquetaDestino.setVisibility(View.GONE);
+            campoDestino.setVisibility(View.GONE);
+            tvErrorDestino.setVisibility(View.GONE);
         } else {
             if (toolbar != null) {
                 toolbar.setTitle(R.string.mov_titulo);
@@ -426,6 +437,8 @@ public class MovimientosActivity extends AppCompatActivity {
         MovimientoRequest datos;
         if (OPERACION_VENTA.equals(tipoOperacion)) {
             datos = MovimientoRequest.venta(producto.getIdProducto(), origen.getId(), cantidad);
+        } else if (OPERACION_MERMA.equals(tipoOperacion)) {
+            datos = MovimientoRequest.merma(producto.getIdProducto(), origen.getId(), cantidad);
         } else {
             datos = MovimientoRequest.traslado(
                     producto.getIdProducto(), origen.getId(), destino.getId(), cantidad);
@@ -443,6 +456,8 @@ public class MovimientosActivity extends AppCompatActivity {
                 if (respuesta.isSuccessful()) {
                     if (OPERACION_VENTA.equals(tipoOperacion)) {
                         mostrarVentaExitosa(producto, origen, cantidad);
+                    } else if (OPERACION_MERMA.equals(tipoOperacion)) {
+                        mostrarMermaExitosa(producto, origen, cantidad);
                     } else {
                         mostrarTrasladoExitoso(producto, origen, destino, cantidad);
                     }
@@ -504,6 +519,19 @@ public class MovimientosActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.mov_exito_venta_titulo)
                 .setMessage(getString(R.string.mov_exito_venta_mensaje, cantidad,
+                        producto.getNombreProducto(), origen.getNombre()))
+                .setPositiveButton(R.string.mov_aceptar, null)
+                .show();
+
+        etCantidad.setText("");
+        ocultarError(etCantidad, tvErrorCantidad);
+        cargarProductos(origen.getId());
+    }
+
+    private void mostrarMermaExitosa(StockSucursalDto producto, SucursalDto origen, int cantidad) {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.mov_exito_merma_titulo)
+                .setMessage(getString(R.string.mov_exito_merma_mensaje, cantidad,
                         producto.getNombreProducto(), origen.getNombre()))
                 .setPositiveButton(R.string.mov_aceptar, null)
                 .show();
