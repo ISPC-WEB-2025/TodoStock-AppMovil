@@ -12,6 +12,7 @@
     <string name="mov_elija_origen">Elija primero la sucursal de origen</string>
     <string name="mov_sin_stock">El origen no tiene productos con stock</string>
     <string name="mov_producto_item">%1$s (%2$d disp.)</string>
+    <string name="mov_btn_confirmar">Confirmar</string>
     <string name="mov_boton_enviando">ENVIANDO…</string>
 
     <string name="mov_error_producto">Por favor seleccione un producto</string>
@@ -26,6 +27,26 @@
 
     <string name="mov_exito_titulo">Traslado registrado</string>
     <string name="mov_exito_mensaje">Se trasladaron %1$d unidades de %2$s de %3$s a %4$s.</string>
+
+    <string name="mov_etiqueta_origen">ORIGEN</string>
+    <string name="mov_etiqueta_sucursal">SUCURSAL</string>
+    <string name="mov_etiqueta_sucursal_receptora">SUCURSAL RECEPTORA (CASA CENTRAL)</string>
+    <string name="mov_etiqueta_destino">DESTINO</string>
+
+    <string name="mov_titulo_ingreso">Ingreso de mercadería</string>
+    <string name="mov_btn_confirmar_ingreso">REGISTRAR INGRESO</string>
+    <string name="mov_exito_ingreso_titulo">Ingreso registrado</string>
+    <string name="mov_exito_ingreso_mensaje">Se ingresaron %1$d unidades de %2$s en %3$s.</string>
+
+    <string name="mov_titulo_venta">Salida por venta</string>
+    <string name="mov_btn_confirmar_venta">REGISTRAR VENTA</string>
+    <string name="mov_exito_venta_titulo">Venta registrada</string>
+    <string name="mov_exito_venta_mensaje">Se registró la salida por venta de %1$d unidades de %2$s en %3$s.</string>
+
+    <string name="mov_titulo_merma">Mermas y roturas</string>
+    <string name="mov_btn_confirmar_merma">REGISTRAR MERMA</string>
+    <string name="mov_exito_merma_titulo">Merma registrada</string>
+    <string name="mov_exito_merma_mensaje">Se registró la merma de %1$d unidades de %2$s en %3$s.</string>
 
     <string name="mov_error_titulo">No se pudo registrar el movimiento</string>
     <string name="mov_error_stock_servidor">No hay stock suficiente en el origen. Disponible: %1$d.</string>

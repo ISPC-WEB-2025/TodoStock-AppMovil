@@ -2,6 +2,7 @@ package com.ispc.todostock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class MenuMovimientosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu_movimientos);
 
         inicializarVistas();
+        aplicarPermisosPorRol();
         configurarToolbar();
         configurarNavegacion();
     }
@@ -57,6 +59,16 @@ public class MenuMovimientosActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Aplica la matriz de permisos por rol en el menú de movimientos:
+     * - Ingreso de mercadería (Entrada): exclusivo de Administradores (ADR-0005).
+     * - Traslados, Ventas y Mermas: disponibles para Administrador y Empleado.
+     */
+    private void aplicarPermisosPorRol() {
+        boolean esAdmin = SesionManager.getInstance(this).esAdmin();
+        btnMovIngresos.setVisibility(esAdmin ? View.VISIBLE : View.GONE);
+    }
+
     private void configurarToolbar() {
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(v -> finish());
@@ -64,20 +76,32 @@ public class MenuMovimientosActivity extends AppCompatActivity {
     }
 
     private void configurarNavegacion() {
-        // Ingreso de mercadería (Sprint 3)
-        btnMovIngresos.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
+        // Ingreso de mercadería
+        btnMovIngresos.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_INGRESO);
+            startActivity(intent);
+        });
 
         // Movimientos entre sucursales
-        btnMovSucursales.setOnClickListener(v ->
-                startActivity(new Intent(MenuMovimientosActivity.this, MovimientosActivity.class)));
+        btnMovSucursales.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_TRASLADO);
+            startActivity(intent);
+        });
 
-        // Salida por venta (Sprint 3)
-        btnMovVentas.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
+        // Salida por venta
+        btnMovVentas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_VENTA);
+            startActivity(intent);
+        });
 
-        // Baja de productos por rotura o merma (Sprint 3)
-        btnMovBajas.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
+        // Mermas y roturas de stock
+        btnMovBajas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_MERMA);
+            startActivity(intent);
+        });
     }
 }

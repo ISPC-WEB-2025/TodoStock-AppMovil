@@ -5,6 +5,6 @@
     <string name="menu_mov_btn_ingresos">Ingreso de mercadería</string>
     <string name="menu_mov_btn_sucursales">Movimientos entre sucursales</string>
     <string name="menu_mov_btn_ventas">Salida por venta</string>
-    <string name="menu_mov_btn_bajas">Baja de productos</string>
+    <string name="menu_mov_btn_bajas">Mermas y roturas</string>
     <string name="menu_mov_pendiente">Módulo en construcción (Sprint 3)</string>
 </resources>
