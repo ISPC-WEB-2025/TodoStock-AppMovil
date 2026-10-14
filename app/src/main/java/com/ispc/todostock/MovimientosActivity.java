@@ -297,13 +297,25 @@ public class MovimientosActivity extends AppCompatActivity {
 
     private void mostrarSucursales(List<SucursalDto> lista, String guia) {
         sucursales.clear();
-        sucursales.addAll(lista);
+
+        List<SucursalDto> listaAMostrar = new ArrayList<>();
+        if (OPERACION_INGRESO.equals(tipoOperacion)) {
+            for (SucursalDto sucursal : lista) {
+                if (sucursal.isEsCentral()) {
+                    listaAMostrar.add(sucursal);
+                }
+            }
+        } else {
+            listaAMostrar.addAll(lista);
+        }
+
+        sucursales.addAll(listaAMostrar);
 
         List<String> textos = new ArrayList<>();
         textos.add(guia);
         int posCentral = -1;
-        for (int i = 0; i < lista.size(); i++) {
-            SucursalDto sucursal = lista.get(i);
+        for (int i = 0; i < listaAMostrar.size(); i++) {
+            SucursalDto sucursal = listaAMostrar.get(i);
             if (sucursal.isEsCentral()) {
                 textos.add(sucursal.getNombre() + " (Casa Central)");
                 posCentral = i;
@@ -313,13 +325,13 @@ public class MovimientosActivity extends AppCompatActivity {
         }
         spinnerOrigen.setAdapter(crearAdapter(textos));
         spinnerDestino.setAdapter(crearAdapter(textos));
-        if (!lista.isEmpty()) {
-            if (origenPosPendiente > 0 && origenPosPendiente <= lista.size()) {
+        if (!listaAMostrar.isEmpty()) {
+            if (origenPosPendiente > 0 && origenPosPendiente <= listaAMostrar.size()) {
                 spinnerOrigen.setSelection(origenPosPendiente);
             } else if (OPERACION_INGRESO.equals(tipoOperacion) && posCentral >= 0) {
                 spinnerOrigen.setSelection(posCentral + 1);
             }
-            if (destinoPosPendiente > 0 && destinoPosPendiente <= lista.size()) {
+            if (destinoPosPendiente > 0 && destinoPosPendiente <= listaAMostrar.size()) {
                 spinnerDestino.setSelection(destinoPosPendiente);
             }
             origenPosPendiente = 0;
@@ -523,18 +535,17 @@ public class MovimientosActivity extends AppCompatActivity {
             return;
         }
 
-        if (OPERACION_INGRESO.equals(tipoOperacion)) {
-            enviarIngreso(productoCatalogo, origen, cantidad);
-        } else {
-            enviarMovimiento(producto, origen, destino, cantidad);
-        }
+        enviarSolicitud(producto, productoCatalogo, origen, destino, cantidad);
     }
 
-    private void enviarMovimiento(StockSucursalDto producto, SucursalDto origen, SucursalDto destino, int cantidad) {
+    private void enviarSolicitud(StockSucursalDto producto, ProductoDto productoCatalogo,
+                                SucursalDto origen, SucursalDto destino, int cantidad) {
         mostrarEnviando(true);
 
         MovimientoRequest datos;
-        if (OPERACION_VENTA.equals(tipoOperacion)) {
+        if (OPERACION_INGRESO.equals(tipoOperacion)) {
+            datos = MovimientoRequest.ingreso(productoCatalogo.getIdProducto(), origen.getId(), cantidad);
+        } else if (OPERACION_VENTA.equals(tipoOperacion)) {
             datos = MovimientoRequest.venta(producto.getIdProducto(), origen.getId(), cantidad);
         } else if (OPERACION_MERMA.equals(tipoOperacion)) {
             datos = MovimientoRequest.merma(producto.getIdProducto(), origen.getId(), cantidad);
@@ -553,13 +564,7 @@ public class MovimientosActivity extends AppCompatActivity {
                 mostrarEnviando(false);
 
                 if (respuesta.isSuccessful()) {
-                    if (OPERACION_VENTA.equals(tipoOperacion)) {
-                        mostrarVentaExitosa(producto, origen, cantidad);
-                    } else if (OPERACION_MERMA.equals(tipoOperacion)) {
-                        mostrarMermaExitosa(producto, origen, cantidad);
-                    } else {
-                        mostrarTrasladoExitoso(producto, origen, destino, cantidad);
-                    }
+                    mostrarOperacionExitosa(producto, productoCatalogo, origen, destino, cantidad);
                 } else if (respuesta.code() == 401) {
                     mostrarSesionVencida();
                 } else if (respuesta.code() == 403) {
@@ -581,12 +586,20 @@ public class MovimientosActivity extends AppCompatActivity {
         });
     }
 
-    /** 400: si el backend informa el stock disponible, se muestra; si no, mensaje genérico. */
+    /** 400: si el backend informa el stock disponible o un mensaje de error específico, se muestra; si no, mensaje genérico. */
     private void mostrarErrorDeTraslado(Response<ResponseBody> respuesta, SucursalDto origen) {
         int disponible = -1;
+        String mensajeServidor = null;
         try (ResponseBody cuerpo = respuesta.errorBody()) {
             if (cuerpo != null) {
-                disponible = new JSONObject(cuerpo.string()).optInt("stock_disponible", -1);
+                String cuerpoTexto = cuerpo.string();
+                JSONObject json = new JSONObject(cuerpoTexto);
+                disponible = json.optInt("stock_disponible", -1);
+                if (json.has("error")) {
+                    mensajeServidor = json.optString("error");
+                } else if (json.has("detail")) {
+                    mensajeServidor = json.optString("detail");
+                }
             }
         } catch (Exception e) {
             disponible = -1;
@@ -595,99 +608,50 @@ public class MovimientosActivity extends AppCompatActivity {
         if (disponible >= 0) {
             mostrarError(getString(R.string.mov_error_stock_servidor, disponible));
             cargarProductos(origen.getId()); // el stock cambió: se actualiza la lista
+        } else if (mensajeServidor != null && !mensajeServidor.trim().isEmpty()) {
+            mostrarError(mensajeServidor);
         } else {
             mostrarError(getString(R.string.mov_error_generico));
         }
     }
 
-    private void mostrarTrasladoExitoso(StockSucursalDto producto, SucursalDto origen, SucursalDto destino, int cantidad) {
+    private void mostrarOperacionExitosa(StockSucursalDto producto, ProductoDto productoCatalogo,
+                                        SucursalDto origen, SucursalDto destino, int cantidad) {
+        int tituloRes;
+        String mensaje;
+
+        if (OPERACION_INGRESO.equals(tipoOperacion)) {
+            tituloRes = R.string.mov_exito_ingreso_titulo;
+            mensaje = getString(R.string.mov_exito_ingreso_mensaje, cantidad,
+                    productoCatalogo.getNombre(), origen.getNombre());
+        } else if (OPERACION_VENTA.equals(tipoOperacion)) {
+            tituloRes = R.string.mov_exito_venta_titulo;
+            mensaje = getString(R.string.mov_exito_venta_mensaje, cantidad,
+                    producto.getNombreProducto(), origen.getNombre());
+        } else if (OPERACION_MERMA.equals(tipoOperacion)) {
+            tituloRes = R.string.mov_exito_merma_titulo;
+            mensaje = getString(R.string.mov_exito_merma_mensaje, cantidad,
+                    producto.getNombreProducto(), origen.getNombre());
+        } else {
+            tituloRes = R.string.mov_exito_titulo;
+            mensaje = getString(R.string.mov_exito_mensaje, cantidad,
+                    producto.getNombreProducto(), origen.getNombre(), destino.getNombre());
+        }
+
         new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.mov_exito_titulo)
-                .setMessage(getString(R.string.mov_exito_mensaje, cantidad,
-                        producto.getNombreProducto(), origen.getNombre(), destino.getNombre()))
-                .setPositiveButton(R.string.mov_aceptar, null)
-                .show();
-
-        // Se deja listo para otro traslado desde el mismo origen, con el stock actualizado.
-        etCantidad.setText("");
-        ocultarError(etCantidad, tvErrorCantidad);
-        cargarProductos(origen.getId());
-    }
-
-    private void mostrarVentaExitosa(StockSucursalDto producto, SucursalDto origen, int cantidad) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.mov_exito_venta_titulo)
-                .setMessage(getString(R.string.mov_exito_venta_mensaje, cantidad,
-                        producto.getNombreProducto(), origen.getNombre()))
-                .setPositiveButton(R.string.mov_aceptar, null)
-                .show();
-
-        etCantidad.setText("");
-        ocultarError(etCantidad, tvErrorCantidad);
-        cargarProductos(origen.getId());
-    }
-
-    private void mostrarMermaExitosa(StockSucursalDto producto, SucursalDto origen, int cantidad) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.mov_exito_merma_titulo)
-                .setMessage(getString(R.string.mov_exito_merma_mensaje, cantidad,
-                        producto.getNombreProducto(), origen.getNombre()))
+                .setTitle(tituloRes)
+                .setMessage(mensaje)
                 .setPositiveButton(R.string.mov_aceptar, null)
                 .show();
 
         etCantidad.setText("");
         ocultarError(etCantidad, tvErrorCantidad);
-        cargarProductos(origen.getId());
-    }
 
-    private void enviarIngreso(ProductoDto producto, SucursalDto origen, int cantidad) {
-        mostrarEnviando(true);
-
-        MovimientoRequest datos = MovimientoRequest.ingreso(producto.getIdProducto(), origen.getId(), cantidad);
-
-        Call<ResponseBody> llamada = api.registrarMovimiento(datos);
-        llamadasEnCurso.add(llamada);
-        llamada.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> respuesta) {
-                llamadasEnCurso.remove(call);
-                if (isFinishing() || isDestroyed()) return;
-                mostrarEnviando(false);
-
-                if (respuesta.isSuccessful()) {
-                    mostrarIngresoExitoso(producto, origen, cantidad);
-                } else if (respuesta.code() == 401) {
-                    mostrarSesionVencida();
-                } else if (respuesta.code() == 403) {
-                    mostrarError(getString(R.string.mov_error_permiso));
-                } else if (respuesta.code() == 400) {
-                    mostrarErrorDeTraslado(respuesta, origen);
-                } else {
-                    mostrarError(getString(R.string.mov_error_generico));
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable error) {
-                llamadasEnCurso.remove(call);
-                if (call.isCanceled() || isFinishing() || isDestroyed()) return;
-                mostrarEnviando(false);
-                mostrarError(getString(R.string.mov_error_conexion));
-            }
-        });
-    }
-
-    private void mostrarIngresoExitoso(ProductoDto producto, SucursalDto origen, int cantidad) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.mov_exito_ingreso_titulo)
-                .setMessage(getString(R.string.mov_exito_ingreso_mensaje, cantidad,
-                        producto.getNombre(), origen.getNombre()))
-                .setPositiveButton(R.string.mov_aceptar, null)
-                .show();
-
-        etCantidad.setText("");
-        ocultarError(etCantidad, tvErrorCantidad);
-        cargarCatalogoProductos();
+        if (OPERACION_INGRESO.equals(tipoOperacion)) {
+            cargarCatalogoProductos();
+        } else {
+            cargarProductos(origen.getId());
+        }
     }
 
     // ---------- Mensajes ----------
