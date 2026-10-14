@@ -40,6 +40,7 @@
 
         <!-- Origen -->
         <TextView
+            android:id="@+id/tvEtiquetaOrigen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -81,6 +82,7 @@
 
         <!-- Destino -->
         <TextView
+            android:id="@+id/tvEtiquetaDestino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
@@ -197,7 +199,7 @@
             android:id="@+id/btnConfirmar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Confirmar"
+            android:text="@string/mov_btn_confirmar"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"

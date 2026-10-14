@@ -9,6 +9,8 @@ import com.google.gson.annotations.SerializedName;
 public class MovimientoRequest {
 
     public static final String TIPO_TRASLADO = "Traslado";
+    public static final String TIPO_ENTRADA = "Entrada";
+    public static final String TIPO_SALIDA = "Salida";
 
     private final String tipo;
     private final int cantidad;
@@ -37,5 +39,44 @@ public class MovimientoRequest {
     /** Traslado entre dos sucursales. El backend lo registra de forma atómica. */
     public static MovimientoRequest traslado(int idProducto, int idOrigen, int idDestino, int cantidad) {
         return new MovimientoRequest(TIPO_TRASLADO, cantidad, idProducto, idOrigen, idDestino, null);
+    }
+
+    /** Ingreso de mercadería (Entrada de stock hacia Casa Central o sucursal). */
+    public static MovimientoRequest ingreso(int idProducto, int idSucursal, int cantidad) {
+        return new MovimientoRequest(TIPO_ENTRADA, cantidad, idProducto, idSucursal, null, "Ingreso de mercadería");
+    }
+
+    /** Salida de stock por venta en mostrador. */
+    public static MovimientoRequest venta(int idProducto, int idSucursal, int cantidad) {
+        return new MovimientoRequest(TIPO_SALIDA, cantidad, idProducto, idSucursal, null, "Venta en mostrador");
+    }
+
+    /** Salida de stock por merma o rotura. */
+    public static MovimientoRequest merma(int idProducto, int idSucursal, int cantidad) {
+        return new MovimientoRequest(TIPO_SALIDA, cantidad, idProducto, idSucursal, null, "Merma o rotura de stock");
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public int getIdSucursalOrigen() {
+        return idSucursalOrigen;
+    }
+
+    public Integer getIdSucursalDestino() {
+        return idSucursalDestino;
+    }
+
+    public String getMotivo() {
+        return motivo;
     }
 }
