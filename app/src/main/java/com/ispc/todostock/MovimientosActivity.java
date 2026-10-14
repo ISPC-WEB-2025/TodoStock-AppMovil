@@ -339,6 +339,7 @@ public class MovimientosActivity extends AppCompatActivity {
                     if (item.getIdProducto() == productoIdPendiente) {
                         productoSeleccionado = item;
                         actvProducto.setText(item.getTextoMostrar(), false);
+                        actvProducto.setSelection(0);
                         break;
                     }
                 }
@@ -650,6 +651,7 @@ public class MovimientosActivity extends AppCompatActivity {
         actvProducto.setOnItemClickListener((parent, view, position, id) -> {
             productoSeleccionado = (ProductoMovimientoItem) parent.getItemAtPosition(position);
             tilProducto.setError(null);
+            actvProducto.post(() -> actvProducto.setSelection(0));
         });
         actvProducto.setOnClickListener(v -> {
             if (adaptadorProductos != null && adaptadorProductos.getCount() > 0) {

@@ -149,6 +149,9 @@
                 android:layout_height="wrap_content"
                 android:completionThreshold="1"
                 android:inputType="text"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="15sp"
                 android:textColor="@color/color_texto" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,7 +191,7 @@
             android:id="@+id/btnConfirmar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Confirmar"
+            android:text="@string/mov_btn_confirmar"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
