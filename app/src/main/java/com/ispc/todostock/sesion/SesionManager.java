@@ -79,9 +79,39 @@ public final class SesionManager implements ProveedorToken {
                 .apply();
     }
 
-    /** true si hay un token guardado (no controla si ya venció). */
+    /** true si hay un token guardado. Lo usa SplashActivity (TK91) para ir al Menú Principal. */
     public boolean haySesion() {
-        return getAccessToken() != null;
+        String token = getAccessToken();
+        return token != null && !token.trim().isEmpty();
+    }
+
+    /** Verifica si el token de acceso JWT ha expirado leyendo el claim exp. */
+    public boolean isTokenExpirado() {
+        String token = getAccessToken();
+        if (token == null || token.trim().isEmpty()) {
+            return true;
+        }
+        try {
+            String[] partes = token.split("\\.");
+            if (partes.length < 2) {
+                return false;
+            }
+            byte[] bytes;
+            try {
+                bytes = java.util.Base64.getUrlDecoder().decode(partes[1]);
+            } catch (Throwable t) {
+                bytes = android.util.Base64.decode(partes[1], android.util.Base64.URL_SAFE | android.util.Base64.NO_WRAP | android.util.Base64.NO_PADDING);
+            }
+            org.json.JSONObject payload = new org.json.JSONObject(new String(bytes, java.nio.charset.StandardCharsets.UTF_8));
+            if (payload.has("exp")) {
+                long exp = payload.getLong("exp");
+                long ahoraSegundos = System.currentTimeMillis() / 1000;
+                return ahoraSegundos >= exp;
+            }
+        } catch (Exception ignored) {
+            return false;
+        }
+        return false;
     }
 
     /** Token de acceso, o null si no hay sesión. Lo usa el interceptor (TK06). */

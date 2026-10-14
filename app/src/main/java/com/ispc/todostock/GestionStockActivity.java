@@ -91,10 +91,12 @@ public class GestionStockActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<StockItem> items = new ArrayList<>();
                     for (StockSucursalDto dto : response.body()) {
-                        items.add(StockItem.desde(dto));
+                        if (dto.getCantidad() > 0 && !BajaDeProducto.estaInactivo(dto.getNombreProducto())) {
+                            items.add(StockItem.desde(dto));
+                        }
                     }
                     if (items.isEmpty()) {
-                        mostrarMensaje("Esta sucursal todavía no tiene productos cargados.", false);
+                        mostrarMensaje("Esta sucursal no tiene productos con stock disponible.", false);
                     } else {
                         adapter.actualizarLista(items);
                         mostrarLista();

@@ -49,7 +49,12 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         // Destacar si está bajo stock.
         // TK79: colores de la app (antes estaban escritos a mano y no tenían contraste).
         // Sobre el fondo de la tarjeta: color_errores 6.88, color_botones 6.09, color_texto 15.64.
-        if (item.esBajoStock()) {
+        if (item.getCantidad() <= 0) {
+            int rojo = ContextCompat.getColor(context, R.color.color_errores);
+            holder.tvEstado.setText("Sin Stock");
+            holder.tvEstado.setTextColor(rojo);
+            holder.tvCantidad.setTextColor(rojo);
+        } else if (item.esBajoStock()) {
             int rojo = ContextCompat.getColor(context, R.color.color_errores);
             holder.tvEstado.setText("¡Stock Bajo!");
             holder.tvEstado.setTextColor(rojo);
