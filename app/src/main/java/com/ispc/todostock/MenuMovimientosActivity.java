@@ -69,12 +69,18 @@ public class MenuMovimientosActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
 
         // Movimientos entre sucursales
-        btnMovSucursales.setOnClickListener(v ->
-                startActivity(new Intent(MenuMovimientosActivity.this, MovimientosActivity.class)));
+        btnMovSucursales.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_TRASLADO);
+            startActivity(intent);
+        });
 
-        // Salida por venta (Sprint 3)
-        btnMovVentas.setOnClickListener(v ->
-                Toast.makeText(this, getString(R.string.menu_mov_pendiente), Toast.LENGTH_SHORT).show());
+        // Salida por venta
+        btnMovVentas.setOnClickListener(v -> {
+            Intent intent = new Intent(MenuMovimientosActivity.this, MovimientosActivity.class);
+            intent.putExtra(MovimientosActivity.EXTRA_TIPO_OPERACION, MovimientosActivity.OPERACION_VENTA);
+            startActivity(intent);
+        });
 
         // Baja de productos por rotura o merma (Sprint 3)
         btnMovBajas.setOnClickListener(v ->
