@@ -79,28 +79,40 @@ public final class SesionManager implements ProveedorToken {
                 .apply();
     }
 
-    /** true si hay un token guardado. Lo usa SplashActivity (TK91) para ir al Menú Principal. */
+    /** true si hay un token guardado y aún no ha vencido. Si venció, se limpia la sesión. */
     public boolean haySesion() {
         String token = getAccessToken();
-        return token != null && !token.trim().isEmpty();
+        if (token == null || token.trim().isEmpty()) {
+            return false;
+        }
+        if (isTokenExpirado()) {
+            cerrarSesion();
+            return false;
+        }
+        return true;
     }
 
-    /** Verifica si el token de acceso JWT ha expirado leyendo el claim exp. */
+    /** Verifica si el token de acceso JWT actual ha expirado. */
     public boolean isTokenExpirado() {
-        String token = getAccessToken();
+        return isTokenExpirado(getAccessToken());
+    }
+
+    /**
+     * Verifica si una cadena de token JWT está expirada leyendo el claim 'exp'.
+     * Retorna true si el token es nulo, inválido o si su tiempo de expiración ya pasó.
+     */
+    public static boolean isTokenExpirado(String token) {
         if (token == null || token.trim().isEmpty()) {
             return true;
         }
         try {
             String[] partes = token.split("\\.");
             if (partes.length < 2) {
-                return false;
+                return true;
             }
-            byte[] bytes;
-            try {
-                bytes = java.util.Base64.getUrlDecoder().decode(partes[1]);
-            } catch (Throwable t) {
-                bytes = android.util.Base64.decode(partes[1], android.util.Base64.URL_SAFE | android.util.Base64.NO_WRAP | android.util.Base64.NO_PADDING);
+            byte[] bytes = decodificarBase64Url(partes[1]);
+            if (bytes == null) {
+                return true;
             }
             org.json.JSONObject payload = new org.json.JSONObject(new String(bytes, java.nio.charset.StandardCharsets.UTF_8));
             if (payload.has("exp")) {
@@ -108,10 +120,28 @@ public final class SesionManager implements ProveedorToken {
                 long ahoraSegundos = System.currentTimeMillis() / 1000;
                 return ahoraSegundos >= exp;
             }
-        } catch (Exception ignored) {
-            return false;
+        } catch (Exception e) {
+            return true;
         }
         return false;
+    }
+
+    private static byte[] decodificarBase64Url(String input) {
+        try {
+            return android.util.Base64.decode(input, android.util.Base64.URL_SAFE | android.util.Base64.NO_WRAP | android.util.Base64.NO_PADDING);
+        } catch (Throwable t) {
+            // Fallback para pruebas unitarias JVM
+            try {
+                int missingPadding = (4 - (input.length() % 4)) % 4;
+                StringBuilder sb = new StringBuilder(input);
+                for (int i = 0; i < missingPadding; i++) {
+                    sb.append('=');
+                }
+                return java.util.Base64.getUrlDecoder().decode(sb.toString());
+            } catch (Throwable t2) {
+                return null;
+            }
+        }
     }
 
     /** Token de acceso, o null si no hay sesión. Lo usa el interceptor (TK06). */
