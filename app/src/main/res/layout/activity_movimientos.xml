@@ -124,44 +124,33 @@
 
         <!-- Producto -->
         <TextView
+            android:id="@+id/tvEtiquetaProducto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:labelFor="@+id/spinnerProducto"
+            android:labelFor="@+id/actvProducto"
             android:text="PRODUCTO"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <FrameLayout
-            android:id="@+id/campoProducto"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilProducto"
+            style="@style/CampoRegistro"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/input_fondo">
+            android:hint="@string/mov_hint_producto"
+            app:endIconMode="dropdown_menu">
 
-            <Spinner
-                android:id="@+id/spinnerProducto"
+            <AutoCompleteTextView
+                android:id="@+id/actvProducto"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="end|center_vertical"
-                android:layout_marginEnd="16dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:importantForAccessibility="no"
-                android:src="@drawable/ic_flecha_desplegable" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/tvErrorProducto"
-            style="@style/ErrorDeCampo"
-            android:layout_marginTop="-12dp"
-            android:layout_marginBottom="12dp" />
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:inputType="text"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Cantidad -->
         <TextView

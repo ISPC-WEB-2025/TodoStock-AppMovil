@@ -9,6 +9,7 @@
     <string name="mov_cargando">Cargando…</string>
     <string name="mov_seleccione_sucursal">Seleccione sucursal</string>
     <string name="mov_seleccione_producto">Seleccione producto</string>
+    <string name="mov_hint_producto">Seleccione o busque un producto</string>
     <string name="mov_elija_origen">Elija primero la sucursal de origen</string>
     <string name="mov_sin_stock">El origen no tiene productos con stock</string>
     <string name="mov_producto_item">%1$s (%2$d disp.)</string>

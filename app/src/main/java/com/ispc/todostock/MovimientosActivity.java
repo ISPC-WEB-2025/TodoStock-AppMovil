@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.ispc.todostock.network.ApiClient;
 import com.ispc.todostock.network.InventarioApiService;
 import com.ispc.todostock.network.MovimientoRequest;
@@ -62,14 +64,19 @@ public class MovimientosActivity extends AppCompatActivity {
     public static final String OPERACION_MERMA = "MERMA";
     public static final String OPERACION_INGRESO = "INGRESO";
 
-    private Spinner spinnerOrigen, spinnerDestino, spinnerProducto;
+    private Spinner spinnerOrigen, spinnerDestino;
+    private TextInputLayout tilProducto;
+    private AutoCompleteTextView actvProducto;
+    private ProductoMovimientoAdapter adaptadorProductos;
+    private ProductoMovimientoItem productoSeleccionado;
+
     private EditText etCantidad;
     private AppCompatButton btnConfirmar;
     private CharSequence textoBotonOriginal;
 
-    private FrameLayout campoOrigen, campoDestino, campoProducto;
+    private FrameLayout campoOrigen, campoDestino;
     private TextView tvEtiquetaOrigen, tvEtiquetaDestino;
-    private TextView tvErrorOrigen, tvErrorDestino, tvErrorProducto, tvErrorCantidad;
+    private TextView tvErrorOrigen, tvErrorDestino, tvErrorCantidad;
 
     private String tipoOperacion = OPERACION_TRASLADO;
 
@@ -82,10 +89,10 @@ public class MovimientosActivity extends AppCompatActivity {
 
     private static final String STATE_ORIGEN_POS = "origen_pos";
     private static final String STATE_DESTINO_POS = "destino_pos";
-    private static final String STATE_PRODUCTO_POS = "producto_pos";
+    private static final String STATE_PRODUCTO_ID = "producto_id";
     private int origenPosPendiente = 0;
     private int destinoPosPendiente = 0;
-    private int productoPosPendiente = 0;
+    private int productoIdPendiente = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,22 +111,22 @@ public class MovimientosActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarMovimientos);
         spinnerOrigen = findViewById(R.id.spinnerOrigen);
         spinnerDestino = findViewById(R.id.spinnerDestino);
-        spinnerProducto = findViewById(R.id.spinnerProducto);
+        tilProducto = findViewById(R.id.tilProducto);
+        actvProducto = findViewById(R.id.actvProducto);
         etCantidad = findViewById(R.id.etCantidad);
         btnConfirmar = findViewById(R.id.btnConfirmar);
         textoBotonOriginal = btnConfirmar.getText();
 
         campoOrigen = findViewById(R.id.campoOrigen);
         campoDestino = findViewById(R.id.campoDestino);
-        campoProducto = findViewById(R.id.campoProducto);
         tvEtiquetaOrigen = findViewById(R.id.tvEtiquetaOrigen);
         tvEtiquetaDestino = findViewById(R.id.tvEtiquetaDestino);
         tvErrorOrigen = findViewById(R.id.tvErrorOrigen);
         tvErrorDestino = findViewById(R.id.tvErrorDestino);
-        tvErrorProducto = findViewById(R.id.tvErrorProducto);
         tvErrorCantidad = findViewById(R.id.tvErrorCantidad);
 
         configurarModoOperacion(toolbar);
+        configurarDesplegableProducto();
 
         api = ApiClient.create(InventarioApiService.class);
 
@@ -163,20 +170,6 @@ public class MovimientosActivity extends AppCompatActivity {
             }
         });
 
-        spinnerProducto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int posicion, long id) {
-                if (posicion > 0) {
-                    ocultarError(campoProducto, tvErrorProducto);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // No hace falta hacer nada.
-            }
-        });
-
         // TK79: al escribir en la cantidad, se borra su error.
         etCantidad.addTextChangedListener(new TextWatcher() {
             @Override
@@ -198,7 +191,7 @@ public class MovimientosActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             origenPosPendiente = savedInstanceState.getInt(STATE_ORIGEN_POS, 0);
             destinoPosPendiente = savedInstanceState.getInt(STATE_DESTINO_POS, 0);
-            productoPosPendiente = savedInstanceState.getInt(STATE_PRODUCTO_POS, 0);
+            productoIdPendiente = savedInstanceState.getInt(STATE_PRODUCTO_ID, -1);
         }
 
         cargarSucursales();
@@ -209,10 +202,10 @@ public class MovimientosActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         int origenPos = spinnerOrigen.getSelectedItemPosition();
         int destinoPos = spinnerDestino.getSelectedItemPosition();
-        int productoPos = spinnerProducto.getSelectedItemPosition();
+        int idProd = (productoSeleccionado != null) ? productoSeleccionado.getIdProducto() : productoIdPendiente;
         outState.putInt(STATE_ORIGEN_POS, origenPos > 0 ? origenPos : origenPosPendiente);
         outState.putInt(STATE_DESTINO_POS, destinoPos > 0 ? destinoPos : destinoPosPendiente);
-        outState.putInt(STATE_PRODUCTO_POS, productoPos > 0 ? productoPos : productoPosPendiente);
+        outState.putInt(STATE_PRODUCTO_ID, idProd);
     }
 
     @Override
@@ -342,18 +335,30 @@ public class MovimientosActivity extends AppCompatActivity {
     private void mostrarProductos(List<StockSucursalDto> lista, String guia) {
         productosDelOrigen.clear();
         productosDelOrigen.addAll(lista);
+        productoSeleccionado = null;
+        actvProducto.setText("", false);
 
-        List<String> textos = new ArrayList<>();
-        textos.add(guia);
+        List<ProductoMovimientoItem> items = new ArrayList<>();
         for (StockSucursalDto producto : lista) {
-            textos.add(getString(R.string.mov_producto_item, producto.getNombreProducto(), producto.getCantidad()));
+            items.add(new ProductoMovimientoItem(producto));
         }
-        spinnerProducto.setAdapter(crearAdapter(textos));
-        if (!lista.isEmpty()) {
-            if (productoPosPendiente > 0 && productoPosPendiente <= lista.size()) {
-                spinnerProducto.setSelection(productoPosPendiente);
+        adaptadorProductos = new ProductoMovimientoAdapter(this, items);
+        actvProducto.setAdapter(adaptadorProductos);
+
+        if (lista.isEmpty()) {
+            tilProducto.setHelperText(guia);
+        } else {
+            tilProducto.setHelperText(null);
+            if (productoIdPendiente > 0) {
+                for (ProductoMovimientoItem item : items) {
+                    if (item.getIdProducto() == productoIdPendiente) {
+                        productoSeleccionado = item;
+                        actvProducto.setText(item.getTextoMostrar(), false);
+                        break;
+                    }
+                }
+                productoIdPendiente = -1;
             }
-            productoPosPendiente = 0;
         }
     }
 
@@ -396,23 +401,30 @@ public class MovimientosActivity extends AppCompatActivity {
     private void mostrarProductosCatalogo(List<ProductoDto> lista, String guia) {
         catalogoProductos.clear();
         catalogoProductos.addAll(lista);
+        productoSeleccionado = null;
+        actvProducto.setText("", false);
 
-        List<String> textos = new ArrayList<>();
-        textos.add(guia);
+        List<ProductoMovimientoItem> items = new ArrayList<>();
         for (ProductoDto producto : lista) {
-            String cod = producto.getCodigo();
-            if (cod != null && !cod.trim().isEmpty()) {
-                textos.add(producto.getNombre() + " (" + cod + ")");
-            } else {
-                textos.add(producto.getNombre());
-            }
+            items.add(new ProductoMovimientoItem(producto));
         }
-        spinnerProducto.setAdapter(crearAdapter(textos));
-        if (!lista.isEmpty()) {
-            if (productoPosPendiente > 0 && productoPosPendiente <= lista.size()) {
-                spinnerProducto.setSelection(productoPosPendiente);
+        adaptadorProductos = new ProductoMovimientoAdapter(this, items);
+        actvProducto.setAdapter(adaptadorProductos);
+
+        if (lista.isEmpty()) {
+            tilProducto.setHelperText(guia);
+        } else {
+            tilProducto.setHelperText(null);
+            if (productoIdPendiente > 0) {
+                for (ProductoMovimientoItem item : items) {
+                    if (item.getIdProducto() == productoIdPendiente) {
+                        productoSeleccionado = item;
+                        actvProducto.setText(item.getTextoMostrar(), false);
+                        break;
+                    }
+                }
+                productoIdPendiente = -1;
             }
-            productoPosPendiente = 0;
         }
     }
 
@@ -468,7 +480,6 @@ public class MovimientosActivity extends AppCompatActivity {
 
         int origenPos = spinnerOrigen.getSelectedItemPosition();
         int destinoPos = spinnerDestino.getSelectedItemPosition();
-        int productoPos = spinnerProducto.getSelectedItemPosition();
         String cantidadTexto = etCantidad.getText().toString().trim();
 
         boolean hayErrores = false;
@@ -500,18 +511,18 @@ public class MovimientosActivity extends AppCompatActivity {
         StockSucursalDto producto = null;
         ProductoDto productoCatalogo = null;
         if (OPERACION_INGRESO.equals(tipoOperacion)) {
-            if (productoPos <= 0 || productoPos > catalogoProductos.size()) {
-                mostrarErrorDeCampo(campoProducto, tvErrorProducto, getString(R.string.mov_error_producto));
+            if (productoSeleccionado == null || productoSeleccionado.getCatalogoDto() == null) {
+                tilProducto.setError(getString(R.string.mov_error_producto));
                 hayErrores = true;
             } else {
-                productoCatalogo = catalogoProductos.get(productoPos - 1);
+                productoCatalogo = productoSeleccionado.getCatalogoDto();
             }
         } else {
-            if (productoPos <= 0 || productoPos > productosDelOrigen.size()) {
-                mostrarErrorDeCampo(campoProducto, tvErrorProducto, getString(R.string.mov_error_producto));
+            if (productoSeleccionado == null || productoSeleccionado.getStockDto() == null) {
+                tilProducto.setError(getString(R.string.mov_error_producto));
                 hayErrores = true;
             } else {
-                producto = productosDelOrigen.get(productoPos - 1);
+                producto = productoSeleccionado.getStockDto();
             }
         }
 
@@ -647,6 +658,10 @@ public class MovimientosActivity extends AppCompatActivity {
         etCantidad.setText("");
         ocultarError(etCantidad, tvErrorCantidad);
 
+        actvProducto.setText("", false);
+        productoSeleccionado = null;
+        tilProducto.setError(null);
+
         if (OPERACION_INGRESO.equals(tipoOperacion)) {
             cargarCatalogoProductos();
         } else {
@@ -674,7 +689,7 @@ public class MovimientosActivity extends AppCompatActivity {
     private void ocultarTodosLosErrores() {
         ocultarError(campoOrigen, tvErrorOrigen);
         ocultarError(campoDestino, tvErrorDestino);
-        ocultarError(campoProducto, tvErrorProducto);
+        tilProducto.setError(null);
         ocultarError(etCantidad, tvErrorCantidad);
     }
 
@@ -714,6 +729,40 @@ public class MovimientosActivity extends AppCompatActivity {
     private void mostrarEnviando(boolean enviando) {
         btnConfirmar.setEnabled(!enviando);
         btnConfirmar.setText(enviando ? getString(R.string.mov_boton_enviando) : textoBotonOriginal);
+    }
+
+    // ---------- Desplegable y Buscador de Producto ----------
+
+    private void configurarDesplegableProducto() {
+        actvProducto.setThreshold(1);
+        actvProducto.setOnItemClickListener((parent, view, position, id) -> {
+            productoSeleccionado = (ProductoMovimientoItem) parent.getItemAtPosition(position);
+            tilProducto.setError(null);
+        });
+        actvProducto.setOnClickListener(v -> {
+            if (adaptadorProductos != null && adaptadorProductos.getCount() > 0) {
+                actvProducto.showDropDown();
+            }
+        });
+        actvProducto.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No hace falta hacer nada.
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilProducto.setError(null);
+                if (productoSeleccionado != null && !s.toString().equals(productoSeleccionado.getTextoMostrar())) {
+                    productoSeleccionado = null;
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No hace falta hacer nada.
+            }
+        });
     }
 
     // ---------- Spinners ----------
