@@ -4,6 +4,9 @@ Captures/
 *.jks
 *.keystore
 
+# SECRETS
+secrets.properties
+
 # Salidas de compilación y caches de Gradle
 .gradle/
 build/
@@ -17,3 +20,18 @@ build/
 # Reportes de testing y métricas
 lint/
 baseline-prof.txt
+
+# Notas y backlog local
+backlog.md
+*backlog*.md
+.issues/
+
+# Configuraciones de VS Code
+.vscode/
+
+# Contexto para agentes de IA (local, no va al repo)
+agents.md
+
+
+# Configuracion local de Claude Code
+.claude/

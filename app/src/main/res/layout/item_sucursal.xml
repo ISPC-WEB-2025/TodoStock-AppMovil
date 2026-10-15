@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: color de fondo propio (gris_fondo_input). Sin él, en modo oscuro Material
+     pintaba la tarjeta gris oscuro y el nombre casi negro quedaba sin contraste. -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardSucursal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/gris_fondo_input"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvNombreSucursal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sucursal Centro"
+            android:textColor="@color/color_texto"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvDireccionSucursal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Av. Principal 1234"
+            android:textColor="@color/texto_tenue"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

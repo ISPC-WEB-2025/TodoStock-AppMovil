@@ -2,6 +2,32 @@ plugins {
     id 'com.android.application'
 }
 
+// TK90: URL del backend desplegado (el mismo que usa la web TodoStock).
+def apiBaseUrlDesplegado = 'https://todostock.alwaysdata.net/'
+
+// Por defecto la app usa el backend desplegado. Quien quiera probar contra un backend
+// local agrega en local.properties (archivo que NO se sube al repo) una línea como:
+//     api.baseUrl=http://10.0.2.2:8000/        (emulador)
+//     api.baseUrl=http://192.168.0.15:8000/    (celular físico)
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+def apiBaseUrlDebug = localProps.getProperty('api.baseUrl', apiBaseUrlDesplegado)
+
+def secretsProps = new Properties()
+def secretsPropsFile = rootProject.file('secrets.properties')
+if (!secretsPropsFile.exists()) {
+    secretsPropsFile = rootProject.file('secret.properties')
+}
+if (secretsPropsFile.exists()) {
+    secretsPropsFile.withInputStream { secretsProps.load(it) }
+}
+def postmanApiKey = secretsProps.getProperty('POSTMAN_API_KEY', '')
+def testUserEmail = secretsProps.getProperty('TEST_USER_EMAIL', '')
+def testUserPassword = secretsProps.getProperty('TEST_USER_PASSWORD', '')
+
 android {
     namespace 'com.ispc.todostock'
     compileSdk 33
@@ -13,18 +39,37 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "POSTMAN_API_KEY", "\"${postmanApiKey}\""
+        buildConfigField "String", "TEST_USER_EMAIL", "\"${testUserEmail}\""
+        buildConfigField "String", "TEST_USER_PASSWORD", "\"${testUserPassword}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // TK90: desde Android Gradle Plugin 8 la clase BuildConfig no se genera sola.
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDebug}\""
+        }
         release {
+            buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDesplegado}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
-                targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // TK90 (mínimos de automatización): desactiva las animaciones del dispositivo
+    // al correr los tests de Espresso, para que no fallen de forma intermitente.
+    testOptions {
+        animationsDisabled = true
     }
 }
 
@@ -32,7 +77,35 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // TK90: OkHttp trae la librería estándar de Kotlin; esta línea alinea sus versiones
+    // y evita el error de compilación "Duplicate class kotlin...".
+    implementation platform('org.jetbrains.kotlin:kotlin-bom:1.8.22')
+
+    // TK90: red
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+
+    // TK90: guardado seguro del token (EncryptedSharedPreferences). Requiere minSdk 23 o superior.
+    implementation 'androidx.security:security-crypto:1.0.0'
+
+    // TK90 (mínimos de automatización): ViewModel y LiveData para el LoginViewModel (TK112).
+    // Misma versión que ya trae appcompat 1.6.1, para no mezclar versiones.
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata:2.5.1'
+
+    // Testing
     testImplementation 'junit:junit:4.13.2'
+    // TK90: Mockito 4.x es la última línea compatible con Java 8.
+    testImplementation 'org.mockito:mockito-core:4.11.0'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+    // TK90 (mínimos de automatización): InstantTaskExecutorRule, para que LiveData
+    // funcione en los tests unitarios del ViewModel (AUT-UNIT-02).
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    // TK90 (mínimos de automatización): AccessibilityChecks en los tests de Espresso (ACC-01).
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.5.1'
 }

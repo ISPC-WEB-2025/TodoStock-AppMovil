@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:orientation="vertical">
+
+    <!-- Barra superior para mantener el formato -->
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="Sucursales"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- TK79: texto y lista centrados en la pantalla, como en Movimientos.
+         Si hay muchas sucursales, la lista ocupa el espacio disponible y se desplaza. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+            android:paddingVertical="16dp"
+            android:gravity="center"
+            android:text="@string/seleccione_una_sucursal_para_ver_su_informaci_n"
+            android:textColor="@color/texto_secundario"
+            android:textSize="16sp" />
+
+        <!-- Lista vertical de sucursales. TK79: margen lateral de 32dp -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSucursales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+            android:paddingBottom="16dp"
+            tools:listitem="@layout/item_sucursal" />
+    </LinearLayout>
+
+</LinearLayout>

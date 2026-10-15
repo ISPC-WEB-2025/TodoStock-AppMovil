@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:orientation="vertical"
+    tools:context=".PerfilActivity">
+
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/perfil_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <ProgressBar
+        android:id="@+id/progresoPerfil"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <!-- TK79: contenido centrado en la pantalla, como en Movimientos -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+            android:paddingVertical="16dp">
+
+            <TextView
+                android:id="@+id/tvErrorPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:accessibilityLiveRegion="polite"
+                android:textColor="@color/color_errores"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView style="@style/EtiquetaPerfil" android:text="@string/perfil_label_nombre" />
+            <TextView android:id="@+id/tvPerfilNombre" style="@style/ValorPerfil" />
+
+            <TextView style="@style/EtiquetaPerfil" android:text="@string/perfil_label_email" />
+            <TextView android:id="@+id/tvPerfilEmail" style="@style/ValorPerfil" />
+
+            <TextView style="@style/EtiquetaPerfil" android:text="@string/perfil_label_dni" />
+            <TextView android:id="@+id/tvPerfilDni" style="@style/ValorPerfil" />
+
+            <TextView style="@style/EtiquetaPerfil" android:text="@string/perfil_label_fecha" />
+            <TextView android:id="@+id/tvPerfilFecha" style="@style/ValorPerfil" />
+
+            <TextView style="@style/EtiquetaPerfil" android:text="@string/perfil_label_rol" />
+            <TextView android:id="@+id/tvPerfilRol" style="@style/ValorPerfil" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnEditarPerfil"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/boton_redondeado"
+                android:enabled="false"
+                android:text="@string/perfil_boton_editar"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

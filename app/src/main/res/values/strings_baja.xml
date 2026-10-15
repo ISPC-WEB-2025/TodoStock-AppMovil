@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK52: "Darme de baja" (derecho de arrepentimiento) -->
+<resources>
+    <string name="baja_boton">Darme de baja</string>
+
+    <string name="baja_titulo">¿Querés dar de baja tu cuenta?</string>
+    <string name="baja_mensaje">Tu cuenta se va a desactivar y ya no vas a poder ingresar a TodoStock. Para volver a usarla, un Administrador tiene que reactivarla.</string>
+    <string name="baja_confirmar">Sí, darme de baja</string>
+    <string name="baja_cancelar">Cancelar</string>
+    <string name="baja_procesando">Procesando la baja…</string>
+
+    <string name="baja_exitosa">Tu cuenta fue dada de baja.</string>
+
+    <string name="baja_error_titulo">No se pudo dar de baja la cuenta</string>
+    <string name="baja_error_superadmin">La cuenta del Super Administrador no se puede dar de baja.</string>
+    <string name="baja_error_generico">Ocurrió un error en el servidor. Intentá de nuevo más tarde.</string>
+    <string name="baja_error_conexion">No se pudo conectar con el servidor. Revisá tu conexión a Internet e intentá de nuevo.</string>
+    <string name="baja_sesion_vencida">Tu sesión venció. Iniciá sesión de nuevo para darte de baja.</string>
+    <string name="baja_aceptar">Aceptar</string>
+</resources>

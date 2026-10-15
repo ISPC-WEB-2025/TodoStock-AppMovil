@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarStock"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="Gestión de stock"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- Indicador de la sucursal actual -->
+    <TextView
+        android:id="@+id/tvSucursalFiltro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="16dp"
+        android:text="Mostrando inventario de: Sucursal 1"
+        android:textColor="@color/color_texto"
+        android:textSize="15sp"
+        android:textStyle="italic" />
+
+    <!-- TK16: la lista, el "cargando" y el mensaje de error comparten el mismo espacio -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- TK79: 24dp + 8dp de margen de cada tarjeta = 32dp a cada lado -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_stock" />
+
+        <ProgressBar
+            android:id="@+id/pbStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="Cargando stock"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/llMensajeStock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvMensajeStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:textColor="@color/color_texto"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReintentarStock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Reintentar" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

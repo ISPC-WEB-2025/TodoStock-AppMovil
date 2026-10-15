@@ -1,0 +1,23 @@
+name: Sincronizar Roadmap
+
+on:
+  push:
+    branches:
+      - develop
+  issues:
+    types: [closed, reopened, edited]
+
+jobs:
+  sincronizar-roadmap:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar actualización del Roadmap
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ROADMAP_DISPATCH_TOKEN }}
+          script: |
+            await github.rest.repos.createDispatchEvent({
+              owner: 'ISPC-WEB-2025',
+              repo: 'TodoStock-Mobile-RoadMap',
+              event_type: 'update-roadmap'
+            });

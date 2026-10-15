@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:orientation="vertical">
+
+    <!-- TK79: barra superior unificada (MaterialToolbar con el título centrado) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/carga_producto_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- TK79: el contenido queda centrado en la pantalla, como en Movimientos.
+         ScrollView para que se pueda recorrer si el teclado tapa los campos. -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/tvDescripcionPantalla"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+                android:paddingVertical="16dp"
+                android:gravity="center"
+                android:text="@string/carga_producto_descripcion"
+                android:textColor="@color/texto_secundario"
+                android:textSize="16sp" />
+
+            <!-- Nombre -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNombreProducto"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/carga_producto_hint_nombre">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombreProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Descripción -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDescripcion"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/carga_producto_hint_descripcion">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDescripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:gravity="top|start"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Precio (numérico) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPrecio"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/carga_producto_hint_precio">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPrecio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Código -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCodigo"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:layout_marginBottom="12dp"
+                android:hint="@string/carga_producto_hint_codigo">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCodigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- TK23: Categoría (desplegable con las categorías reales de la API) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCategoria"
+                style="@style/CampoRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:layout_marginBottom="24dp"
+                android:hint="@string/carga_producto_hint_categoria"
+                app:endIconMode="dropdown_menu">
+                <AutoCompleteTextView
+                    android:id="@+id/actvCategoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    android:textColor="@color/color_texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnGuardar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginHorizontal="@dimen/margen_horizontal_pantalla"
+                android:text="@string/carga_producto_boton_guardar"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/boton_redondeado" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

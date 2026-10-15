@@ -1,9 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.TodoStock" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme.
+         TK79: tema claro fijo. Con DayNight, en modo oscuro los componentes de Material
+         tomaban colores oscuros y violetas sobre los fondos claros de la app (texto de
+         "Cerrar Sesión" violeta, tarjetas grises, errores en rosa). -->
+    <style name="Base.Theme.TodoStock" parent="Theme.Material3.Light.NoActionBar" />
+
+    <!-- TK79: colores de la app en el tema, en lugar de los violetas de fábrica de Material. -->
+    <style name="Theme.TodoStock" parent="Base.Theme.TodoStock">
+        <item name="colorPrimary">@color/color_botones</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/gris_fondo_input</item>
+        <item name="colorOnPrimaryContainer">@color/color_texto</item>
+        <item name="colorSecondary">@color/color_detalles</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorError">@color/color_errores</item>
+        <item name="colorOnError">@color/white</item>
+        <item name="colorOnSurface">@color/color_texto</item>
+        <item name="colorOnSurfaceVariant">@color/texto_tenue</item>
+        <item name="android:textColorHint">@color/texto_tenue</item>
+        <item name="android:windowBackground">@color/color_fondo</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
-    <style name="Theme.TodoStock" parent="Base.Theme.TodoStock" />
+    <!-- Tema para Splash: unifica el SplashScreen del sistema (Android 12+) con el splash de la app -->
+    <style name="Theme.TodoStock.Splash" parent="Theme.TodoStock">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/fondo_splash</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@mipmap/ic_launcher_foreground</item>
+        <item name="android:statusBarColor">@color/fondo_splash</item>
+        <item name="android:navigationBarColor">@color/fondo_splash</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>

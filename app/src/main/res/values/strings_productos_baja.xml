@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="productos_baja_titulo">Dar de baja el producto</string>
+    <string name="productos_baja_mensaje">¿Dar de baja \"%1$s\"? Va a quedar marcado como INACTIVO y no se va a poder editar. Podés reactivarlo cuando quieras.</string>
+    <string name="productos_baja_confirmar">Dar de baja</string>
+    <string name="productos_baja_cancelar">Cancelar</string>
+    <string name="productos_baja_ok">Producto dado de baja</string>
+    <string name="productos_reactivar_ok">Producto reactivado</string>
+    <string name="productos_accion_error_red">No hay conexión con el servidor. No se hizo ningún cambio.</string>
+    <string name="productos_accion_error_generico">No se pudo completar la acción (código %1$d).</string>
+    <string name="productos_reactivar_titulo">Reactivar el producto</string>
+    <string name="productos_reactivar_mensaje">¿Reactivar \"%1$s\"? Va a volver a estar activo y se va a poder editar.</string>
+    <string name="productos_reactivar_confirmar">Reactivar</string>
+</resources>

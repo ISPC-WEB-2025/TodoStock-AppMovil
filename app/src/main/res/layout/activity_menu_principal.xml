@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menú Principal (Hub central de navegación) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <!-- Barra superior / Header -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMenu"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:title="TodoStock"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- Datos de sesion / Rol activo -->
+    <TextView
+        android:id="@+id/tvRolActivo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+        android:paddingVertical="16dp"
+        android:text="Sesión activa: Administrador"
+        android:textColor="@color/texto_secundario"
+        android:textSize="14sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <!-- Gestión de usuarios (solo Administrador) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavUsuarios"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_usuarios"
+                    android:visibility="gone" />
+
+                <!-- Seleccionar sucursal -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavSucursal"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_sucursal" />
+
+                <!-- Gestión de stock -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavStock"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_stock" />
+
+                <!-- Movimientos -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavMovimientos"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_movimientos" />
+
+                <!-- Mi perfil -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavPerfil"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_perfil" />
+
+                <!-- Contacto y soporte -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavContacto"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_contacto" />
+
+                <!-- Ayuda (cómo usar la app, términos e información) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavAyuda"
+                    style="@style/BotonMenu"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/menu_btn_ayuda" />
+
+            </LinearLayout>
+
+            <!-- Cerrar sesión -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Cerrar Sesión"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/boton_presionado"
+                app:cornerRadius="25dp" />
+
+            <!-- Darme de baja -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDarmeDeBaja"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:minHeight="48dp"
+                android:text="@string/baja_boton"
+                android:textAllCaps="false"
+                android:textColor="@color/color_errores"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

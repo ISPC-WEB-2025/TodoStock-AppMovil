@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: mensaje de error debajo de un campo (Movimientos).
+     Oculto hasta que hay un error. accessibilityLiveRegion hace que TalkBack lo lea
+     cuando aparece. -->
+<resources>
+    <style name="ErrorDeCampo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_errores</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:accessibilityLiveRegion">polite</item>
+    </style>
+</resources>
