@@ -82,14 +82,16 @@ feature/octavio-XXXXX     ─┘
 ### 📥 Descarga e Instalación del APK
 Los paquetes instalables se encuentran disponibles en los **[Releases de GitHub](https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/releases)**:
 
-1. **Instalación en dispositivo físico (Android):**
+> 📱 **Compatibilidad de Sistema Operativo:** Requiere **Android 7.0 (API 24)** o superior. Totalmente compatible y probado con versiones modernas de Android (Android 13 / API 33 y superiores).
+
+1. **Instalación en dispositivo físico (Android 7.0+):**
    - Descargar el archivo `.apk` de la última versión en el dispositivo.
    - Abrir el archivo descargado. Si Android solicita confirmación, habilitar la opción de *Instalar aplicaciones de fuentes desconocidas* en los ajustes del navegador o administrador de archivos.
    - Presionar **Instalar** y abrir la aplicación.
 
 2. **Instalación en Emulador (Android Studio):**
    - Descargar el `.apk` en la computadora.
-   - Con el emulador Android en ejecución, arrastrar y soltar el archivo `.apk` directamente sobre la ventana del emulador.
+   - Con el emulador Android en ejecución (ej. AVD con Android 7.0 a 13+), arrastrar y soltar el archivo `.apk` directamente sobre la ventana del emulador.
    - Alternativamente, instalar desde terminal vía ADB:
      ```bash
      adb install app-release.apk
