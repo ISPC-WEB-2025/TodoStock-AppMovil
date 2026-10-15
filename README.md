@@ -77,6 +77,41 @@ feature/octavio-XXXXX     ─┘
 
 ---
 
+## 📱 Instalación del APK y Cuentas de Prueba
+
+### 📥 Descarga e Instalación del APK
+Los paquetes instalables se encuentran disponibles en los **[Releases de GitHub](https://github.com/ISPC-WEB-2025/TodoStock-AppMovil/releases)**:
+
+1. **Instalación en dispositivo físico (Android):**
+   - Descargar el archivo `.apk` de la última versión en el dispositivo.
+   - Abrir el archivo descargado. Si Android solicita confirmación, habilitar la opción de *Instalar aplicaciones de fuentes desconocidas* en los ajustes del navegador o administrador de archivos.
+   - Presionar **Instalar** y abrir la aplicación.
+
+2. **Instalación en Emulador (Android Studio):**
+   - Descargar el `.apk` en la computadora.
+   - Con el emulador Android en ejecución, arrastrar y soltar el archivo `.apk` directamente sobre la ventana del emulador.
+   - Alternativamente, instalar desde terminal vía ADB:
+     ```bash
+     adb install app-release.apk
+     ```
+
+### 👤 Cuentas Habilitadas para Evaluación Docente
+Para evaluar los flujos de la aplicación según el nivel de acceso (conectada al backend en producción en Alwaysdata):
+
+| Rol / Nivel de Acceso | Cuenta / Email Habilitado | Alcance en la App |
+|---|---|---|
+| **Administrador** | `alejandro.santangelo@ispc.edu.ar` | Menú completo: gestión de stock, movimientos, alta de productos, sucursales y administración de usuarios (aprobación/edición). |
+| **Administrador** | `mario.gonzalez@ispc.edu.ar` | Menú completo: gestión de stock, movimientos, alta de productos, sucursales y administración de usuarios (aprobación/edición). |
+| **Administrador** | `solic.admin@test.com` | Menú completo: gestión de stock, movimientos, alta de productos, sucursales y administración de usuarios (aprobación/edición). |
+| **Empleado** | `demo@empleado.com` | Menú operativo: consulta de stock por sucursal, registro de movimientos y selección de sucursal. |
+| **Empleado** | `solic.empleado@test.com` | Menú operativo: consulta de stock por sucursal, registro de movimientos y selección de sucursal. |
+
+> 🔒 **Credenciales:** Por políticas de seguridad y buenas prácticas del repositorio, las contraseñas de acceso se proporcionan de forma privada al equipo docente.
+>
+> ⚙️ **Superadministrador:** En caso de requerir un usuario con permisos de *Superadministrador* (`is_superuser=True`), solicitarlo al equipo ya que debe crearse directamente desde Django.
+
+---
+
 ## 🔌 Configuración de Conexión a la API (Backend)
 
 Por defecto, la aplicación se conecta automáticamente al **backend en producción desplegado en la nube**:
