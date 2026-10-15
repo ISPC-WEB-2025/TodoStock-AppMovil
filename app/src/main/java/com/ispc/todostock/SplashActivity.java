@@ -35,6 +35,6 @@ public class SplashActivity extends AppCompatActivity {
                 // no vuelva a ella con el botón Atrás
                 finish();
             }
-        }, 3000); // Tiempo en milisegundos
+        }, 2000); // Tiempo en milisegundos
     }
 }
