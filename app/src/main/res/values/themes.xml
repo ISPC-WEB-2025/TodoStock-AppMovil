@@ -21,4 +21,13 @@
         <item name="android:windowBackground">@color/color_fondo</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
+
+    <!-- Tema para Splash: unifica el SplashScreen del sistema (Android 12+) con el splash de la app -->
+    <style name="Theme.TodoStock.Splash" parent="Theme.TodoStock">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/fondo_splash</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@mipmap/ic_launcher_foreground</item>
+        <item name="android:statusBarColor">@color/fondo_splash</item>
+        <item name="android:navigationBarColor">@color/fondo_splash</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>
