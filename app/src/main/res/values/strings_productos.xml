@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK39: textos del listado de productos -->
+<resources>
+    <string name="productos_titulo">Listado de productos</string>
+    <string name="productos_hint_buscar">Buscar por nombre o código</string>
+    <string name="productos_cargando">Cargando productos</string>
+    <string name="productos_reintentar">Reintentar</string>
+    <string name="productos_vacio">Todavía no hay productos cargados.</string>
+    <string name="productos_sin_resultados">No hay productos que coincidan con tu búsqueda.</string>
+    <string name="productos_error_sesion">Tu sesión venció. Volvé a iniciar sesión.</string>
+    <string name="productos_error_permiso">No tenés permiso para ver los productos.</string>
+    <string name="productos_error_red">No hay conexión con el servidor. Revisá tu internet e intentá de nuevo.</string>
+    <string name="productos_error_generico">No se pudieron cargar los productos (código %1$d).</string>
+    <string name="productos_codigo">Código: %1$s</string>
+    <string name="productos_inactivo">INACTIVO</string>
+    <string name="productos_btn_editar">Editar</string>
+    <string name="productos_btn_baja">Dar de baja</string>
+    <string name="productos_btn_reactivar">Reactivar</string>
+    <string name="productos_cd_editar">Editar %1$s</string>
+    <string name="productos_cd_baja">Dar de baja %1$s</string>
+    <string name="productos_cd_reactivar">Reactivar %1$s</string>
+    <!-- Provisorio: se saca cuando se conecten la edición y la baja -->
+    <string name="productos_pendiente">Esta acción se habilita en el próximo paso.</string>
+</resources>

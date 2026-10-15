@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: flecha de los desplegables de Movimientos. Triángulo plano en el color del texto
+     (reemplaza a @android:drawable/arrow_down_float, que tenía sombra y poco contraste). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@color/color_texto"
+        android:pathData="M7,10l5,5l5,-5z" />
+</vector>

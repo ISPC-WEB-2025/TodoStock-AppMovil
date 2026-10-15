@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- TK79: color de fondo propio (gris_fondo_input). Sin él, en modo oscuro Material
+     pintaba la tarjeta gris oscuro y el nombre casi negro quedaba sin contraste. -->
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardSucursal"
@@ -8,6 +10,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/gris_fondo_input"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp">
 
@@ -32,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="Av. Principal 1234"
-            android:textColor="#555555"
+            android:textColor="@color/texto_tenue"
             android:textSize="13sp" />
     </LinearLayout>
 

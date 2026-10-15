@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- pantalla Ayuda. Lista de opciones: cómo usar la app, términos y información. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_fondo"
+    android:orientation="vertical">
+
+    <!-- Barra superior unificada (convención TK79) -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarAyuda"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationContentDescription="@string/ayuda_volver"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/ayuda_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- Contenido centrado en vertical, como Movimientos y Carga de producto -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+            android:paddingBottom="48dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/gris_fondo_input"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Cómo usar TodoStock (video) -->
+                    <LinearLayout
+                        android:id="@+id/filaVideo"
+                        style="@style/FilaAyuda">
+
+                        <ImageView
+                            style="@style/FilaAyudaIcono"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_ayuda_video" />
+
+                        <LinearLayout style="@style/FilaAyudaTextos">
+
+                            <TextView
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_video" />
+
+                            <TextView
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_video_sub" />
+                        </LinearLayout>
+
+                        <ImageView
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <View style="@style/FilaAyudaSeparador" />
+
+                    <!-- Términos y política de privacidad -->
+                    <LinearLayout
+                        android:id="@+id/filaTerminos"
+                        style="@style/FilaAyuda">
+
+                        <ImageView
+                            style="@style/FilaAyudaIcono"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_ayuda_documento" />
+
+                        <LinearLayout style="@style/FilaAyudaTextos">
+
+                            <TextView
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_terminos" />
+
+                            <TextView
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_terminos_sub" />
+                        </LinearLayout>
+
+                        <ImageView
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                    <View style="@style/FilaAyudaSeparador" />
+
+                    <!-- Información de la app -->
+                    <LinearLayout
+                        android:id="@+id/filaInfo"
+                        style="@style/FilaAyuda">
+
+                        <ImageView
+                            style="@style/FilaAyudaIcono"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_ayuda_info" />
+
+                        <LinearLayout style="@style/FilaAyudaTextos">
+
+                            <TextView
+                                style="@style/FilaAyudaTitulo"
+                                android:text="@string/ayuda_fila_info" />
+
+                            <TextView
+                                style="@style/FilaAyudaSubtitulo"
+                                android:text="@string/ayuda_fila_info_sub" />
+                        </LinearLayout>
+
+                        <ImageView
+                            style="@style/FilaAyudaFlecha"
+                            android:contentDescription="@null" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

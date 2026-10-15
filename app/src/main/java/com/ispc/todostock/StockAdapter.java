@@ -1,13 +1,13 @@
 package com.ispc.todostock;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -46,15 +46,23 @@ public class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHol
         holder.tvCodigo.setText("Código: " + item.getCodigo());
         holder.tvCantidad.setText(item.getCantidad() + " un.");
 
-        // Destacar si está bajo stock
-        if (item.esBajoStock()) {
+        // Destacar si está bajo stock.
+        // TK79: colores de la app (antes estaban escritos a mano y no tenían contraste).
+        // Sobre el fondo de la tarjeta: color_errores 6.88, color_botones 6.09, color_texto 15.64.
+        if (item.getCantidad() <= 0) {
+            int rojo = ContextCompat.getColor(context, R.color.color_errores);
+            holder.tvEstado.setText("Sin Stock");
+            holder.tvEstado.setTextColor(rojo);
+            holder.tvCantidad.setTextColor(rojo);
+        } else if (item.esBajoStock()) {
+            int rojo = ContextCompat.getColor(context, R.color.color_errores);
             holder.tvEstado.setText("¡Stock Bajo!");
-            holder.tvEstado.setTextColor(Color.parseColor("#DC2626")); // color_error
-            holder.tvCantidad.setTextColor(Color.parseColor("#DC2626"));
+            holder.tvEstado.setTextColor(rojo);
+            holder.tvCantidad.setTextColor(rojo);
         } else {
             holder.tvEstado.setText("Disponible");
-            holder.tvEstado.setTextColor(Color.parseColor("#16A34A")); // color_success
-            holder.tvCantidad.setTextColor(Color.parseColor("#1E3A8A")); // color_primary
+            holder.tvEstado.setTextColor(ContextCompat.getColor(context, R.color.color_botones));
+            holder.tvCantidad.setTextColor(ContextCompat.getColor(context, R.color.color_texto));
         }
     }
 

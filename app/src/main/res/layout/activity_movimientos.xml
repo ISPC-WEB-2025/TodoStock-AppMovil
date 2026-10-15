@@ -1,59 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_fondo"
     android:orientation="vertical">
 
-    <!-- Barra superior de lado a lado con fondo verde -->
-    <FrameLayout
+    <!-- TK79: barra superior unificada con el resto de las pantallas
+         (MaterialToolbar verde con el título centrado). -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarMovimientos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/boton_presionado"
-        android:padding="16dp"
-        android:layout_marginBottom="24dp">
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="16dp"
+        android:background="@color/color_botones"
+        app:navigationContentDescription="@string/mov_volver_descripcion"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/mov_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
 
-        <ImageButton
-            android:id="@+id/btnAtras"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="start|center_vertical"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/flecha_atras"
-            android:contentDescription="Volver a la pantalla anterior" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="MOVIMIENTOS\n(sucursales)"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </FrameLayout>
-
-    <!-- Sub-contenedor para el formulario -->
-    <LinearLayout
+    <!-- Sub-contenedor para el formulario.
+         TK79: cada campo tiene debajo su mensaje de error (oculto hasta que hay un error),
+         en lugar de los Toast que desaparecían y no indicaban el campo. -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_vertical"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp">
+        android:paddingStart="@dimen/margen_horizontal_pantalla"
+        android:paddingEnd="@dimen/margen_horizontal_pantalla"
+        android:paddingBottom="16dp">
 
         <!-- Origen -->
         <TextView
+            android:id="@+id/tvEtiquetaOrigen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
+            android:labelFor="@+id/spinnerOrigen"
             android:text="ORIGEN"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <FrameLayout
+            android:id="@+id/campoOrigen"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
@@ -72,20 +70,30 @@
                 android:layout_marginEnd="16dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:src="@android:drawable/arrow_down_float" />
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_flecha_desplegable" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvErrorOrigen"
+            style="@style/ErrorDeCampo"
+            android:layout_marginTop="-12dp"
+            android:layout_marginBottom="12dp" />
 
         <!-- Destino -->
         <TextView
+            android:id="@+id/tvEtiquetaDestino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
+            android:labelFor="@+id/spinnerDestino"
             android:text="DESTINO"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <FrameLayout
+            android:id="@+id/campoDestino"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
@@ -104,20 +112,29 @@
                 android:layout_marginEnd="16dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:src="@android:drawable/arrow_down_float" />
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_flecha_desplegable" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvErrorDestino"
+            style="@style/ErrorDeCampo"
+            android:layout_marginTop="-12dp"
+            android:layout_marginBottom="12dp" />
 
         <!-- Producto -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
+            android:labelFor="@+id/spinnerProducto"
             android:text="PRODUCTO"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <FrameLayout
+            android:id="@+id/campoProducto"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="16dp"
@@ -136,19 +153,28 @@
                 android:layout_marginEnd="16dp"
                 android:clickable="false"
                 android:focusable="false"
-                android:src="@android:drawable/arrow_down_float" />
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_flecha_desplegable" />
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/tvErrorProducto"
+            style="@style/ErrorDeCampo"
+            android:layout_marginTop="-12dp"
+            android:layout_marginBottom="12dp" />
 
         <!-- Cantidad -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
+            android:labelFor="@+id/etCantidad"
             android:text="CANTIDAD"
             android:textColor="@color/color_texto"
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <!-- TK79: color del texto de ayuda (antes gris muy claro) -->
         <EditText
             android:id="@+id/etCantidad"
             android:layout_width="match_parent"
@@ -159,18 +185,26 @@
             android:inputType="number"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:textColor="@color/texto_secundario" />
+            android:textColor="@color/color_texto"
+            android:textColorHint="@color/texto_tenue" />
+
+        <TextView
+            android:id="@+id/tvErrorCantidad"
+            style="@style/ErrorDeCampo"
+            android:layout_marginTop="-28dp"
+            android:layout_marginBottom="28dp" />
 
         <!-- Botón -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnConfirmar"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="Confirmar"
+            android:text="@string/mov_btn_confirmar"
             android:textSize="20sp"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:background="@drawable/boton_redondeado" />
 
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>

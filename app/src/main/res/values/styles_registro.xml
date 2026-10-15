@@ -11,5 +11,10 @@
         <item name="boxCornerRadiusBottomEnd">12dp</item>
         <item name="boxStrokeColor">@color/color_botones</item>
         <item name="hintTextColor">@color/color_botones</item>
+        <!-- TK79: etiqueta del campo cuando no está en foco (antes gris claro, sin contraste). -->
+        <item name="android:textColorHint">@color/texto_tenue</item>
+        <!-- TK79: el error usa el rojo de la app, no el rosa del modo oscuro. -->
+        <item name="boxStrokeErrorColor">@color/color_errores</item>
+        <item name="errorTextColor">@color/color_errores</item>
     </style>
 </resources>

@@ -1,6 +1,7 @@
 package com.ispc.todostock;
 
-import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.CompoundButtonCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
@@ -23,9 +26,7 @@ import com.ispc.todostock.validacion.Validadores.RequisitoPassword;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import okhttp3.ResponseBody;
@@ -45,6 +46,7 @@ public class RegistroActivity extends AppCompatActivity {
     private TextInputLayout tilNombre, tilEmail, tilDni, tilFecha, tilPassword, tilConfirmar;
     private EditText etNombre, etEmail, etDni, etFecha, etPassword, etConfirmar;
     private CheckBox cbTerminos;
+    private ColorStateList colorCasillaOriginal;
     private TextView tvErrorTerminos, tvErrorGeneral;
     private Button btnRegistrarme;
 
@@ -68,6 +70,7 @@ public class RegistroActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etConfirmar = findViewById(R.id.etConfirmar);
         cbTerminos = findViewById(R.id.cbTerminos);
+        colorCasillaOriginal = CompoundButtonCompat.getButtonTintList(cbTerminos);
         tvErrorTerminos = findViewById(R.id.tvErrorTerminos);
         tvErrorGeneral = findViewById(R.id.tvErrorGeneral);
         btnRegistrarme = findViewById(R.id.btnRegistrarme);
@@ -76,9 +79,26 @@ public class RegistroActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarRegistro);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        etFecha.setOnClickListener(v -> mostrarSelectorDeFecha());
-        findViewById(R.id.tvVerTerminos).setOnClickListener(v -> mostrarTerminos());
+        etFecha.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilFecha.setError(null);
+            }
+            @Override
+            public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        // TK52: abre la pantalla con los términos y la política de privacidad.
+        findViewById(R.id.tvVerTerminos).setOnClickListener(v ->
+                startActivity(new Intent(this, TerminosActivity.class)));
         btnRegistrarme.setOnClickListener(v -> intentarRegistro());
+
+        // TK52: al marcar la casilla se va el error de los términos.
+        cbTerminos.setOnCheckedChangeListener((casilla, marcada) -> {
+            if (marcada) mostrarErrorTerminos(false);
+        });
     }
 
     @Override
@@ -88,29 +108,6 @@ public class RegistroActivity extends AppCompatActivity {
             llamadaEnCurso.cancel();
         }
         super.onDestroy();
-    }
-
-    private void mostrarSelectorDeFecha() {
-        Calendar hoy = Calendar.getInstance();
-        DatePickerDialog dialogo = new DatePickerDialog(
-                this,
-                (view, anio, mes, dia) -> etFecha.setText(
-                        String.format(Locale.US, "%02d/%02d/%04d", dia, mes + 1, anio)),
-                hoy.get(Calendar.YEAR),
-                hoy.get(Calendar.MONTH),
-                hoy.get(Calendar.DAY_OF_MONTH));
-        // No se pueden elegir fechas futuras.
-        dialogo.getDatePicker().setMaxDate(System.currentTimeMillis());
-        dialogo.show();
-    }
-
-    private void mostrarTerminos() {
-        // TK52 reemplaza este diálogo por la pantalla con los textos definitivos (TK105).
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.registro_terminos_titulo)
-                .setMessage(R.string.registro_terminos_texto_provisorio)
-                .setPositiveButton(R.string.registro_aceptar, null)
-                .show();
     }
 
     private void intentarRegistro() {
@@ -140,6 +137,10 @@ public class RegistroActivity extends AppCompatActivity {
         if (!Validadores.fechaNacimientoValida(fecha)) {
             tilFecha.setError(getString(R.string.registro_error_fecha));
             todoValido = false;
+        } else if (!Validadores.esMayorDeEdad(fecha)) {
+            // #221: edad mínima para registrarse.
+            tilFecha.setError(getString(R.string.registro_error_edad, Validadores.EDAD_MINIMA));
+            todoValido = false;
         }
         Set<RequisitoPassword> faltantes = Validadores.requisitosFaltantes(password);
         if (!faltantes.isEmpty()) {
@@ -151,7 +152,7 @@ public class RegistroActivity extends AppCompatActivity {
             todoValido = false;
         }
         if (!cbTerminos.isChecked()) {
-            tvErrorTerminos.setVisibility(View.VISIBLE);
+            mostrarErrorTerminos(true);
             todoValido = false;
         }
 
@@ -212,9 +213,8 @@ public class RegistroActivity extends AppCompatActivity {
                 if (respuesta.isSuccessful()) {
                     mostrarRegistroExitoso();
                 } else if (respuesta.code() == 400) {
-                    mostrarErrorDelServidor(leerMensajeDeError(respuesta));
+                    mostrarErrorDelServidor(leerCuerpoDeError(respuesta));
                 } else {
-                    // El backend responde 500 cuando el DNI ya está registrado.
                     mostrarErrorGeneral(getString(R.string.registro_error_generico));
                 }
             }
@@ -228,25 +228,37 @@ public class RegistroActivity extends AppCompatActivity {
         });
     }
 
-    /** Lee el campo "error" del cuerpo de una respuesta 400. Devuelve null si no lo encuentra. */
-    private String leerMensajeDeError(Response<ResponseBody> respuesta) {
+    /** Lee el cuerpo JSON de una respuesta de error. Devuelve null si no se puede leer. */
+    private JSONObject leerCuerpoDeError(Response<ResponseBody> respuesta) {
         try (ResponseBody cuerpo = respuesta.errorBody()) {
             if (cuerpo == null) return null;
-            String mensaje = new JSONObject(cuerpo.string()).optString("error", "");
-            return mensaje.isEmpty() ? null : mensaje;
+            return new JSONObject(cuerpo.string());
         } catch (Exception e) {
             return null;
         }
     }
 
-    private void mostrarErrorDelServidor(String mensaje) {
-        if (mensaje == null) {
+    /**
+     * Muestra el error 400 del backend debajo del campo que corresponde.
+     * Usa "detalles" para saber qué campo falló y muestra un texto propio,
+     * porque los mensajes del servidor son los genéricos de Django.
+     * La app ya validó el formato del email y del DNI antes de enviar, así que
+     * un error del servidor en esos campos significa que ya están registrados.
+     */
+    private void mostrarErrorDelServidor(JSONObject cuerpo) {
+        boolean mostrado = false;
+        JSONObject detalles = cuerpo == null ? null : cuerpo.optJSONObject("detalles");
+
+        if (detalles != null && detalles.has("email")) {
+            tilEmail.setError(getString(R.string.registro_error_email_registrado));
+            mostrado = true;
+        }
+        if (detalles != null && detalles.has("dni")) {
+            tilDni.setError(getString(R.string.registro_error_dni_registrado));
+            mostrado = true;
+        }
+        if (!mostrado) {
             mostrarErrorGeneral(getString(R.string.registro_error_generico));
-        } else if (mensaje.toLowerCase(Locale.ROOT).contains("email")) {
-            // "Este email ya existe.": se muestra en el campo que corresponde.
-            tilEmail.setError(mensaje);
-        } else {
-            mostrarErrorGeneral(mensaje);
         }
     }
 
@@ -271,6 +283,17 @@ public class RegistroActivity extends AppCompatActivity {
                 : R.string.registro_boton);
     }
 
+    /**
+     * TK52: muestra u oculta el error de los términos. Con error, el cuadradito de la
+     * casilla se pinta de rojo para que se vea a qué se refiere el mensaje.
+     */
+    private void mostrarErrorTerminos(boolean mostrar) {
+        tvErrorTerminos.setVisibility(mostrar ? View.VISIBLE : View.GONE);
+        CompoundButtonCompat.setButtonTintList(cbTerminos, mostrar
+                ? ColorStateList.valueOf(ContextCompat.getColor(this, R.color.color_errores))
+                : colorCasillaOriginal);
+    }
+
     private void limpiarErrores() {
         tilNombre.setError(null);
         tilEmail.setError(null);
@@ -278,7 +301,7 @@ public class RegistroActivity extends AppCompatActivity {
         tilFecha.setError(null);
         tilPassword.setError(null);
         tilConfirmar.setError(null);
-        tvErrorTerminos.setVisibility(View.GONE);
+        mostrarErrorTerminos(false);
         tvErrorGeneral.setVisibility(View.GONE);
     }
 }

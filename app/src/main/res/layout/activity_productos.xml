@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_fondo">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarProductos"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/color_botones"
+        app:navigationIcon="@drawable/flecha_atras"
+        app:title="@string/productos_titulo"
+        app:titleCentered="true"
+        app:titleTextColor="@color/color_fondo" />
+
+    <!-- TK39: buscador por nombre o código -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilBuscar"
+        style="@style/CampoRegistro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:hint="@string/productos_hint_buscar"
+        app:endIconMode="clear_text">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBuscar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="@color/color_texto" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- La lista, el "cargando" y los mensajes comparten el mismo espacio -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- 24dp + 8dp de margen de cada tarjeta = 32dp a cada lado -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvProductos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_producto" />
+
+        <ProgressBar
+            android:id="@+id/pbProductos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/productos_cargando"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/llMensajeProductos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvMensajeProductos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:accessibilityLiveRegion="polite"
+                android:gravity="center"
+                android:textColor="@color/color_texto"
+                android:textSize="16sp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReintentarProductos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/productos_reintentar" />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

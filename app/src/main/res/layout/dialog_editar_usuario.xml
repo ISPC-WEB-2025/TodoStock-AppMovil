@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TK37: Formulario del diálogo "Editar usuario" (mismos campos y estilo que Cargar usuario de TK109) -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp">
+
+        <!-- Nombre y apellido -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEditarNombre"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_nombre">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Correo electrónico -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEditarEmail"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_email">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- DNI -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEditarDni"
+            style="@style/CampoRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_dni">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEditarDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Rol: solo visible para el Super Administrador (ADR-0008) -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEditarRol"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:hint="@string/usuarios_hint_rol"
+            android:visibility="gone"
+            app:boxBackgroundColor="@color/gris_fondo_input"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="@color/color_botones"
+            app:boxStrokeWidth="1dp">
+            <AutoCompleteTextView
+                android:id="@+id/actvEditarRol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textColor="@color/color_texto" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</ScrollView>

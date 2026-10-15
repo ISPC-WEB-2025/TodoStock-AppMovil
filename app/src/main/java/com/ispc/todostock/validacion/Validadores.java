@@ -2,6 +2,7 @@ package com.ispc.todostock.validacion;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Locale;
@@ -26,6 +27,9 @@ public final class Validadores {
 
     /** Mismo mínimo que usa el formulario de registro de la web. */
     public static final int NOMBRE_MIN = 6;
+
+    /** #221: edad mínima para registrarse. */
+    public static final int EDAD_MINIMA = 18;
 
     /** Formato en que la pantalla muestra la fecha. */
     public static final String FORMATO_FECHA_PANTALLA = "dd/MM/yyyy";
@@ -114,6 +118,21 @@ public final class Validadores {
         return fecha != null && !fecha.after(hoy);
     }
 
+    /** #221: la persona tiene EDAD_MINIMA años o más (los cumple hoy o antes). */
+    public static boolean esMayorDeEdad(String fechaPantalla) {
+        return esMayorDeEdad(fechaPantalla, new Date());
+    }
+
+    /** Igual que la anterior, pero recibe "hoy" para poder testearla. */
+    public static boolean esMayorDeEdad(String fechaPantalla, Date hoy) {
+        Date fecha = parsear(fechaPantalla);
+        if (fecha == null) return false;
+        Calendar cumpleMinimo = Calendar.getInstance();
+        cumpleMinimo.setTime(fecha);
+        cumpleMinimo.add(Calendar.YEAR, EDAD_MINIMA);   // día en que cumple 18
+        return !cumpleMinimo.getTime().after(hoy);
+    }
+
     /**
      * Convierte la fecha de la pantalla (dd/MM/yyyy) al formato del backend
      * (yyyy-MM-dd). Devuelve null si la fecha no es válida.
@@ -124,6 +143,38 @@ public final class Validadores {
         return new SimpleDateFormat(FORMATO_FECHA_API, Locale.US).format(fecha);
     }
 
+    // ---------- Movimientos (TK26 / TK27) ----------
+
+    /**
+     * La cantidad de un movimiento tiene que ser un número entero mayor a cero.
+     * Rechaza también un texto vacío o un número demasiado grande, que hoy
+     * cerraría la app al convertirlo.
+     */
+    public static boolean cantidadValida(String cantidad) {
+        if (cantidad == null) return false;
+        try {
+            return Integer.parseInt(cantidad.trim()) > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /** En un traslado, la sucursal de origen y la de destino tienen que ser distintas. */
+    public static boolean origenYDestinoDistintos(int idOrigen, int idDestino) {
+        return idOrigen != idDestino;
+    }
+    /** yyyy-MM-dd (backend) -> dd/MM/yyyy (pantalla). Devuelve "" si no se puede. */
+    public static String fechaDesdeApi(String fechaApi) {
+        if (fechaApi == null) return "";
+        try {
+            SimpleDateFormat in = new SimpleDateFormat(FORMATO_FECHA_API, Locale.US);
+            in.setLenient(false);
+            Date d = in.parse(fechaApi.trim());
+            return new SimpleDateFormat(FORMATO_FECHA_PANTALLA, Locale.US).format(d);
+        } catch (ParseException e) {
+            return "";
+        }
+    }
     private static Date parsear(String fechaPantalla) {
         if (fechaPantalla == null || fechaPantalla.trim().length() != FORMATO_FECHA_PANTALLA.length()) {
             return null;

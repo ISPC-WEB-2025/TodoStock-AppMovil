@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp"
-    android:background="@color/white"
+    android:paddingHorizontal="@dimen/margen_horizontal_pantalla"
+    android:paddingVertical="32dp"
     >
 
     <!-- Título Principal -->
@@ -21,40 +27,42 @@
         android:layout_marginBottom="32dp" />
 
     <!-- Campo de Usuario -->
+    <!-- TK92: estilo unificado con CampoRegistro para eliminar doble borde y errorIconDrawable en null -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsuario"
+        style="@style/CampoRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-    <EditText
-        android:id="@+id/etUsuario"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Nombre de usuario"
-        android:inputType="textPersonName"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:background="@drawable/input_fondo"
-        android:textColor="@color/color_texto"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:hint="@string/login_hint_email"
+        app:errorIconDrawable="@null">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/color_texto" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Campo de Contraseña -->
+    <!-- TK92: estilo unificado con CampoRegistro, toggle de contraseña limpio y sin colisión de iconos -->
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        style="@style/CampoRegistro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        app:passwordToggleEnabled="true">
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:background="@drawable/input_fondo"
-        android:textColor="@color/color_texto"
-        android:layout_marginBottom="24dp" />
+        android:hint="@string/login_hint_password"
+        app:endIconMode="password_toggle"
+        app:errorIconDrawable="@null">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/color_texto" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Botón de ingreso -->
@@ -84,3 +92,4 @@
         android:textStyle="bold" />
 
 </LinearLayout>
+</ScrollView>
