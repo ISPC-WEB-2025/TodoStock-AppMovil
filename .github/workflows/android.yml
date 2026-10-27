@@ -13,10 +13,18 @@ on:
       - release
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   unit-tests:
     name: Tests Unitarios
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout del repositorio
@@ -42,3 +50,4 @@ jobs:
           name: reporte-tests-unitarios
           path: app/build/reports/tests/testDebugUnitTest/
           retention-days: 14
+          if-no-files-found: ignore
