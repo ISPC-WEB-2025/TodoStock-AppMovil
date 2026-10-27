@@ -57,7 +57,7 @@ android {
         }
         release {
             buildConfigField "String", "BASE_URL", "\"${apiBaseUrlDesplegado}\""
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -98,6 +98,7 @@ dependencies {
 
     // Testing
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.json:json:20231013'
     // TK90: Mockito 4.x es la última línea compatible con Java 8.
     testImplementation 'org.mockito:mockito-core:4.11.0'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'

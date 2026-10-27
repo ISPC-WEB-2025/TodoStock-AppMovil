@@ -56,10 +56,14 @@ public class LoginViewModelTest {
     /** Caso feliz: el repositorio responde EXITO y el ViewModel lo publica. */
     @Test
     public void login_credencialesValidas_publicaExito() {
+        // Arrange
         LoginResponse datos = new LoginResponse();
         when(repositorio.login(EMAIL, PASSWORD)).thenReturn(ResultadoLogin.exito(datos));
 
+        // Act
         viewModel.login(EMAIL, PASSWORD);
+
+        // Assert
 
         ResultadoLogin resultado = viewModel.getResultado().getValue();
         assertTrue(resultado.esExito());
@@ -73,10 +77,14 @@ public class LoginViewModelTest {
     /** Caso de error: el repositorio responde 401 y el ViewModel publica CREDENCIALES_INCORRECTAS. */
     @Test
     public void login_credencialesIncorrectas_publicaError() {
+        // Arrange
         when(repositorio.login(EMAIL, PASSWORD))
                 .thenReturn(ResultadoLogin.error(ResultadoLogin.Tipo.CREDENCIALES_INCORRECTAS));
 
+        // Act
         viewModel.login(EMAIL, PASSWORD);
+
+        // Assert
 
         ResultadoLogin resultado = viewModel.getResultado().getValue();
         assertFalse(resultado.esExito());

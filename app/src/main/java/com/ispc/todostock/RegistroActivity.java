@@ -257,6 +257,10 @@ public class RegistroActivity extends AppCompatActivity {
             tilDni.setError(getString(R.string.registro_error_dni_registrado));
             mostrado = true;
         }
+        if (detalles != null && (detalles.has("fecha_nacimiento") || detalles.has("fdn"))) {
+            tilFecha.setError(getString(R.string.registro_error_edad, Validadores.EDAD_MINIMA));
+            mostrado = true;
+        }
         if (!mostrado) {
             mostrarErrorGeneral(getString(R.string.registro_error_generico));
         }

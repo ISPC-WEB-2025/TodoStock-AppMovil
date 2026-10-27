@@ -1,0 +1,40 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  unit-tests:
+    name: Tests Unitarios
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Dar permisos de ejecución a Gradlew
+        run: chmod +x gradlew
+
+      - name: Ejecutar Tests Unitarios
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Publicar Reporte HTML de Tests como Artefacto
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-tests-unitarios
+          path: app/build/reports/tests/testDebugUnitTest/
+          retention-days: 14

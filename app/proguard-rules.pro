@@ -19,3 +19,23 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+# ===================================================================
+# Reglas de seguridad para Release (R8 / ProGuard)
+# ===================================================================
+
+# Preservar todos los modelos DTO de red para que Retrofit/Gson mapeen el JSON de la API
+-keep class com.ispc.todostock.network.** { *; }
+
+# Preservar anotaciones, firmas y métodos de Retrofit
+-keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-keepclassmembers,allowshrinking,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Reglas para Google Tink y EncryptedSharedPreferences (SesionManager)
+-keep class com.google.crypto.tink.** { *; }
+-dontwarn com.google.errorprone.annotations.**

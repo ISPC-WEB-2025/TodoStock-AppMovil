@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -95,6 +96,12 @@ public class MovimientosActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(EXTRA_TIPO_OPERACION)) {
             tipoMovimiento = TipoMovimiento.desdeString(intent.getStringExtra(EXTRA_TIPO_OPERACION));
+        }
+
+        if (tipoMovimiento == TipoMovimiento.INGRESO && !SesionManager.getInstance(this).esAdmin()) {
+            Toast.makeText(this, R.string.mov_error_permiso, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
 
         // TK79: la barra superior ahora es una MaterialToolbar; la flecha de volver es su navegación.
@@ -263,7 +270,12 @@ public class MovimientosActivity extends AppCompatActivity {
                 if (isFinishing() || isDestroyed()) return;
 
                 if (respuesta.isSuccessful() && respuesta.body() != null) {
-                    List<StockSucursalDto> productos = respuesta.body();
+                    List<StockSucursalDto> productos = new ArrayList<>();
+                    for (StockSucursalDto dto : respuesta.body()) {
+                        if (!BajaDeProducto.estaInactivo(dto.getNombreProducto())) {
+                            productos.add(dto);
+                        }
+                    }
                     String guia = productos.isEmpty()
                             ? getString(R.string.mov_sin_stock)
                             : getString(R.string.mov_seleccione_producto);
@@ -363,7 +375,12 @@ public class MovimientosActivity extends AppCompatActivity {
                 if (isFinishing() || isDestroyed()) return;
 
                 if (respuesta.isSuccessful() && respuesta.body() != null) {
-                    List<ProductoDto> lista = respuesta.body();
+                    List<ProductoDto> lista = new ArrayList<>();
+                    for (ProductoDto dto : respuesta.body()) {
+                        if (!BajaDeProducto.estaInactivo(dto.getNombre())) {
+                            lista.add(dto);
+                        }
+                    }
                     String guia = lista.isEmpty()
                             ? getString(R.string.mov_sin_stock)
                             : getString(R.string.mov_seleccione_producto);
