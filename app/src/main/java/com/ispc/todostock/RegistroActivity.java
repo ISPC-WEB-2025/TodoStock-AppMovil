@@ -79,16 +79,11 @@ public class RegistroActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarRegistro);
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        etFecha.addTextChangedListener(new android.text.TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                tilFecha.setError(null);
-            }
-            @Override
-            public void afterTextChanged(android.text.Editable s) {}
-        });
+        MascaraFechaWatcher.aplicar(
+                etFecha,
+                tilFecha,
+                getString(R.string.registro_error_fecha),
+                getString(R.string.registro_error_edad, Validadores.EDAD_MINIMA));
 
         // TK52: abre la pantalla con los términos y la política de privacidad.
         findViewById(R.id.tvVerTerminos).setOnClickListener(v ->
