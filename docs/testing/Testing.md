@@ -25,12 +25,13 @@ Planilla de Trazabilidad Externa: [Google Sheets - Planilla General de Test Case
 
 ### 🧪 1.1 Cobertura de Pruebas Unitarias e Integración Android (`app/src/test/`)
 
-En el cliente Android nativo se implementaron cinco suites automatizadas en `app/src/test/java/com/ispc/todostock/`:
+En el cliente Android nativo se implementaron ocho suites automatizadas en `app/src/test/java/com/ispc/todostock/`:
 
 1. **`ValidadoresTest.java` (TK60 - PR #213, PR #226, PR #267):**
    - **Patrón de Diseño:** Arrange-Act-Assert (AAA).
    - **Casos de Prueba:** Formato de e-mail, fortaleza de contraseña (mínimo 9 caracteres, mayúscula, número y especial), edad mínima +18 y formato de DNI.
-2. **`StockItemTest.java` (TK61 - PR #277):**
+2. **`StockItemTest.java` (TK61 - PR #277, PR #323):**
+   - **Patrón de Diseño:** Arrange-Act-Assert (AAA).
    - **Lógica Probada:** Evaluación del cálculo de stock bajo el umbral mínimo (`isStockBajo()`), asignación de colores de advertencia y mapeo correcto entre DTOs de API REST (`StockSucursalDto`) e instancias de modelo de UI (`StockItem`).
 3. **`LoginViewModelTest.java` (TK62 - PR #293):**
    - **Pruebas de ViewModel y Repositorio:** Evaluación de estados de UI de autenticación (`ResultadoLogin`), manejo de tokens JWT y emulación de llamadas asíncronas con `AuthRepository` simulado.
@@ -38,6 +39,15 @@ En el cliente Android nativo se implementaron cinco suites automatizadas en `app
    - **Pruebas de Integración de Red (MockWebServer - 200 OK):** Verificación del parseo de respuestas HTTP 200 OK en JSON hacia DTOs (`LoginResponse`, `SucursalDto`, `PerfilResponse`, `StockSucursalDto`).
 5. **`repositorio/AuthRepositoryTest.java` (AUT-NET-02 - TK65 - PR #295, PR #297):**
    - **Pruebas de Integración de Red con Manejo de Errores (MockWebServer - HTTP 500):** Verificación del flujo de autenticación exitoso, guardado de tokens y manejo seguro de fallas de servidor HTTP 500 (con y sin cuerpo HTML) en `AuthRepository`, garantizando que el estado de UI `ResultadoLogin.Error` informe limpiamente al usuario sin romper la aplicación.
+6. **`network/MovimientoRequestTest.java` (AUT-UNIT-05 - TK118 - PR #302):**
+   - **Patrón de Diseño:** Arrange-Act-Assert (AAA).
+   - **Lógica Probada:** Serialización JSON estricta y construcción de payloads para los 4 tipos de movimientos (`Traslado`, `Entrada`, `Salida` por venta y `Salida` por merma/rotura).
+7. **`BajaDeProductoTest.java` (AUT-UNIT-06 - TK122 - PR #323):**
+   - **Patrón de Diseño:** Arrange-Act-Assert (AAA).
+   - **Lógica Probada:** Detección de inactividad (`estaInactivo()`), remoción de prefijo `[INACTIVO]` y blindaje ante valores nulos para excluir productos dados de baja lógica en los selectores de movimientos.
+8. **`MascaraFechaWatcherTest.java` (TK325 - PR #326):**
+   - **Patrón de Diseño:** Arrange-Act-Assert (AAA).
+   - **Lógica Probada:** Batería de 10 tests unitarios que valida formateo en tiempo real (`dd/MM/yyyy`), auto-inserción de barras, retroceso seguro con backspace, normalización de pegado y truncado a 10 caracteres.
 
 ---
 
