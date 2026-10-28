@@ -20,6 +20,8 @@
     <string name="usuarios_error_nombre">Mínimo %1$d caracteres</string>
     <string name="usuarios_error_email">Formato de correo inválido</string>
     <string name="usuarios_error_dni">Debe tener 7 u 8 números</string>
+    <string name="usuarios_error_fecha">Fecha inválida (dd/mm/aaaa)</string>
+    <string name="usuarios_error_edad">Debe ser mayor de %1$d años</string>
 
     <!-- Pestaña 2: Cargar usuario (TK109) -->
     <string name="usuarios_cargar_desc">Complete los datos para dar de alta un usuario directamente en el sistema.</string>

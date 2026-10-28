@@ -136,6 +136,7 @@ La estrategia se basa en la pirámide de automatización de pruebas de software,
   * `ValidadoresTest.java`: Batería de pruebas unitarias sobre la clase `Validadores` cubriendo contraseñas, DNI, fecha, edad mínima (18 años) y cantidades/sucursales de movimientos (`AUT-UNIT-01`, `AUT-UNIT-03`, `AUT-UNIT-04`).
   * `LoginViewModelTest.java` (`AUT-UNIT-02` / #202): Caso feliz (credenciales correctas emiten estado `Exito`) y caso de error (credenciales inválidas emiten estado `Error`), aislando el repositorio con `@Mock` y verificando `LiveData` y llamadas de comportamiento (`verify`).
   * `MovimientoRequestTest.java` (`AUT-UNIT-05` / #302): Suite de pruebas unitarias locales en JVM con JUnit 4 y patrón AAA que valida la correcta construcción y serialización JSON de los payloads de `MovimientoRequest` (Traslado, Entrada/Ingreso, Salida/Venta, Salida/Merma) y partición de equivalencia/valores límite en cantidad.
+  * `MascaraFechaWatcherTest.java` (#325): Suite de pruebas unitarias locales en JVM con JUnit 4 y patrón AAA que valida el formateo interactivo de fecha (`dd/MM/yyyy`), la inserción automática y borrado seguro de barras separadoras sin bucles, la normalización de texto pegado y el truncado a 10 caracteres.
 
 ### 3.2 Nivel 2: Integración de Red y Contratos API (`AUT-NET-01` y `AUT-NET-02`)
 * **Herramienta:** `MockWebServer` (Square).
@@ -320,7 +321,7 @@ Para dar cumplimiento a las buenas prácticas de QA y a la consigna académica, 
 | **US04: Contacto** | Formulario valida y envía mensaje exitosamente a soporte. | TK42 | `TC-C-01` |
 | **US05 & US09: Productos** | Solo Admin da de alta/edita/elimina; código único; campos obligatorios. | TK23, TK38, TK39, TK93 | `TC-CP-01`, `TC-CP-02` |
 | **US06: Movimientos** | Traslado atómico (origen != destino); Ingreso restringido a Casa Central; Salida por venta; Mermas/Roturas; cantidad > 0 y stock suficiente; buscador integrado de producto. | TK27, TK115, TK116, TK117, TK118 | `TC-MOV-001` a `TC-MOV-011`<br>`MovimientoRequestTest` (`AUT-UNIT-05`)<br>`ValidadoresTest#cantidadValida`<br>`ValidadoresTest#origenYDestinoDistintos` |
-| **US07: Registro** | Alta con cuenta pendiente; DNI 7/8 dígitos; password robusta; mayor de 18 años. | TK34, TK35, TK47, TK60 | `TC-REG-API-01..05`<br>`ValidadoresTest` (15 tests de contraseñas, DNI, fecha y edad)<br>`TC-REG-EDAD-01..02`<br>`TC-REG-01..04` |
+| **US07: Registro** | Alta con cuenta pendiente; DNI 7/8 dígitos; password robusta; mayor de 18 años; máscara y validación temprana de fecha. | TK34, TK35, TK47, TK60, #325 | `TC-REG-API-01..05`<br>`ValidadoresTest` (15 tests de contraseñas, DNI, fecha y edad)<br>`MascaraFechaWatcherTest` (10 tests de máscara y formato)<br>`TC-REG-EDAD-01..02`<br>`TC-REG-01..04` |
 | **US11: Legislación** | Términos obligatorios antes de registro; opción 'Darme de baja' borra sesión y audita. | TK52 | `TC-SEG-05` (Parte 1 y 2) |
 | **RNF-SEG: Seguridad** | Expiración de token; protección fuerza bruta; tabla LogAuditoria. | TK46, TK49, TK51 | `TC-SEG-01`, `TC-SEG-02`, `TC-SEG-03`, `TC-SEG-04`, `TC-SEG-05` |
 
