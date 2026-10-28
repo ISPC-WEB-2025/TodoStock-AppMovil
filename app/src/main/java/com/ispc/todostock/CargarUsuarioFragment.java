@@ -93,7 +93,11 @@ public class CargarUsuarioFragment extends Fragment {
         agregarWatcher(etNombre, tilNombre);
         agregarWatcher(etEmail, tilEmail);
         agregarWatcher(etDni, tilDni);
-        agregarWatcher(etFdn, tilFdn);
+        MascaraFechaWatcher.aplicar(
+                etFdn,
+                tilFdn,
+                getString(R.string.usuarios_error_fecha),
+                getString(R.string.usuarios_error_edad, Validadores.EDAD_MINIMA));
         agregarWatcher(etPassword, tilPassword);
     }
 
@@ -234,10 +238,10 @@ public class CargarUsuarioFragment extends Fragment {
         }
 
         if (!Validadores.fechaNacimientoValida(fdn)) {
-            tilFdn.setError("Fecha inválida (dd/MM/yyyy)");
+            tilFdn.setError(getString(R.string.usuarios_error_fecha));
             valido = false;
         } else if (!Validadores.esMayorDeEdad(fdn)) {
-            tilFdn.setError("Debe ser mayor de " + Validadores.EDAD_MINIMA + " años");
+            tilFdn.setError(getString(R.string.usuarios_error_edad, Validadores.EDAD_MINIMA));
             valido = false;
         }
 
