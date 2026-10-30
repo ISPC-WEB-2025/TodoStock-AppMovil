@@ -28,9 +28,13 @@ public class StockItemTest {
     @Test
     public void esBajoStock_cantidadMenorAlMinimo_esTrue() {
 
+        // Arrange
         StockItem item = unItem(0, 30);
 
+        // Act
         boolean bajo = item.esBajoStock();
+
+        // Assert
 
         assertTrue(bajo);
     }
@@ -38,9 +42,13 @@ public class StockItemTest {
     /** Valor límite: cantidad igual al mínimo ya cuenta como stock bajo. */
     @Test
     public void esBajoStock_cantidadIgualAlMinimo_esTrue() {
+        // Arrange
         StockItem item = unItem(5, 5);
 
+        // Act
         boolean bajo = item.esBajoStock();
+
+        // Assert
 
         assertTrue(bajo);
     }
@@ -48,9 +56,13 @@ public class StockItemTest {
     /** Valor límite: un producto por encima del mínimo no es stock bajo. */
     @Test
     public void esBajoStock_cantidadMayorAlMinimo_esFalse() {
+        // Arrange
         StockItem item = unItem(6, 5);
 
+        // Act
         boolean bajo = item.esBajoStock();
+
+        // Assert
 
         assertFalse(bajo);
     }
@@ -73,13 +85,17 @@ public class StockItemTest {
     /** Del JSON que devuelve la API al StockItem: se copian los seis campos. */
     @Test
     public void desde_jsonDeLaApi_copiaLosSeisCamposAlStockItem() {
+        // Arrange
         String json = "{\"id_art\": 7, \"id_suc\": 2,"
                 + " \"nombre_producto\": \"Perfil de aluminio 60mm\","
                 + " \"codigo_producto\": \"COD-001\","
                 + " \"cantidad_stock\": 0, \"stock_min\": 30}";
         StockSucursalDto dto = new Gson().fromJson(json, StockSucursalDto.class);
 
+        // Act
         StockItem item = StockItem.desde(dto);
+
+        // Assert
 
         assertEquals(7, item.getId());
         assertEquals(2, item.getSucursalId());

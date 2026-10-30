@@ -1,0 +1,53 @@
+name: CI Tests
+
+on:
+  push:
+    branches:
+      - develop
+      - release
+      - main
+      - "feature/**"
+  pull_request:
+    branches:
+      - develop
+      - release
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    name: Tests Unitarios
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Dar permisos de ejecución a Gradlew
+        run: chmod +x gradlew
+
+      - name: Ejecutar Tests Unitarios
+        run: ./gradlew testDebugUnitTest --no-daemon
+
+      - name: Publicar Reporte HTML de Tests como Artefacto
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-tests-unitarios
+          path: app/build/reports/tests/testDebugUnitTest/
+          retention-days: 14
+          if-no-files-found: ignore

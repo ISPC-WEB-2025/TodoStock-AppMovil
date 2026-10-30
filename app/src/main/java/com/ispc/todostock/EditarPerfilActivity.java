@@ -82,17 +82,24 @@ public class EditarPerfilActivity extends AppCompatActivity {
 
     private void mostrarSelectorDeFecha() {
         Calendar cal = Calendar.getInstance();
+        Calendar maxFecha = Calendar.getInstance();
+        maxFecha.add(Calendar.YEAR, -Validadores.EDAD_MINIMA);
         String actual = etFecha.getText().toString().trim();
         if (Validadores.fechaAFormatoApi(actual) != null) {
             // actual = dd/MM/yyyy válido: se usa como fecha inicial del selector
             String[] p = actual.split("/");
             cal.set(Integer.parseInt(p[2]), Integer.parseInt(p[1]) - 1, Integer.parseInt(p[0]));
         }
+        if (cal.after(maxFecha)) {
+            cal = (Calendar) maxFecha.clone();
+        }
         DatePickerDialog dialogo = new DatePickerDialog(this,
-                (view, anio, mes, dia) -> etFecha.setText(
-                        String.format(Locale.US, "%02d/%02d/%04d", dia, mes + 1, anio)),
+                (view, anio, mes, dia) -> {
+                    etFecha.setText(String.format(Locale.US, "%02d/%02d/%04d", dia, mes + 1, anio));
+                    tilFecha.setError(null);
+                },
                 cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-        dialogo.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dialogo.getDatePicker().setMaxDate(maxFecha.getTimeInMillis());
         dialogo.show();
     }
 
@@ -114,6 +121,9 @@ public class EditarPerfilActivity extends AppCompatActivity {
         }
         if (!Validadores.fechaNacimientoValida(fecha)) {
             tilFecha.setError(getString(R.string.registro_error_fecha));
+            valido = false;
+        } else if (!Validadores.esMayorDeEdad(fecha)) {
+            tilFecha.setError(getString(R.string.registro_error_edad, Validadores.EDAD_MINIMA));
             valido = false;
         }
         if (!valido) return;
@@ -180,7 +190,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
                 switch (campo) {
                     case "nombre": tilNombre.setError(msg); break;
                     case "dni": tilDni.setError(msg); break;
-                    case "fecha_nacimiento": tilFecha.setError(msg); break;
+                    case "fecha_nacimiento":
+                    case "fdn":
+                        tilFecha.setError(msg);
+                        break;
                     default: otros.append(msg).append(' ');
                 }
             }

@@ -134,8 +134,11 @@ La estrategia se basa en la pirámide de automatización de pruebas de software,
   * **Análisis de Valores Límite (BVA):** Contraseña (8 rechaza, 9 acepta), DNI (6 rechaza, 7/8 acepta, 9 rechaza), Nombre (5 rechaza, 6 acepta), Fecha de nacimiento (hoy acepta, mañana rechaza), Edad (cumple 18 hoy acepta, cumple 18 mañana rechaza), Cantidad de movimiento (0 rechaza, 1 acepta).
 * **Alcance de Clases Planificado:**
   * `ValidadoresTest.java`: Batería de pruebas unitarias sobre la clase `Validadores` cubriendo contraseñas, DNI, fecha, edad mínima (18 años) y cantidades/sucursales de movimientos (`AUT-UNIT-01`, `AUT-UNIT-03`, `AUT-UNIT-04`).
+  * `StockItemTest.java` (`AUT-UNIT-02` / #114): Suite de pruebas unitarias locales con patrón AAA sobre el cálculo de stock bajo (`stockMinimo > 0 && cantidad <= stockMinimo`), umbrales de alerta visual y mapeo de `StockSucursalDto` a `StockItem`.
   * `LoginViewModelTest.java` (`AUT-UNIT-02` / #202): Caso feliz (credenciales correctas emiten estado `Exito`) y caso de error (credenciales inválidas emiten estado `Error`), aislando el repositorio con `@Mock` y verificando `LiveData` y llamadas de comportamiento (`verify`).
   * `MovimientoRequestTest.java` (`AUT-UNIT-05` / #302): Suite de pruebas unitarias locales en JVM con JUnit 4 y patrón AAA que valida la correcta construcción y serialización JSON de los payloads de `MovimientoRequest` (Traslado, Entrada/Ingreso, Salida/Venta, Salida/Merma) y partición de equivalencia/valores límite en cantidad.
+  * `BajaDeProductoTest.java` (`AUT-UNIT-06` / #319): Suite de pruebas unitarias locales con patrón AAA que valida la detección de la marca `[INACTIVO]` y la exclusión de productos inactivos en selectores de movimientos.
+  * `MascaraFechaWatcherTest.java` (#325): Suite de pruebas unitarias locales en JVM con JUnit 4 y patrón AAA que valida el formateo interactivo de fecha (`dd/MM/yyyy`), la inserción automática y borrado seguro de barras separadoras sin bucles, la normalización de texto pegado y el truncado a 10 caracteres.
 
 ### 3.2 Nivel 2: Integración de Red y Contratos API (`AUT-NET-01` y `AUT-NET-02`)
 * **Herramienta:** `MockWebServer` (Square).
@@ -316,11 +319,11 @@ Para dar cumplimiento a las buenas prácticas de QA y a la consigna académica, 
 |---|---|---|---|
 | **US01: Login y Menú** | Credenciales válidas acceden según rol; datos vacíos bloquean; cierre de sesión borra token. | TK05, TK07, TK48, TK92 | `TC-L-01`, `TC-L-02`, `TC-L-03`, `TC-L-04`<br>`LoginViewModelTest` (`AUT-UNIT-02`)<br>Espresso Login Flow (`AUT-UI-01`) |
 | **US02: Sucursales** | Listado real desde API; selección transfiere ID por Intent. | TK12 | `TC-SSUC-01`, `TC-SSUC-02` |
-| **US03: Stock** | Stock en tiempo real; alerta visual si está bajo el umbral. | TK16, TK17 | `TC-STK-01`, `TC-STK-02` |
+| **US03: Stock** | Stock en tiempo real; alerta visual si está bajo el umbral. | TK16, TK17, TK61 | `TC-STK-01`, `TC-STK-02`<br>`StockItemTest` (`AUT-UNIT-02`) |
 | **US04: Contacto** | Formulario valida y envía mensaje exitosamente a soporte. | TK42 | `TC-C-01` |
-| **US05 & US09: Productos** | Solo Admin da de alta/edita/elimina; código único; campos obligatorios. | TK23, TK38, TK39, TK93 | `TC-CP-01`, `TC-CP-02` |
-| **US06: Movimientos** | Traslado atómico (origen != destino); Ingreso restringido a Casa Central; Salida por venta; Mermas/Roturas; cantidad > 0 y stock suficiente; buscador integrado de producto. | TK27, TK115, TK116, TK117, TK118 | `TC-MOV-001` a `TC-MOV-011`<br>`MovimientoRequestTest` (`AUT-UNIT-05`)<br>`ValidadoresTest#cantidadValida`<br>`ValidadoresTest#origenYDestinoDistintos` |
-| **US07: Registro** | Alta con cuenta pendiente; DNI 7/8 dígitos; password robusta; mayor de 18 años. | TK34, TK35, TK47, TK60 | `TC-REG-API-01..05`<br>`ValidadoresTest` (15 tests de contraseñas, DNI, fecha y edad)<br>`TC-REG-EDAD-01..02`<br>`TC-REG-01..04` |
+| **US05 & US09: Productos** | Solo Admin da de alta/edita/elimina; código único; campos obligatorios; exclusión de inactivos. | TK23, TK38, TK39, TK93, TK122 | `TC-CP-01`, `TC-CP-02`<br>`BajaDeProductoTest` (`AUT-UNIT-06`) |
+| **US06: Movimientos** | Traslado atómico (origen != destino); Ingreso restringido a Casa Central; Salida por venta; Mermas/Roturas; cantidad > 0 y stock suficiente; buscador integrado de producto; exclusión de inactivos. | TK27, TK115, TK116, TK117, TK118, TK122 | `TC-MOV-001` a `TC-MOV-011`<br>`MovimientoRequestTest` (`AUT-UNIT-05`)<br>`BajaDeProductoTest` (`AUT-UNIT-06`)<br>`ValidadoresTest#cantidadValida`<br>`ValidadoresTest#origenYDestinoDistintos` |
+| **US07: Registro** | Alta con cuenta pendiente; DNI 7/8 dígitos; password robusta; mayor de 18 años; máscara y validación temprana de fecha. | TK34, TK35, TK47, TK60, #325 | `TC-REG-API-01..05`<br>`ValidadoresTest` (15 tests de contraseñas, DNI, fecha y edad)<br>`MascaraFechaWatcherTest` (10 tests de máscara y formato)<br>`TC-REG-EDAD-01..02`<br>`TC-REG-01..04` |
 | **US11: Legislación** | Términos obligatorios antes de registro; opción 'Darme de baja' borra sesión y audita. | TK52 | `TC-SEG-05` (Parte 1 y 2) |
 | **RNF-SEG: Seguridad** | Expiración de token; protección fuerza bruta; tabla LogAuditoria. | TK46, TK49, TK51 | `TC-SEG-01`, `TC-SEG-02`, `TC-SEG-03`, `TC-SEG-04`, `TC-SEG-05` |
 
